@@ -1,0 +1,21 @@
+{
+  "name": "pimcore/perspective-editor",
+  "license": "GPL-3.0+",
+  "type": "pimcore-bundle",
+  "description": "Pimcore Perspective Editor",
+  "autoload": {
+    "psr-4": {
+      "Pimcore\\Bundle\\PerspectiveEditorBundle\\": "src/"
+    }
+  },
+  "require": {
+    "pimcore/pimcore": "^6.8"
+  },
+  "extra": {
+    "pimcore": {
+      "bundles": [
+        "Pimcore\\Bundle\\PerspectiveEditorBundle\\PerspectiveEditorBundle"
+      ]
+    }
+  }
+}
