@@ -1,1 +1,1 @@
-# Pimcore Prespective Editor
+# Pimcore Perspective Editor
