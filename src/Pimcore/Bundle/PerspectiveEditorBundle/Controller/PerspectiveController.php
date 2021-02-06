@@ -2,16 +2,16 @@
 
 namespace PerspectiveEditorBundle\Controller;
 
-use AdminBundle\Services\PerspectiveAccessor;
-use AdminBundle\Services\TreeHelper;
-use AdminBundle\Services\ViewAccessor;
+use PerspectiveEditorBundle\Services\PerspectiveAccessor;
+use PerspectiveEditorBundle\Services\TreeHelper;
+use PerspectiveEditorBundle\Services\ViewAccessor;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class PerspectiveController
- * @package AdminBundle\Controller\Admin
+ * @package PerspectiveEditorBundle\Controller\Admin
  */
 class PerspectiveController extends AdminController {
 
