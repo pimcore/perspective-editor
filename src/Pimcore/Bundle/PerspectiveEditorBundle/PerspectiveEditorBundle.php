@@ -9,10 +9,10 @@ class PerspectiveEditorBundle extends AbstractPimcoreBundle
     public function getJsPaths()
     {
         return [
-            '/bundles/admin/js/pimcore/perspective/startup.js',
-            '/bundles/admin/js/pimcore/perspective/perspective.js',
-            '/bundles/admin/js/pimcore/perspective/view.js',
-            '/bundles/admin/js/pimcore/perspective/common.js',
+            '/bundles/perspectiveeditor/js/pimcore/perspective/startup.js',
+            '/bundles/perspectiveeditor/js/pimcore/perspective/perspective.js',
+            '/bundles/perspectiveeditor/js/pimcore/perspective/view.js',
+            '/bundles/perspectiveeditor/js/pimcore/perspective/common.js',
         ];
     }
 }
