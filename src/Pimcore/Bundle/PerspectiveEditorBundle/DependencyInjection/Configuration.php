@@ -1,6 +1,6 @@
 <?php
 
-namespace Pimcore\Bundle\PerspectiveEditorBundle\DependencyInjection;
+namespace PerspectiveEditorBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
