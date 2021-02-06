@@ -1,6 +1,6 @@
 <?php
 
-namespace Pimcore\Bundle\PerspectiveEditorBundle\DependencyInjection;
+namespace PerspectiveEditorBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
