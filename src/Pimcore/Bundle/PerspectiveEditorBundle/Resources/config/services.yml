@@ -6,9 +6,9 @@ services:
         bind:
             $configDirectory: "%kernel.root_dir%/config/pimcore/"
 
-    AdminBundle\Controller\:
+    PerspectiveEditorBundle\Controller\:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
 
-    AdminBundle\Services\:
+    PerspectiveEditorBundle\Services\:
         resource: '../../Services'
