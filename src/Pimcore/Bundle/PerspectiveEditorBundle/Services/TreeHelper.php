@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
+namespace PerspectiveEditorBundle\Services;
 
 
 class TreeHelper {
