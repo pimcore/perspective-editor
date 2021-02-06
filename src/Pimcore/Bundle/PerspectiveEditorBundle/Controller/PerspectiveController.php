@@ -1,6 +1,6 @@
 <?php
 
-namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
+namespace PerspectiveEditorBundle\Controller;
 
 use AdminBundle\Services\PerspectiveAccessor;
 use AdminBundle\Services\TreeHelper;
