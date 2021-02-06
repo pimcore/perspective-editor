@@ -1,6 +1,6 @@
 <?php
 
-namespace Pimcore\Bundle\PerspectiveEditorBundle;
+namespace PerspectiveEditorBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
