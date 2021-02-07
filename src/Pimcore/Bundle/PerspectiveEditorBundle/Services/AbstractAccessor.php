@@ -33,7 +33,6 @@ abstract class AbstractAccessor {
     }
 
     public function getConfiguration(){
-        $this->configDirectory = __DIR__ . '/../../../app/config/pimcore/';
         if(!file_exists($this->configDirectory.$this->filename)){
             return false;
         }
