@@ -14,7 +14,7 @@
   "extra": {
     "pimcore": {
       "bundles": [
-        "Pimcore\\Bundle\\PerspectiveEditorBundle\\PerspectiveEditorBundle"
+        "PerspectiveEditorBundle\\PerspectiveEditorBundle"
       ]
     }
   }
