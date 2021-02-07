@@ -8,6 +8,7 @@ use PerspectiveEditorBundle\Services\ViewAccessor;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class PerspectiveController
