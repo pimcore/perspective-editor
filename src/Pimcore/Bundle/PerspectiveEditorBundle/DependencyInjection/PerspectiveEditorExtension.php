@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class AdminExtension extends Extension
+class PerspectiveEditorExtension extends Extension
 {
     /**
      * {@inheritdoc}
