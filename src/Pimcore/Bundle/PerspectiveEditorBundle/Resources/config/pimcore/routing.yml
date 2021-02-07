@@ -1,0 +1,4 @@
+admin:
+    resource: "@PerspectiveEditorBundle/Controller/"
+    type:     annotation
+    prefix:   /admin/perspectives-views
