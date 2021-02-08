@@ -68,6 +68,9 @@ class PerspectiveController extends AdminController {
         ];
         try{
             $treeStore = json_decode($request->get('data'), true);
+
+            $this->checkForUniqueElements($treeStore);
+
             $perspectiveAccessor->writeConfiguration($treeStore);
         } catch(\Exception $e){
             $ret['success'] = false;
@@ -96,6 +99,26 @@ class PerspectiveController extends AdminController {
         }
 
         return new JsonResponse($ret);
+    }
+
+    protected function checkForUniqueElements(array $treeStore){
+        foreach($treeStore['children'] as $perspective){
+            $elementTree = array_values(array_filter($perspective['children'], function($entry){
+                return $entry['type'] == 'elementTree';
+            }));
+
+            if(sizeof($elementTree) == 0){
+                return;
+            }
+
+            $elements = array_values(array_filter($elementTree[0]['children'], function($entry){
+                return in_array($entry['config']['type'], ['assets', 'documents', 'objects']);
+            }));
+
+            if(sizeof($elements) > 3){
+                throw new \Exception('no-unique-treeelements');
+            }
+        }
     }
 
     protected function createPerspectiveEntry(TreeHelper $treeHelper, $perspectiveName, $perspectiveConfig){
