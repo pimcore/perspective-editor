@@ -589,10 +589,10 @@ class PerspectiveEditor{
         var treeElementTypStore = new Ext.data.Store({
             fields: ['name', 'value'],
             data: [
-                {name: 'documents', value: 'documents'},
-                {name: 'assets', value: 'assets'},
-                {name: 'objects', value: 'objects'},
-                {name: 'customview', value: 'customview'}
+                {name: t('plugin_pimcore_perspectiveeditor_document'), value: 'documents'},
+                {name: t('plugin_pimcore_perspectiveeditor_asset'), value: 'assets'},
+                {name: t('plugin_pimcore_perspectiveeditor_object'), value: 'objects'},
+                {name: t('plugin_pimcore_perspectiveeditor_custom_view'), value: 'customview'}
             ]
         });
 
@@ -709,7 +709,7 @@ class PerspectiveEditor{
             items: [
                 new Ext.form.ComboBox({
                     padding: 10,
-                    fieldLabel: t('view_type'),
+                    fieldLabel: t('plugin_pimcore_perspectiveeditor_view_type'),
                     queryMode: 'local',
                     store: treeElementTypStore,
                     displayField: 'name',
@@ -750,7 +750,7 @@ class PerspectiveEditor{
                     value: config.position,
                     store: new Ext.data.Store({
                         fields: ['name', 'position'],
-                        data: [{name: 'left', position: 'left'}, {name: 'right', position: 'right'}]
+                        data: [{name: t('plugin_pimcore_perspectiveeditor_left'), position: 'left'}, {name: t('plugin_pimcore_perspectiveeditor_right'), position: 'right'}]
                     }),
                     listeners: {
                         change: function(elem, newValue, oldValue){
