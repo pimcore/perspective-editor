@@ -34,7 +34,7 @@ class ViewEditor{
             });
 
             this.panel = new Ext.Panel({
-                title: t("view_editor"),
+                title: t("plugin_pimcore_perspectiveeditor_view_editor"),
                 iconCls: "pimcore_icon_image",
                 border: false,
                 layout: "border",
@@ -50,7 +50,7 @@ class ViewEditor{
                         store: this.viewTreeStore,
                         rootVisible: false,
                         root: {
-                            text: t('views'),
+                            text: t('plugin_pimcore_perspectiveeditor_views'),
                             iconCls: 'pimcore_icon_binoculars'
                         },
                         listeners: {
@@ -66,8 +66,8 @@ class ViewEditor{
                                             iconCls: "pimcore_icon_delete",
                                             handler: function(){
                                                 Ext.MessageBox.show({
-                                                    title:t('are_you_sure'),
-                                                    msg: t("all_content_will_be_lost"),
+                                                    title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                                                    msg: t('plugin_pimcore_perspectiveeditor_all_content_will_be_lost'),
                                                     buttons: Ext.Msg.OKCANCEL ,
                                                     icon: Ext.MessageBox.INFO ,
                                                     fn: function (button) {
@@ -86,17 +86,17 @@ class ViewEditor{
                         bbar: [
                             "->",
                             new Ext.Button({
-                                text: t("add_view"),
+                                text: t('plugin_pimcore_perspectiveeditor_add_view'),
                                 iconCls: "pimcore_icon_plus",
                                 handler: function(){
                                     this.viewTreeStore.getRoot().appendChild({
                                         id: PerspectiveViewHelper.generateUuid(),
-                                        text: t('new view'),
+                                        text: t('plugin_pimcore_perspectiveeditor_new_view'),
                                         type: 'view',
                                         icon: '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
                                         leaf: true,
                                         config: {
-                                            name: t('new view'),
+                                            name: t('plugin_pimcore_perspectiveeditor_new_view'),
                                             treetype: 'document',
                                             position: 'left',
                                             rootfolder: '/',
@@ -119,8 +119,8 @@ class ViewEditor{
                             iconCls: "pimcore_icon_reload",
                             handler: function(){
                                 Ext.MessageBox.show({
-                                    title:t('are_you_sure'),
-                                    msg: t('confirm_reload'),
+                                    title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                                    msg: t('plugin_pimcore_perspectiveeditor_confirm_reload'),
                                     buttons: Ext.Msg.OKCANCEL ,
                                     icon: Ext.MessageBox.INFO ,
                                     fn: function (button) {
@@ -132,7 +132,7 @@ class ViewEditor{
                             }.bind(this)
                         }),
                         new Ext.Button({
-                            text: t("save"),
+                            text: t('save'),
                             iconCls: "pimcore_icon_save",
                             handler: function(){
                                 Ext.Ajax.request({
@@ -169,13 +169,14 @@ class ViewEditor{
 
             var items = this.createViewContextMenuPart(record.data);
             items.unshift(new Ext.form.FieldSet({
-                title: t('name'),
+                title: t('plugin_pimcore_perspectiveeditor_name'),
                 items: this.createViewNamingPart(record)
             }));
 
             this.viewEditPanel.add(
                 new Ext.form.Panel({
-                    title: t('view_selection'), iconCls: 'pimcore_icon_image_editor_advanced',
+                    title: t('plugin_pimcore_perspectiveeditor_view_selection'),
+                    iconCls: 'pimcore_icon_image_editor_advanced',
                     items: items
                 })
             );
@@ -213,7 +214,7 @@ class ViewEditor{
             new Ext.form.ComboBox({
                 padding: 10,
                 store: viewTypStore,
-                fieldLabel: t('type'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_type'),
                 displayField: 'name',
                 valueField: 'value',
                 editable: false,
@@ -244,12 +245,12 @@ class ViewEditor{
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
                 padding: 10,
-                fieldLabel: t('icon'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_icon'),
                 items: iconItems,
             },
             new Ext.form.ComboBox({
                 padding: 10,
-                fieldLabel: t('position'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
                 displayField: 'name',
                 valueField: 'position',
                 name: 'position',
@@ -267,7 +268,7 @@ class ViewEditor{
             }),
             new Ext.form.TextField({
                 padding: 10,
-                fieldLabel: t('rootfolder'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_rootfolder'),
                 value: data.config.rootfolder,
                 fieldCls: "input_drop_target",
                 listeners: {
@@ -314,7 +315,7 @@ class ViewEditor{
             }),
             new Ext.form.ComboBox({
                 padding: 10,
-                fieldLabel: t('show_root'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_show_root'),
                 displayField: 'name',
                 valueField: 'show',
                 editable: false,
@@ -331,7 +332,7 @@ class ViewEditor{
             }),
             new Ext.form.NumberField({
                 padding: 10,
-                fieldLabel: t('sort'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
                 value: data.config.sort,
                 listeners:{
                     change: function(elem, newValue, oldValue){
@@ -356,7 +357,7 @@ class ViewEditor{
         PerspectiveViewHelper.checkAndCreateDataStructure(config.treeContextMenu, structure);
 
         this.documentTreeContextMenuGroup = new Ext.form.FieldSet({
-            title: t('document') + ' - ' + t('contextmenu'),
+            title: t('plugin_pimcore_perspectiveeditor_document') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: data.config.treetype !== 'document',
             margin: '30 0',
             items: [
@@ -390,7 +391,7 @@ class ViewEditor{
         });
 
         this.assetTreeContextMenuGroup = new Ext.form.FieldSet({
-            title: t('asset') + ' - ' + t('contextmenu'),
+            title: t('plugin_pimcore_perspectiveeditor_asset') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: data.config.treetype !== 'asset',
             margin: '30 0',
             items: [
@@ -411,7 +412,7 @@ class ViewEditor{
         });
 
         this.objectTreeContextMenuGroup = new Ext.form.FieldSet({
-            title: t('object') + ' - ' + t('contextmenu'),
+            title: t('plugin_pimcore_perspectiveeditor_object') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: data.config.treetype !== 'object',
             margin: '30 0',
             items: [
