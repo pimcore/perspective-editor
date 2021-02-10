@@ -13,19 +13,19 @@ abstract class AbstractAccessor {
         $this->configDirectory = $configDirectory;
     }
 
-    protected function pretty_export($var, $indent="") {
+    protected function pretty_export($var, $indent = '') {
         switch (gettype($var)) {
-            case "array":
+            case 'array':
                 $indexed = array_keys($var) === range(0, count($var) - 1);
                 $r = [];
                 foreach ($var as $key => $value) {
                     $r[] = "$indent    "
-                        . ($indexed ? "" : $this->pretty_export($key) . " => ")
+                        . ($indexed ? "" : $this->pretty_export($key) . ' => ')
                         . $this->pretty_export($value, "$indent    ");
                 }
-                return "[\n" . implode(",\n", $r) . "\n" . $indent . "]";
-            case "string": return "'" . addcslashes(str_replace("'", '"', $var), "\\\$\"\r\n\t\v\f") . "'";
-            case "boolean": return $var ? "1" : "0";
+                return "[\n" . implode(",\n", $r) . "\n" . $indent . ']';
+            case 'string': return "'" . addcslashes(str_replace("'", '"', $var), "\\\$\"\r\n\t\v\f") . "'";
+            case 'boolean': return $var ? '1' : '0';
             case 'integer':
             case 'double': return $var;
             default: return var_export($var, true);
