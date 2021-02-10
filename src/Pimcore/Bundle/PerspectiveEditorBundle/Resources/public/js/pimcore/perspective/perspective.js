@@ -164,7 +164,7 @@ class PerspectiveEditor{
                                             this.perspectiveTreeStore.reload();
                                             this.perspectiveEditPanel.removeAll();
                                         } else {
-                                            pimcore.helpers.showNotification(t("error"), responseObject.error, "error")
+                                            pimcore.helpers.showNotification(t("error"), t(responseObject.error), "error");
                                         }
                                     }.bind(this)
                                 });
