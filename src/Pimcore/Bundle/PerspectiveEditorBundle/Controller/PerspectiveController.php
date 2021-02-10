@@ -116,7 +116,7 @@ class PerspectiveController extends AdminController {
             }));
 
             if(sizeof($elements) > 3){
-                throw new \Exception('no-unique-treeelements');
+                throw new \Exception('plugin_pimcore_perspectiveeditor_no_unique_treeelements');
             }
         }
     }
