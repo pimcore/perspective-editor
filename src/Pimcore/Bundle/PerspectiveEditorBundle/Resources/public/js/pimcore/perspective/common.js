@@ -73,7 +73,7 @@ class PerspectiveViewHelper{
         });
 
         return new Ext.form.Panel({
-            title: t('icon_selection'),
+            title: t('plugin_pimcore_perspectiveeditor_icon_selection'),
             iconCls: 'pimcore_icon_asset',
             layout: "hbox",
             items: [

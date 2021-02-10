@@ -37,7 +37,7 @@ class PerspectiveEditor{
             });
 
             this.panel = new Ext.Panel({
-                title: 'perspective_editor',
+                title: t('plugin_pimcore_perspectiveeditor_perspective_editor'),
                 iconCls: 'pimcore_icon_routes',
                 border: false,
                 layout: 'border',
@@ -69,19 +69,19 @@ class PerspectiveEditor{
                         bbar: [
                             "->",
                             new Ext.Button({
-                                text: t("add_perspective"),
+                                text: t("plugin_pimcore_perspectiveeditor_add_perspective"),
                                 iconCls: "pimcore_icon_plus",
                                 handler: function(){
                                     this.perspectiveTreeStore.getRoot().appendChild({
                                         id: PerspectiveViewHelper.generateUuid(),
-                                        text: t('new_perspective'),
+                                        text: t('plugin_pimcore_perspectiveeditor_new_perspective'),
                                         type: 'perspective',
                                         icon: '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
                                         expanded: true,
                                         children: [
                                             {
                                                 id: PerspectiveViewHelper.generateUuid(),
-                                                text: t('icon'),
+                                                text: t('plugin_pimcore_perspectiveeditor_icon'),
                                                 type: 'icon',
                                                 leaf: true,
                                                 icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
@@ -92,7 +92,7 @@ class PerspectiveEditor{
                                             },
                                             {
                                                 id: PerspectiveViewHelper.generateUuid(),
-                                                text: t('elementTree'),
+                                                text: t('plugin_pimcore_perspectiveeditor_elementTree'),
                                                 type: 'elementTree',
                                                 leaf: true,
                                                 icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
@@ -103,7 +103,7 @@ class PerspectiveEditor{
                                             },
                                             {
                                                 id: PerspectiveViewHelper.generateUuid(),
-                                                text: t('dashboard'),
+                                                text: t('plugin_pimcore_perspectiveeditor_dashboard'),
                                                 type: 'dashboard',
                                                 leaf: true,
                                                 icon: '/bundles/pimcoreadmin/img/flat-color-icons/star.svg',
@@ -111,7 +111,7 @@ class PerspectiveEditor{
                                             },
                                             {
                                                 id: PerspectiveViewHelper.generateUuid(),
-                                                text: t('toolbar'),
+                                                text: t('plugin_pimcore_perspectiveeditor_toolbar'),
                                                 type: 'toolbar',
                                                 leaf: true,
                                                 icon: '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
@@ -131,12 +131,12 @@ class PerspectiveEditor{
                     items: [
                         "->",
                         new Ext.Button({
-                            text: t("reload"),
+                            text: t("plugin_pimcore_perspectiveeditor_reload"),
                             iconCls: "pimcore_icon_reload",
                             handler: function () {
                                 Ext.MessageBox.show({
-                                    title: t('are_you_sure'),
-                                    msg: t('confirm_reload'),
+                                    title: t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                                    msg: t('plugin_pimcore_perspectiveeditor_confirm_reload'),
                                     buttons: Ext.Msg.OKCANCEL,
                                     icon: Ext.MessageBox.INFO,
                                     fn: function (button) {
@@ -164,7 +164,7 @@ class PerspectiveEditor{
                                             this.perspectiveTreeStore.reload();
                                             this.perspectiveEditPanel.removeAll();
                                         } else {
-                                            pimcore.helpers.showNotification(t("error"), responseObject.error, "error")
+                                            pimcore.helpers.showNotification(t("error"), t(responseObject.error), "error");
                                         }
                                     }.bind(this)
                                 });
@@ -204,10 +204,10 @@ class PerspectiveEditor{
 
     buildRenameDialog (record){
         return Ext.menu.Item({
-            text: t('rename'),
+            text: t('plugin_pimcore_perspectiveeditor_rename'),
             iconCls: 'pimcore_icon_edit',
             handler: function(){
-                Ext.MessageBox.prompt(t('rename'), t('perspective_rename'), function (button, value) {
+                Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
                     if (button === 'ok' && value !== record.data.text) {
                         record.data.text = value;
                         PerspectiveViewHelper.reloadTreeNode(record);
@@ -219,7 +219,7 @@ class PerspectiveEditor{
 
     buildAddDialog (record){
         return Ext.menu.Item({
-            text: t('add'),
+            text: t('plugin_pimcore_perspectiveeditor_add'),
             iconCls: 'pimcore_icon_add',
             handler: function(){
                 switch (record.data.type){
@@ -252,7 +252,7 @@ class PerspectiveEditor{
         }
 
         parent.appendChild({
-            text: t('new_dashboard_definition'),
+            text: t('plugin_pimcore_perspectiveeditor_new_dashboard_definition'),
             type: 'dashboardDefinition',
             leaf: true,
             iconCls: 'pimcore_icon_gridconfig_operator_renderer',
@@ -271,8 +271,8 @@ class PerspectiveEditor{
             iconCls: "pimcore_icon_delete",
             handler: function(){
                 Ext.MessageBox.show({
-                    title:t('are_you_sure'),
-                    msg: t('confirm_delete'),
+                    title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                    msg: t('plugin_pimcore_perspectiveeditor_confirm_delete'),
                     buttons: Ext.Msg.OKCANCEL ,
                     icon: Ext.MessageBox.INFO ,
                     fn: function (button) {
@@ -310,7 +310,7 @@ class PerspectiveEditor{
         PerspectiveViewHelper.checkAndCreateDataStructure(config, structure);
 
         return new Ext.Panel({
-            title: t('toolbar_access'),
+            title: t('plugin_pimcore_perspectiveeditor_toolbar_access'),
             iconCls: 'pimcore_icon_support',
             items: [
                 new Ext.Panel({
@@ -319,7 +319,7 @@ class PerspectiveEditor{
                     autoscroll: true,
                     items: [
                         new Ext.form.FieldSet({
-                            title: t('file'),
+                            title: t('plugin_pimcore_perspectiveeditor_file'),
                             collapsible: true,
                             items: [
                                 PerspectiveViewHelper.generateCheckbox(t('file_menu_hidden'), config.file, 'hidden'),
@@ -337,7 +337,7 @@ class PerspectiveEditor{
                             ]
                         }),
                         new Ext.form.FieldSet({
-                            title: t('extras'),
+                            title: t('plugin_pimcore_perspectiveeditor_extras'),
                             collapsible: true,
                             items: [
                                 PerspectiveViewHelper.generateCheckbox(t('extra_menu_hidden'), config.extras, 'hidden'),
@@ -361,7 +361,7 @@ class PerspectiveEditor{
                             ]
                         }),
                         new Ext.form.FieldSet({
-                            title: t('marketing'),
+                            title: t('plugin_pimcore_perspectiveeditor_marketing'),
                             collapsible: true,
                             items: [
                                 PerspectiveViewHelper.generateCheckbox(t('marketing_menu_hidden'), config.marketing, 'hidden'),
@@ -375,7 +375,7 @@ class PerspectiveEditor{
                             ]
                         }),
                         new Ext.form.FieldSet({
-                            title: t('settings'),
+                            title: t('plugin_pimcore_perspectiveeditor_settings'),
                             items: [
                                 PerspectiveViewHelper.generateCheckbox(t('settings_menu_hidden'), config.settings, 'hidden'),
                                 PerspectiveViewHelper.generateCheckbox(t('settings_menu_documentTypes'), config.settings, 'documentTypes'),
@@ -409,7 +409,7 @@ class PerspectiveEditor{
                             ]
                         }),
                         new Ext.form.FieldSet({
-                            title: t('search'),
+                            title: t('plugin_pimcore_perspectiveeditor_search'),
                             collapsible: true,
                             items: [
                                 PerspectiveViewHelper.generateCheckbox(t('search_menu_hidden'), config.search, 'hidden'),
@@ -432,7 +432,7 @@ class PerspectiveEditor{
         var selectablePortlets = this.availablePortlets.filter(function(availablePortlet){
             return !in_array(availablePortlet.value, forbiddenPortlets);
         }.bind(this));
-        selectablePortlets.unshift({name: t('select_empty'), value: emptyValue});
+        selectablePortlets.unshift({name: t('plugin_pimcore_perspectiveeditor_select_empty'), value: emptyValue});
 
         var gridData = [];
         var dashboardConfigCount = Math.max(record.data.config.positions[0].length, record.data.config.positions[1].length);
@@ -459,7 +459,7 @@ class PerspectiveEditor{
         });
 
         return new Ext.form.Panel({
-            title: t('dashboard_assignment'),
+            title: t('plugin_pimcore_perspectiveeditor_dashboard_assignment'),
             items: [
                 new Ext.grid.Panel({
                     selType: 'cellmodel',
@@ -486,7 +486,7 @@ class PerspectiveEditor{
                     ],
                     columns: [
                         {
-                            text: t('left_column'),
+                            text: t('plugin_pimcore_perspectiveeditor_left_column'),
                             width: '50%',
                             sortable: false,
                             hideable: false,
@@ -496,7 +496,7 @@ class PerspectiveEditor{
                             }
                         },
                         {
-                            text: t('right_column'),
+                            text: t('plugin_pimcore_perspectiveeditor_right_column'),
                             width: '50%',
                             sortable: false,
                             hideable: false,
@@ -528,19 +528,19 @@ class PerspectiveEditor{
         var emptyValue = '-';
         return [
             Ext.menu.Item({
-                text: t('add'),
+                text: t('plugin_pimcore_perspectiveeditor_add'),
                 iconCls: 'pimcore_icon_add',
                 handler: function(){
                     gridData.insert(index + 1, {left: emptyValue, right: emptyValue});
                 }.bind(this)
             }),
             Ext.menu.Item({
-                text: t('remove'),
+                text: t('plugin_pimcore_perspectiveeditor_remove'),
                 iconCls: 'pimcore_icon_delete',
                 handler: function(){
                     Ext.MessageBox.show({
-                        title:t('are_you_sure'),
-                        msg: t('confirm_delete'),
+                        title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                        msg: t('plugin_pimcore_perspectiveeditor_confirm_delete'),
                         buttons: Ext.Msg.OKCANCEL ,
                         icon: Ext.MessageBox.INFO ,
                         fn: function (button) {
@@ -575,7 +575,7 @@ class PerspectiveEditor{
         }
 
         return new Ext.form.Panel({
-            title: t('dashboard_forbidden'),
+            title: t('plugin_pimcore_perspectiveeditor_dashboard_forbidden'),
             items: items
         });
     }
@@ -589,17 +589,17 @@ class PerspectiveEditor{
         var treeElementTypStore = new Ext.data.Store({
             fields: ['name', 'value'],
             data: [
-                {name: 'documents', value: 'documents'},
-                {name: 'assets', value: 'assets'},
-                {name: 'objects', value: 'objects'},
-                {name: 'customview', value: 'customview'}
+                {name: t('plugin_pimcore_perspectiveeditor_document'), value: 'documents'},
+                {name: t('plugin_pimcore_perspectiveeditor_asset'), value: 'assets'},
+                {name: t('plugin_pimcore_perspectiveeditor_object'), value: 'objects'},
+                {name: t('plugin_pimcore_perspectiveeditor_custom_view'), value: 'customview'}
             ]
         });
 
         var customViewComboBox = new Ext.form.ComboBox({
             padding: 10,
             width: '75%',
-            fieldLabel: t('custom_view'),
+            fieldLabel: t('plugin_pimcore_perspectiveeditor_custom_view'),
             queryMode: 'local',
             store: this.availableViewsStore,
             displayField: 'name',
@@ -624,7 +624,7 @@ class PerspectiveEditor{
         PerspectiveViewHelper.checkAndCreateDataStructure(config.treeContextMenu, structure);
 
         var documentTreeContextMenuGroup = new Ext.form.FieldSet({
-            title: t('document') + ' - ' + t('contextmenu'),
+            title: t('plugin_pimcore_perspectiveeditor_document') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'documents',
             margin: '30 10 0',
             width: 500,
@@ -704,12 +704,12 @@ class PerspectiveEditor{
         });
 
         return new Ext.form.Panel({
-            title: t('tree_element_selection'),
+            title: t('plugin_pimcore_perspectiveeditor_tree_element_selection'),
             icon: '/bundles/pimcoreadmin/img/flat-color-icons/parallel_tasks.svg',
             items: [
                 new Ext.form.ComboBox({
                     padding: 10,
-                    fieldLabel: t('view_type'),
+                    fieldLabel: t('plugin_pimcore_perspectiveeditor_view_type'),
                     queryMode: 'local',
                     store: treeElementTypStore,
                     displayField: 'name',
@@ -742,7 +742,7 @@ class PerspectiveEditor{
                 customViewComboBox,
                 new Ext.form.ComboBox({
                     padding: 10,
-                    fieldLabel: t('position'),
+                    fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
                     displayField: 'name',
                     valueField: 'position',
                     name: 'position',
@@ -750,7 +750,7 @@ class PerspectiveEditor{
                     value: config.position,
                     store: new Ext.data.Store({
                         fields: ['name', 'position'],
-                        data: [{name: 'left', position: 'left'}, {name: 'right', position: 'right'}]
+                        data: [{name: t('plugin_pimcore_perspectiveeditor_left'), position: 'left'}, {name: t('plugin_pimcore_perspectiveeditor_right'), position: 'right'}]
                     }),
                     listeners: {
                         change: function(elem, newValue, oldValue){
@@ -760,7 +760,7 @@ class PerspectiveEditor{
                 }),
                 new Ext.form.NumberField({
                     padding: 10,
-                    fieldLabel: t('sort'),
+                    fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
                     value: config.sort,
                     listeners:{
                         change: function(elem, newValue, oldValue){

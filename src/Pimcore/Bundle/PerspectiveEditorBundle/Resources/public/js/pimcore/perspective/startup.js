@@ -31,7 +31,7 @@ pimcore.settings.perspectiveview = Class.create({
             this.panel = new Ext.Panel({
                 id: this.panelId,
                 iconCls: 'pimcore_icon_binoculars',
-                title: t('perspective_view_editor'),
+                title: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
                 border: false,
                 layout: 'fit',
                 closable: true,
@@ -95,7 +95,7 @@ pimcore.settings.perspectiveview = Class.create({
             layout: 'border',
             items: [
                 new Ext.tree.Panel({
-                    title: t('available_perspectives'),
+                    title: t('plugin_pimcore_perspectiveeditor_available_perspectives'),
                     region: "west",
                     autoScroll: true,
                     animate: false,
