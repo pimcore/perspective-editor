@@ -1,4 +1,5 @@
 plugin_pimcore_perspectiveeditor_perspective_view_editor: "Perspectives/Views"
+plugin_pimcore_perspectiveeditor_no_unique_treeelements: "Elementree elements may contain a maximum of one type of document, asset and data object"
 
 plugin_pimcore_perspectiveeditor_perspective_editor: "Perspectiveneditor"
 plugin_pimcore_perspectiveeditor_available_perspectives: "Available perspectives"
