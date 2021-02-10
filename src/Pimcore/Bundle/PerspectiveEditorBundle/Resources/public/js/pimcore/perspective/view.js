@@ -167,11 +167,13 @@ class ViewEditor{
         if(record.data.type === 'view'){
             this.viewEditPanel.removeAll();
 
-            var items = this.createViewContextMenuPart(record.data);
-            items.unshift(new Ext.form.FieldSet({
+            var items = [];
+            items.push(new Ext.form.FieldSet({
                 title: t('plugin_pimcore_perspectiveeditor_name'),
                 items: this.createViewNamingPart(record)
             }));
+            items.push(this.createSqlPart(record));
+            items.push(...this.createViewContextMenuPart(record.data));
 
             this.viewEditPanel.add(
                 new Ext.form.Panel({
@@ -203,7 +205,7 @@ class ViewEditor{
         return [
             new Ext.form.TextField({
                 padding: 10,
-                fieldLabel: t('name'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_settings'),
                 value: data.config.name,
                 listeners: {
                     change: function(elem, newValue, oldValue){
@@ -239,7 +241,7 @@ class ViewEditor{
                             this.objectTreeContextMenuGroup.show();
                         }
                     }.bind(this)
-                }
+                },
             }),
             {
                 xtype: 'fieldcontainer',
@@ -264,7 +266,7 @@ class ViewEditor{
                     change: function(elem, newValue, oldValue){
                         data.config.position = newValue;
                     }
-                }
+                },
             }),
             new Ext.form.TextField({
                 padding: 10,
@@ -310,8 +312,8 @@ class ViewEditor{
                                 return false;
                             }.bind(el)
                         });
-                    }
-                }
+                    },
+                },
             }),
             new Ext.form.ComboBox({
                 padding: 10,
@@ -327,20 +329,52 @@ class ViewEditor{
                 listeners: {
                     change: function(elem, newValue, oldValue){
                         data.config.showroot = newValue;
-                    }
-                }
+                    },
+                },
             }),
             new Ext.form.NumberField({
                 padding: 10,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
                 value: data.config.sort,
-                listeners:{
+                listeners: {
                     change: function(elem, newValue, oldValue){
                         data.config.sort = newValue;
                     }
-                }
-            })
-        ]
+                },
+            }),
+        ];
+    }
+
+    createSqlPart (record){
+        console.log(record);
+        return new Ext.form.FieldSet({
+            title: t('plugin_pimcore_perspectiveeditor_sql'),
+            margin: '30 0',
+            items: [
+                new Ext.form.TextArea({
+                    fieldLabel: t('plugin_pimcore_perspectiveeditor_sql_having'),
+                    value: record.data.config.having,
+                    padding: 10,
+                    width: '80%',
+                    listeners: {
+                        change: function(elem, newValue, oldValue){
+                            record.data.config.having = newValue;
+                        }
+                    },
+                }),
+                new Ext.form.TextArea({
+                    fieldLabel: t('plugin_pimcore_perspectiveeditor_sql_where'),
+                    value: record.data.config.where,
+                    padding: 10,
+                    width: '80%',
+                    listeners: {
+                        change: function(elem, newValue, oldValue){
+                            record.data.config.where = newValue;
+                        }
+                    },
+                }),
+            ],
+        });
     }
 
     createViewContextMenuPart (data){
