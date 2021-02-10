@@ -1,4 +1,5 @@
 plugin_pimcore_perspectiveeditor_perspective_view_editor: "Perspektiven/Views"
+plugin_pimcore_perspectiveeditor_no_unique_treeelements: "Elementree Elemente dürfen max. jeweils einmal den Typ Dokument, Asset und Datenobjekt enthalten"
 
 plugin_pimcore_perspectiveeditor_perspective_editor: "Perspektiveneditor"
 plugin_pimcore_perspectiveeditor_available_perspectives: "Verfügbare Perspektiven"
@@ -51,3 +52,4 @@ plugin_pimcore_perspectiveeditor_rootfolder: "Stammordner"
 plugin_pimcore_perspectiveeditor_show_root: "Hauptknoten anzeigen"
 plugin_pimcore_perspectiveeditor_asset: "Asset"
 plugin_pimcore_perspectiveeditor_object: "Datenobjekt"
+
