@@ -24,7 +24,7 @@ abstract class AbstractAccessor {
                         . $this->pretty_export($value, "$indent    ");
                 }
                 return "[\n" . implode(",\n", $r) . "\n" . $indent . "]";
-            case "string": return "'" . addcslashes($var, "\\\$\"\r\n\t\v\f") . "'";
+            case "string": return "'" . addcslashes(str_replace("'", '"', $var), "\\\$\"\r\n\t\v\f") . "'";
             case "boolean": return $var ? "1" : "0";
             case 'integer':
             case 'double': return $var;
