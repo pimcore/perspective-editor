@@ -52,4 +52,6 @@ plugin_pimcore_perspectiveeditor_rootfolder: "Stammordner"
 plugin_pimcore_perspectiveeditor_show_root: "Hauptknoten anzeigen"
 plugin_pimcore_perspectiveeditor_asset: "Asset"
 plugin_pimcore_perspectiveeditor_object: "Datenobjekt"
-
+plugin_pimcore_perspectiveeditor_sql: "SQL"
+plugin_pimcore_perspectiveeditor_sql_having: "Having Statement"
+plugin_pimcore_perspectiveeditor_sql_where: "Where Statement"
