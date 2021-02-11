@@ -210,6 +210,7 @@ class PerspectiveEditor{
                 Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
                     if (button === 'ok' && value !== record.data.text) {
                         record.data.text = value;
+                        record.data.name = value;
                         PerspectiveViewHelper.reloadTreeNode(record);
                     }
                 }.bind(this), this, false, record.data.text);
