@@ -1,10 +1,10 @@
 <?php
 
-namespace PerspectiveEditorBundle\Controller;
+namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
 
-use PerspectiveEditorBundle\Services\PerspectiveAccessor;
-use PerspectiveEditorBundle\Services\TreeHelper;
-use PerspectiveEditorBundle\Services\ViewAccessor;
+use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
+use Pimcore\Bundle\PerspectiveEditorBundle\Services\TreeHelper;
+use Pimcore\Bundle\PerspectiveEditorBundle\Services\ViewAccessor;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class PerspectiveController
- * @package PerspectiveEditorBundle\Controller\Admin
+ * @package Pimcore\Bundle\PerspectiveEditorBundle\Controller\Admin
  */
 class PerspectiveController extends AdminController {
 

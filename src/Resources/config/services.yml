@@ -2,13 +2,14 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
+        public: false
         bind:
             $configDirectory: "%kernel.root_dir%/config/pimcore/"
 
-    PerspectiveEditorBundle\Controller\:
+    Pimcore\Bundle\PerspectiveEditorBundle\Controller\:
         resource: '../../Controller'
+        public: true
         tags: ['controller.service_arguments']
 
-    PerspectiveEditorBundle\Services\:
+    Pimcore\Bundle\PerspectiveEditorBundle\Services\:
         resource: '../../Services'

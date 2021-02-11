@@ -5,7 +5,7 @@
   "description": "Pimcore Perspective Editor",
   "autoload": {
     "psr-4": {
-      "": "src/Pimcore/Bundle/"
+      "Pimcore\\Bundle\\PerspectiveEditorBundle\\": "src/"
     }
   },
   "require": {
@@ -14,7 +14,7 @@
   "extra": {
     "pimcore": {
       "bundles": [
-        "PerspectiveEditorBundle\\PerspectiveEditorBundle"
+        "Pimcore\\Bundle\\PerspectiveEditorBundle\\PimcorePerspectiveEditorBundle"
       ]
     }
   }
