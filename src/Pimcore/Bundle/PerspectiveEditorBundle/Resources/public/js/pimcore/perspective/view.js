@@ -38,7 +38,7 @@ class ViewEditor{
                 iconCls: "pimcore_icon_image",
                 border: false,
                 layout: "border",
-                closable: true,
+                closable: false,
                 items: [
                     new Ext.tree.Panel({
                         region: "west",
