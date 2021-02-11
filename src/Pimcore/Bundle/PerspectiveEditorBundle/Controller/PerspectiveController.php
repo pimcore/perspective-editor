@@ -102,8 +102,8 @@ class PerspectiveController extends AdminController {
     }
 
     protected function checkForUniqueElements(array $treeStore){
-        foreach($treeStore['children'] as $perspective){
-            $elementTree = array_values(array_filter($perspective['children'], function($entry){
+        foreach($treeStore['children'] ?? [] as $perspective){
+            $elementTree = array_values(array_filter($perspective['children'] ?? [], function($entry){
                 return $entry['type'] == 'elementTree';
             }));
 
@@ -111,7 +111,7 @@ class PerspectiveController extends AdminController {
                 return;
             }
 
-            $elements = array_values(array_filter($elementTree[0]['children'], function($entry){
+            $elements = array_values(array_filter($elementTree[0]['children'] ?? [], function($entry){
                 return in_array($entry['config']['type'], ['assets', 'documents', 'objects']);
             }));
 

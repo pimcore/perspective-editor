@@ -78,44 +78,45 @@ class PerspectiveAccessor extends AbstractAccessor {
         $configuration = [];
 
         foreach($treeStore['children'] as $child){
-            $configuration[$child['name']] = [];
+            $name = $child['name'] ?? $child['id'];
+            $configuration[$name] = [];
             foreach($child['children'] as $index => $element){
                 if($element['type'] == 'icon'){
-                    $configuration[$child['name']] = array_merge($configuration[$child['name']], $element['config']);
+                    $configuration[$name] = array_merge($configuration[$name], $element['config']);
                 }
                 else if($element['type'] == 'elementTree'){
-                    $configuration[$child['name']]['elementTree'] = [];
+                    $configuration[$name]['elementTree'] = [];
                     if(isset($element['children'])){
                         foreach($element['children'] as $grandchild){
-                            if($grandchild['config']['treeContextMenu']){
+                            if(isset($grandchild['config']['treeContextMenu'])) {
                                 foreach(array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry){
                                     if(substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry){
                                         unset($grandchild['config']['treeContextMenu'][$contextMenuEntry]);
                                     }
                                 }
                             }
-                            $configuration[$child['name']]['elementTree'][] = $grandchild['config'];
+                            $configuration[$name]['elementTree'][] = $grandchild['config'];
                         }
                     }
                 }
                 else if($element['type'] == 'dashboard'){
                     if(count($element['config']) > 0 || isset($element['children'])){
-                        $configuration[$child['name']]['dashboards'] = [];
+                        $configuration[$name]['dashboards'] = [];
                     }
 
                     if(count($element['config']) > 0){
-                        $configuration[$child['name']]['dashboards']['disabledPortlets'] = $element['config'];
+                        $configuration[$name]['dashboards']['disabledPortlets'] = $element['config'];
                     }
 
                     if(isset($element['children'])){
                         foreach($element['children'] as $dashboardDefinition){
-                            $configuration[$child['name']]['dashboards']['predefined'][$dashboardDefinition['config']['name']]['positions'] = $dashboardDefinition['config']['positions'];
+                            $configuration[$name]['dashboards']['predefined'][$dashboardDefinition['config']['name'] ?? '']['positions'] = $dashboardDefinition['config']['positions'];
                         }
                     }
                 }
                 else if($element['type'] == 'toolbar'){
                     if(count($element['config']) > 0 || isset($element['children'])){
-                        $configuration[$child['name']]['toolbar'] = $element['config'];
+                        $configuration[$name]['toolbar'] = $element['config'];
                     }
                 }
             }
