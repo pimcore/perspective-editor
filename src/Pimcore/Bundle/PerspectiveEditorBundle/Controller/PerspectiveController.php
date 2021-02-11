@@ -128,7 +128,7 @@ class PerspectiveController extends AdminController {
             'name' => $perspectiveName,
             'type' => 'perspective',
             'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
-            'expanded' => true,
+            'expanded' => false,
             'children' => [
                 [
                     'id' => $treeHelper->createUuid(),
