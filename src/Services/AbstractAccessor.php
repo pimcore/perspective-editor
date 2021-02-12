@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PerspectiveEditorBundle\Services;
+namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
 
 abstract class AbstractAccessor {
