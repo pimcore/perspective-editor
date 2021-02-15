@@ -6,7 +6,7 @@ plugin_pimcore_perspectiveeditor_available_perspectives: "Verfügbare Perspektiv
 plugin_pimcore_perspectiveeditor_add_perspective: "Perspektive hinzufügen"
 plugin_pimcore_perspectiveeditor_new_perspective: "Neue Perspektive"
 plugin_pimcore_perspectiveeditor_icon: "Vorschaubild"
-plugin_pimcore_perspectiveeditor_elementTree: "Elementbäue"
+plugin_pimcore_perspectiveeditor_elementTree: "Elementbäume"
 plugin_pimcore_perspectiveeditor_dashboard: "Startbildschirm"
 plugin_pimcore_perspectiveeditor_toolbar: "Werkzeugleiste"
 plugin_pimcore_perspectiveeditor_are_you_sure: "Sind Sie sicher?"
