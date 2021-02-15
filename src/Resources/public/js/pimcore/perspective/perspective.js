@@ -74,54 +74,58 @@ class PerspectiveEditor{
                                     text: t("plugin_pimcore_perspectiveeditor_add_perspective"),
                                     iconCls: "pimcore_icon_plus",
                                     handler: function(){
-                                        this.perspectiveTreeStore.getRoot().appendChild({
-                                            id: PerspectiveViewHelper.generateUuid(),
-                                            text: t('plugin_pimcore_perspectiveeditor_new_perspective'),
-                                            type: 'perspective',
-                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
-                                            expanded: true,
-                                            children: [
-                                                {
+                                        Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_perspective'), t('plugin_pimcore_perspectiveeditor_new_perspective'), function (button, value) {
+                                            if (button === 'ok' && value.length > 0) {
+                                                this.perspectiveTreeStore.getRoot().appendChild({
                                                     id: PerspectiveViewHelper.generateUuid(),
-                                                    text: t('plugin_pimcore_perspectiveeditor_icon'),
-                                                    type: 'icon',
-                                                    leaf: true,
-                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
-                                                    config: {
-                                                        iconCls: null,
-                                                        icon: null,
-                                                    },
-                                                },
-                                                {
-                                                    id: PerspectiveViewHelper.generateUuid(),
-                                                    text: t('plugin_pimcore_perspectiveeditor_elementTree'),
-                                                    type: 'elementTree',
-                                                    leaf: true,
-                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
-                                                    config: {
-                                                        iconCls: null,
-                                                        icon: null,
-                                                    },
-                                                },
-                                                {
-                                                    id: PerspectiveViewHelper.generateUuid(),
-                                                    text: t('plugin_pimcore_perspectiveeditor_dashboard'),
-                                                    type: 'dashboard',
-                                                    leaf: true,
-                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/star.svg',
-                                                    config: [],
-                                                },
-                                                {
-                                                    id: PerspectiveViewHelper.generateUuid(),
-                                                    text: t('plugin_pimcore_perspectiveeditor_toolbar'),
-                                                    type: 'toolbar',
-                                                    leaf: true,
-                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
-                                                    config: [],
-                                                },
-                                            ]
-                                        });
-                                        PerspectiveViewHelper.reloadTreeNode(this.perspectiveTreeStore.getRoot().lastChild);
+                                                    text: value,
+                                                    type: 'perspective',
+                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
+                                                    expanded: true,
+                                                    children: [
+                                                        {
+                                                            id: PerspectiveViewHelper.generateUuid(),
+                                                            text: t('plugin_pimcore_perspectiveeditor_icon'),
+                                                            type: 'icon',
+                                                            leaf: true,
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
+                                                            config: {
+                                                                iconCls: null,
+                                                                icon: null,
+                                                            },
+                                                        },
+                                                        {
+                                                            id: PerspectiveViewHelper.generateUuid(),
+                                                            text: t('plugin_pimcore_perspectiveeditor_elementTree'),
+                                                            type: 'elementTree',
+                                                            leaf: true,
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
+                                                            config: {
+                                                                iconCls: null,
+                                                                icon: null,
+                                                            },
+                                                        },
+                                                        {
+                                                            id: PerspectiveViewHelper.generateUuid(),
+                                                            text: t('plugin_pimcore_perspectiveeditor_dashboard'),
+                                                            type: 'dashboard',
+                                                            leaf: true,
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/star.svg',
+                                                            config: [],
+                                                        },
+                                                        {
+                                                            id: PerspectiveViewHelper.generateUuid(),
+                                                            text: t('plugin_pimcore_perspectiveeditor_toolbar'),
+                                                            type: 'toolbar',
+                                                            leaf: true,
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
+                                                            config: [],
+                                                        },
+                                                    ]
+                                                });
+                                                PerspectiveViewHelper.reloadTreeNode(this.perspectiveTreeStore.getRoot().lastChild);
+                                            }
+                                        }.bind(this))
                                     }.bind(this)
                                 }),
                             ],
