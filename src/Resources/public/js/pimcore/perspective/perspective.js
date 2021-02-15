@@ -79,6 +79,7 @@ class PerspectiveEditor{
                                                 this.perspectiveTreeStore.getRoot().appendChild({
                                                     id: PerspectiveViewHelper.generateUuid(),
                                                     text: value,
+                                                    name: value,
                                                     type: 'perspective',
                                                     icon: '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
                                                     expanded: true,
@@ -119,7 +120,23 @@ class PerspectiveEditor{
                                                             type: 'toolbar',
                                                             leaf: true,
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
-                                                            config: [],
+                                                            config: {
+                                                                file: {
+                                                                    hidden: false,
+                                                                },
+                                                                extras: {
+                                                                    hidden: false,
+                                                                },
+                                                                marketing: {
+                                                                    hidden: false,
+                                                                },
+                                                                settings: {
+                                                                    hidden: false,
+                                                                },
+                                                                search: {
+                                                                    hidden: false,
+                                                                }
+                                                            },
                                                         },
                                                     ]
                                                 });

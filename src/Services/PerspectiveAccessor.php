@@ -78,7 +78,7 @@ class PerspectiveAccessor extends AbstractAccessor {
         $configuration = [];
 
         foreach($treeStore['children'] as $child){
-            $name = $child['name'] ?? $child['id'];
+            $name = $child['name'];
             $configuration[$name] = [];
             foreach($child['children'] as $index => $element){
                 if($element['type'] == 'icon'){
