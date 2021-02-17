@@ -171,6 +171,16 @@ pimcore.settings.perspectiveview = Class.create({
     },
 });
 
-setTimeout(function(){
-    new pimcore.settings.perspectiveview();
-}, 2000);
+var menu = Ext.get('pimcore_menu_settings');
+menu.add({
+    text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
+    iconCls: 'pimcore_nav_icon_perspective',
+    handler: function () {
+        try {
+            pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('plugin_pimcore_perspectiveeditor', new pimcore.settings.perspectiveview());
+        }
+    },
+});
