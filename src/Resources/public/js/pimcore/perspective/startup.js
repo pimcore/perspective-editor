@@ -27,10 +27,9 @@ pimcore.settings.perspectiveview = Class.create({
 
     getTabPanel: function () {
         if (!this.panel) {
-
             this.panel = new Ext.Panel({
                 id: this.panelId,
-                iconCls: 'pimcore_icon_binoculars',
+                iconCls: 'pimcore_nav_icon_perspective',
                 title: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
                 border: false,
                 layout: 'fit',

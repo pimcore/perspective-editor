@@ -38,7 +38,6 @@ class ViewEditor{
                 iconCls: "pimcore_icon_image",
                 border: false,
                 layout: "border",
-                closable: false,
                 items: [
                     new Ext.tree.Panel({
                         region: "west",
@@ -83,30 +82,38 @@ class ViewEditor{
                                 menu.showAt(e.pageX, e.pageY);
                             }.bind(this)
                         },
-                        bbar: [
-                            "->",
-                            new Ext.Button({
-                                text: t('plugin_pimcore_perspectiveeditor_add_view'),
-                                iconCls: "pimcore_icon_plus",
-                                handler: function(){
-                                    this.viewTreeStore.getRoot().appendChild({
-                                        id: PerspectiveViewHelper.generateUuid(),
-                                        text: t('plugin_pimcore_perspectiveeditor_new_view'),
-                                        type: 'view',
-                                        icon: '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
-                                        leaf: true,
-                                        config: {
-                                            name: t('plugin_pimcore_perspectiveeditor_new_view'),
-                                            treetype: 'document',
-                                            position: 'left',
-                                            rootfolder: '/',
-                                            showroot: false,
-                                            sort: 0,
-                                        }
-                                    });
-                                }.bind(this)
-                            })
-                        ]
+                        tbar: {
+                            cls: 'pimcore_toolbar_border_bottom',
+                            items: [
+                                '->',
+                                new Ext.Button({
+                                    text: t('plugin_pimcore_perspectiveeditor_add_view'),
+                                    iconCls: "pimcore_icon_plus",
+                                    handler: function () {
+                                        Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_view'), t('plugin_pimcore_perspectiveeditor_new_view'), function (button, value) {
+                                            if (button === 'ok' && value.length > 0) {
+                                                this.viewTreeStore.getRoot().appendChild({
+                                                    id: PerspectiveViewHelper.generateUuid(),
+                                                    text: value,
+                                                    type: 'view',
+                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
+                                                    leaf: true,
+                                                    config: {
+                                                        name: t('plugin_pimcore_perspectiveeditor_new_view'),
+                                                        treetype: 'document',
+                                                        position: 'left',
+                                                        rootfolder: '/',
+                                                        showroot: false,
+                                                        sort: 0,
+                                                    }
+                                                });
+                                                PerspectiveViewHelper.reloadTreeNode(this.viewTreeStore.getRoot().lastChild);
+                                            }
+                                        }.bind(this))
+                                    }.bind(this)
+                                }),
+                            ],
+                        },
                     }),
                     this.viewEditPanel
                 ],
