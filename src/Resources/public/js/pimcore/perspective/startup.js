@@ -18,14 +18,15 @@ pimcore.settings.perspectiveview = Class.create({
     ],
 
     initialize: function(){
-        this.getTabPanel();
+        pimcore.plugin.broker.registerPlugin(this);
     },
 
     activate: function () {
-       Ext.getCmp('pimcore_panel_tabs').setActiveItem(this.panelId);
+       Ext.getCmp('pimcore_panel_tabs').setActiveItem(this.getTabPanel());
     },
 
     getTabPanel: function () {
+        console.log(!!this.panel);
         if (!this.panel) {
             this.panel = new Ext.Panel({
                 id: this.panelId,
@@ -49,8 +50,9 @@ pimcore.settings.perspectiveview = Class.create({
             tabPanel.setActiveItem(this.panelId);
 
             this.panel.on('destroy', function () {
-                pimcore.globalmanager.remove('perspective_view');
-            }.bind(this));
+                pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').panel = false;
+                pimcore.globalmanager.remove('plugin_pimcore_perspectiveeditor');
+            });
 
             pimcore.layout.refresh();
         }
@@ -169,18 +171,22 @@ pimcore.settings.perspectiveview = Class.create({
             }),
         });
     },
-});
 
-var menu = Ext.get('pimcore_menu_settings');
-menu.add({
-    text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
-    iconCls: 'pimcore_nav_icon_perspective',
-    handler: function () {
-        try {
-            pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').activate();
-        }
-        catch (e) {
-            pimcore.globalmanager.add('plugin_pimcore_perspectiveeditor', new pimcore.settings.perspectiveview());
-        }
+    pimcoreReady: function(){
+        var menu = pimcore.globalmanager.get('layout_toolbar').settingsMenu;
+        menu.add({
+            text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
+            iconCls: 'pimcore_nav_icon_perspective',
+            handler: function(){
+                try{
+                    pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').activate();
+                } catch (e) {
+                    this.getTabPanel();
+                    pimcore.globalmanager.add('plugin_pimcore_perspectiveeditor', this);
+                }
+            }.bind(this)
+        });
     },
 });
+
+new pimcore.settings.perspectiveview();
