@@ -35,7 +35,7 @@ class ViewAccessor extends AbstractAccessor {
         ];
 
         foreach($treeStore['children'] as $child){
-            if($child['config']['treeContextMenu']){
+            if(!empty($child['config']['treeContextMenu'])){
                 foreach(array_keys($child['config']['treeContextMenu']) as $contextMenuEntry){
                     if(substr($child['config']['treetype'], 0, strlen($contextMenuEntry)) != $contextMenuEntry){
                         unset($child['config']['treeContextMenu'][$contextMenuEntry]);
