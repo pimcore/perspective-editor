@@ -104,24 +104,37 @@ class PerspectiveController extends AdminController {
     protected function checkForUniqueElements(array $treeStore){
         foreach($treeStore['children'] ?? [] as $perspective){
             $elementTree = array_values(array_filter($perspective['children'] ?? [], function($entry){
-                return $entry['type'] == 'elementTree';
+                return $entry['type'] == 'elementTree' || $entry['type'] == 'elementTreeRight';
             }));
 
             if(sizeof($elementTree) == 0){
                 return;
             }
 
-            $elements = array_values(array_filter($elementTree[0]['children'] ?? [], function($entry){
-                return in_array($entry['config']['type'], ['assets', 'documents', 'objects']);
-            }));
-
-            if(sizeof($elements) > 3){
-                throw new \Exception('plugin_pimcore_perspectiveeditor_no_unique_treeelements');
+            $elementTrees = [];
+            foreach($elementTree as $elementTreeItem) {
+                if (isset($elementTreeItem['children'])) {
+                    $elementTrees = array_merge($elementTrees, $elementTreeItem['children']);
+                }
             }
+
+            foreach(['assets', 'documents', 'objects'] as $type) {
+                $elements = array_values(array_filter($elementTrees, function($entry) use ($type) {
+                    return $entry['config']['type'] == $type;
+                }));
+
+                if(sizeof($elements) > 1){
+                    throw new \Exception('plugin_pimcore_perspectiveeditor_no_unique_treeelements');
+                }
+            }
+
         }
     }
 
     protected function createPerspectiveEntry(TreeHelper $treeHelper, $perspectiveName, $perspectiveConfig){
+        $leftElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'left');
+        $rightElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'right');
+
         return [
             'id' => $treeHelper->createUuid(),
             'text' => $perspectiveName,
@@ -129,6 +142,8 @@ class PerspectiveController extends AdminController {
             'type' => 'perspective',
             'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/reading.svg',
             'expanded' => false,
+            'allowDrag' => false,
+            'allowDrop' => false,
             'children' => [
                 [
                     'id' => $treeHelper->createUuid(),
@@ -136,6 +151,8 @@ class PerspectiveController extends AdminController {
                     'type' => 'icon',
                     'leaf' => true,
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/marker.svg',
+                    'allowDrag' => false,
+                    'allowDrop' => false,
                     'config' => [
                         'iconCls' => $perspectiveConfig['iconCls'] ?? null,
                         'icon' => $perspectiveConfig['icon'] ?? null
@@ -143,12 +160,24 @@ class PerspectiveController extends AdminController {
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTree', [], 'admin'),
+                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTreeLeft', [], 'admin'),
                     'type' => 'elementTree',
-                    'leaf' => !isset($perspectiveConfig['elementTree']),
-                    'expanded' => isset($perspectiveConfig['elementTree']),
-                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
-                    'children' => $this->buildElementTree($treeHelper, $perspectiveConfig),
+                    'leaf' => empty($leftElementTrees),
+                    'expanded' => !empty($leftElementTrees),
+                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/left_down2.svg',
+                    'allowDrag' => false,
+                    'allowDrop' => true,
+                    'children' => $leftElementTrees,
+                ],[
+                    'id' => $treeHelper->createUuid(),
+                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTreeRight', [], 'admin'),
+                    'type' => 'elementTreeRight',
+                    'leaf' => empty($rightElementTrees),
+                    'expanded' => !empty($rightElementTrees),
+                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/right_down2.svg',
+                    'allowDrag' => false,
+                    'allowDrop' => true,
+                    'children' => $rightElementTrees,
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
@@ -158,6 +187,8 @@ class PerspectiveController extends AdminController {
                     'expanded'=> sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) != 0,
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/dashboard.svg',
                     'config' => $perspectiveConfig['dashboards']['disabledPortlets'] ?? [],
+                    'allowDrag' => false,
+                    'allowDrop' => false,
                     'children' => $this->buildDashboardTree($treeHelper, $perspectiveConfig),
                 ],
                 [
@@ -166,13 +197,15 @@ class PerspectiveController extends AdminController {
                     'type' => 'toolbar',
                     'leaf' => true,
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
+                    'allowDrag' => false,
+                    'allowDrop' => false,
                     'config' => $perspectiveConfig['toolbar'] ?? []
                 ]
             ]
         ];
     }
 
-    protected function buildElementTree(TreeHelper $treeHelper, $config){
+    protected function buildElementTree(TreeHelper $treeHelper, $config, $position = 'left'){
         if(!isset($config['elementTree'])){
             return [];
         }
@@ -185,16 +218,24 @@ class PerspectiveController extends AdminController {
         ];
 
         $tree = [];
-        foreach($config['elementTree'] as $element){
-            $tree[] = [
-                'id' => $treeHelper->createUuid(),
-                'text' => $element['type'],
-                'type' => 'elementTreeElement',
-                'leaf' => true,
-                'iconCls' => $treeIcons[$element['type']],
-                'config' => $element
-            ];
+        foreach($config['elementTree'] as $element) {
+
+            if($position === ($element['position'] ?? 'left')) {
+                $tree[] = [
+                    'id' => $treeHelper->createUuid(),
+                    'text' => $element['type'],
+                    'type' => 'elementTreeElement',
+                    'leaf' => true,
+                    'allowDrag' => true,
+                    'iconCls' => $treeIcons[$element['type']],
+                    'config' => $element
+                ];
+            }
         }
+
+        usort($tree, function($item1, $item2) {
+            return ($item1['config']['sort'] ?? 0) - ($item2['config']['sort'] ?? 0);
+        });
 
         return $tree;
     }
@@ -211,6 +252,8 @@ class PerspectiveController extends AdminController {
                 'text' => $dashboardName,
                 'type' => 'dashboardDefinition',
                 'leaf' => true,
+                'allowDrag' => false,
+                'allowDrop' => false,
                 'iconCls' => 'pimcore_icon_welcome',
                 'config' => array_merge($dashboardConfig, ['name' => $dashboardName])
             ];
@@ -230,6 +273,7 @@ class PerspectiveController extends AdminController {
             'icon' => $viewConfig['icon'] ?? '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
             'cls' => 'plugin_pimcore_perspective_editor_custom_view_tree_item',
             'leaf' => true,
+            'allowDrag' => true,
             'config' => $viewConfig ?? $this->getViewDefaultConfig($viewName)
         ];
 

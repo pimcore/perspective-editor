@@ -52,6 +52,13 @@ class PerspectiveEditor{
                         split: true,
                         store: this.perspectiveTreeStore,
                         rootVisible: false,
+                        viewConfig: {
+                            plugins: {
+                                ptype: 'treeviewdragdrop',
+                                enableDrag: true,
+                                enableDrop: true,
+                            }
+                        },
                         listeners: {
                             itemclick: function(tree, record){
                                 this.buildPerspectiveEditorPanel(record);
@@ -97,10 +104,20 @@ class PerspectiveEditor{
                                                         },
                                                         {
                                                             id: PerspectiveViewHelper.generateUuid(),
-                                                            text: t('plugin_pimcore_perspectiveeditor_elementTree'),
+                                                            text: t('plugin_pimcore_perspectiveeditor_elementTreeLeft'),
                                                             type: 'elementTree',
                                                             leaf: true,
-                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/left_down2.svg',
+                                                            config: {
+                                                                iconCls: null,
+                                                                icon: null,
+                                                            },
+                                                        },{
+                                                            id: PerspectiveViewHelper.generateUuid(),
+                                                            text: t('plugin_pimcore_perspectiveeditor_elementTreeRight'),
+                                                            type: 'elementTreeRight',
+                                                            leaf: true,
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/right_down2.svg',
                                                             config: {
                                                                 iconCls: null,
                                                                 icon: null,
@@ -202,7 +219,7 @@ class PerspectiveEditor{
     buildPerspectiveContextMenuItems (record, tree){
         const items = [];
 
-        if(record.data.type === 'elementTree'){
+        if(record.data.type === 'elementTree' || record.data.type === 'elementTreeRight'){
             items.push(this.buildAddDialog(record, tree));
         }
         if(record.data.type === 'perspective' && record.data.text !== 'default'){
@@ -245,7 +262,8 @@ class PerspectiveEditor{
             iconCls: 'pimcore_icon_add',
             handler: function(){
                 switch (record.data.type){
-                    case 'elementTree': this.addElementTree(record, tree); break;
+                    case 'elementTree': this.addElementTree(record, tree, 'left'); break;
+                    case 'elementTreeRight': this.addElementTree(record, tree, 'right'); break;
                     case 'dashboard': this.addDashboard(record, tree); break;
                 }
                 PerspectiveViewHelper.reloadTreeNode(record);
@@ -253,7 +271,7 @@ class PerspectiveEditor{
         });
     }
 
-    addElementTree (parent, tree) {
+    addElementTree (parent, tree, position) {
         const record = parent.appendChild({
             text: 'documents',
             type: 'elementTreeElement',
@@ -261,7 +279,7 @@ class PerspectiveEditor{
             iconCls: 'pimcore_icon_document',
             config: {
                 type: 'documents',
-                position: 'left',
+                position: position,
                 sort: 0,
             },
         });
@@ -775,34 +793,37 @@ class PerspectiveEditor{
                     }
                 }),
                 customViewComboBox,
-                new Ext.form.ComboBox({
-                    padding: 10,
-                    fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
-                    displayField: 'name',
-                    valueField: 'position',
-                    name: 'position',
-                    editable: false,
-                    value: config.position,
-                    store: new Ext.data.Store({
-                        fields: ['name', 'position'],
-                        data: [{name: t('plugin_pimcore_perspectiveeditor_left'), position: 'left'}, {name: t('plugin_pimcore_perspectiveeditor_right'), position: 'right'}]
-                    }),
-                    listeners: {
-                        change: function(elem, newValue, oldValue){
-                            config.position = newValue;
-                        }
-                    }
-                }),
-                new Ext.form.NumberField({
-                    padding: 10,
-                    fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
-                    value: config.sort,
-                    listeners:{
-                        change: function(elem, newValue, oldValue){
-                            config.sort = newValue;
-                        }
-                    }
-                }),
+                // new Ext.form.ComboBox({
+                //     padding: 10,
+                //     fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
+                //     displayField: 'name',
+                //     valueField: 'position',
+                //     name: 'position',
+                //     editable: false,
+                //     value: config.position,
+                //     readOnly: true,
+                //     store: new Ext.data.Store({
+                //         fields: ['name', 'position'],
+                //         data: [{name: t('plugin_pimcore_perspectiveeditor_left'), position: 'left'}, {name: t('plugin_pimcore_perspectiveeditor_right'), position: 'right'}]
+                //     }),
+                //     listeners: {
+                //         change: function(elem, newValue, oldValue){
+                //             config.position = newValue;
+                //         }
+                //     }
+                // }),
+                // new Ext.form.NumberField({
+                //     padding: 10,
+                //     fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
+                //     value: config.sort,
+                //     width: 150,
+                //     readOnly: true,
+                //     listeners:{
+                //         change: function(elem, newValue, oldValue){
+                //             config.sort = newValue;
+                //         }
+                //     }
+                // }),
                 documentTreeContextMenuGroup,
                 assetTreeContextMenuGroup,
                 objectTreeContextMenuGroup
