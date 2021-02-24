@@ -185,8 +185,6 @@ class PerspectiveEditor{
                                         const responseObject = Ext.decode(response.responseText);
                                         if (responseObject.success) {
                                             pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
-                                            this.perspectiveTreeStore.reload();
-                                            this.perspectiveEditPanel.removeAll();
                                             this.setDirty(false);
                                         } else {
                                             pimcore.helpers.showNotification(t("error"), t(responseObject.error), "error");
