@@ -331,7 +331,7 @@ class ViewEditor{
                 value: data.config.showroot,
                 store: new Ext.data.Store({
                     fields: ['name', 'show'],
-                    data: [{name: 'yes', show: 1}, {name: 'no', show: 0}]
+                    data: [{name: 'yes', show: true}, {name: 'no', show: false}]
                 }),
                 listeners: {
                     change: function(elem, newValue, oldValue){

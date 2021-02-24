@@ -25,7 +25,7 @@ abstract class AbstractAccessor {
                 }
                 return "[\n" . implode(",\n", $r) . "\n" . $indent . ']';
             case 'string': return "'" . addcslashes(str_replace("'", '"', $var), "\\\$\"\r\n\t\v\f") . "'";
-            case 'boolean': return $var ? '1' : '0';
+            case 'boolean': return $var ? 'true' : 'false';
             case 'integer':
             case 'double': return $var;
             default: return var_export($var, true);
