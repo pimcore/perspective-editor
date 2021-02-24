@@ -38,7 +38,7 @@ class PerspectiveEditor{
 
             this.panel = new Ext.Panel({
                 title: t('plugin_pimcore_perspectiveeditor_perspective_editor'),
-                iconCls: 'pimcore_icon_routes',
+                iconCls: 'plugin_pimcore_perspective_editor_perspective',
                 border: false,
                 layout: 'border',
                 items: [
@@ -69,7 +69,6 @@ class PerspectiveEditor{
                         tbar: {
                             cls: 'pimcore_toolbar_border_bottom',
                             items: [
-                                '->',
                                 new Ext.Button({
                                     text: t("plugin_pimcore_perspectiveeditor_add_perspective"),
                                     iconCls: "pimcore_icon_plus",
@@ -81,7 +80,7 @@ class PerspectiveEditor{
                                                     text: value,
                                                     name: value,
                                                     type: 'perspective',
-                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
+                                                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/reading.svg',
                                                     expanded: true,
                                                     children: [
                                                         {
@@ -89,7 +88,7 @@ class PerspectiveEditor{
                                                             text: t('plugin_pimcore_perspectiveeditor_icon'),
                                                             type: 'icon',
                                                             leaf: true,
-                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/marker.svg',
                                                             config: {
                                                                 iconCls: null,
                                                                 icon: null,
@@ -100,7 +99,7 @@ class PerspectiveEditor{
                                                             text: t('plugin_pimcore_perspectiveeditor_elementTree'),
                                                             type: 'elementTree',
                                                             leaf: true,
-                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
                                                             config: {
                                                                 iconCls: null,
                                                                 icon: null,
@@ -111,7 +110,7 @@ class PerspectiveEditor{
                                                             text: t('plugin_pimcore_perspectiveeditor_dashboard'),
                                                             type: 'dashboard',
                                                             leaf: true,
-                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/star.svg',
+                                                            icon: '/bundles/pimcoreadmin/img/flat-color-icons/dashboard.svg',
                                                             config: [],
                                                         },
                                                         {
@@ -150,9 +149,7 @@ class PerspectiveEditor{
                     }),
                     this.perspectiveEditPanel
                 ],
-                bbar: new Ext.toolbar.Toolbar({
-                    style: 'background: #e0e1e2',
-                    items: [
+                buttons: [
                         "->",
                         new Ext.Button({
                             text: t("plugin_pimcore_perspectiveeditor_reload"),
@@ -174,7 +171,7 @@ class PerspectiveEditor{
                         }),
                         new Ext.Button({
                             text: t("save"),
-                            iconCls: "pimcore_icon_save",
+                            iconCls: "pimcore_icon_apply",
                             handler: function () {
                                 Ext.Ajax.request({
                                     url: this.routePrefix + '/update',
@@ -194,8 +191,7 @@ class PerspectiveEditor{
                                 });
                             }.bind(this)
                         }),
-                    ],
-                }),
+                ]
             });
         }
 
@@ -280,7 +276,7 @@ class PerspectiveEditor{
             text: t('plugin_pimcore_perspectiveeditor_new_dashboard_definition'),
             type: 'dashboardDefinition',
             leaf: true,
-            iconCls: 'pimcore_icon_gridconfig_operator_renderer',
+            iconCls: 'pimcore_icon_welcome',
             config: {
                 positions: [
                     [colDefault],
@@ -730,7 +726,7 @@ class PerspectiveEditor{
 
         return new Ext.form.Panel({
             title: t('plugin_pimcore_perspectiveeditor_tree_element_selection'),
-            icon: '/bundles/pimcoreadmin/img/flat-color-icons/parallel_tasks.svg',
+            icon: '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
             items: [
                 new Ext.form.ComboBox({
                     padding: 10,

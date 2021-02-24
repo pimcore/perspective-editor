@@ -19,6 +19,13 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
         ];
     }
 
+    public function getCssPaths()
+    {
+        return [
+            '/bundles/pimcoreperspectiveeditor/css/icons.css'
+        ];
+    }
+
     protected function getComposerPackageName(): string
     {
         return "pimcore/perspective-editor";
