@@ -27,14 +27,22 @@ class PerspectiveViewHelper{
     }
 
     static checkAndCreateDataStructure (config, structure){
-        for(var key in structure){
+        for(let key in structure){
             if(!(key in config)){
                 config[key] = {};
             }
-            for(i in structure[key]){
+
+            //support shortcut definitions
+            if(Number.isInteger(config[key]) || typeof config[key] === "boolean") {
+                config[key] = {
+                    hidden: !config[key]
+                };
+            }
+
+            for(let i in structure[key]){
                 var keyPath = structure[key][i].split('.');
                 var c = config[key];
-                for(var j in keyPath){
+                for(let j in keyPath){
                     if(!(keyPath[j] in c)){
                         c[keyPath[j]] = j*1 + 1 === keyPath.length ? 1 : {};
                     }
