@@ -3,18 +3,18 @@ pimcore.registerNS('pimcore.settings.perspectiveview');
 pimcore.settings.perspectiveview = Class.create({
 
     panelId: 'perspective_view_panel_id',
-    perspectiveTreeStore: null,
-    viewTreeStore: null,
-    viewEditPanel: null,
-    availablePortlets: [
-        {name: t('modificationStatistic'), value: 'pimcore.layout.portlets.modificationStatistic'},
-        {name: t('modifiedDocuments'), value: 'pimcore.layout.portlets.modifiedDocuments'},
-        {name: t('modifiedAssets'), value: 'pimcore.layout.portlets.modifiedAssets'},
-        {name: t('modifiedObjects'), value: 'pimcore.layout.portlets.modifiedObjects'},
-        {name: t('analytics'), value: 'pimcore.layout.portlets.analytics'},
-        {name: t('piwik'), value: 'pimcore.layout.portlets.piwik'},
-        {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
-    ],
+    // perspectiveTreeStore: null,
+    // viewTreeStore: null,
+    // viewEditPanel: null,
+    // availablePortlets: [
+    //     {name: t('modificationStatistic'), value: 'pimcore.layout.portlets.modificationStatistic'},
+    //     {name: t('modifiedDocuments'), value: 'pimcore.layout.portlets.modifiedDocuments'},
+    //     {name: t('modifiedAssets'), value: 'pimcore.layout.portlets.modifiedAssets'},
+    //     {name: t('modifiedObjects'), value: 'pimcore.layout.portlets.modifiedObjects'},
+    //     {name: t('analytics'), value: 'pimcore.layout.portlets.analytics'},
+    //     {name: t('piwik'), value: 'pimcore.layout.portlets.piwik'},
+    //     {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
+    // ],
 
     initialize: function(){
         pimcore.plugin.broker.registerPlugin(this);
