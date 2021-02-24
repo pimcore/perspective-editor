@@ -127,7 +127,7 @@ class PerspectiveController extends AdminController {
             'text' => $perspectiveName,
             'name' => $perspectiveName,
             'type' => 'perspective',
-            'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/integrated_webcam.svg',
+            'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/reading.svg',
             'expanded' => false,
             'children' => [
                 [
@@ -135,7 +135,7 @@ class PerspectiveController extends AdminController {
                     'text' => 'icon',
                     'type' => 'icon',
                     'leaf' => true,
-                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/asset.svg',
+                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/marker.svg',
                     'config' => [
                         'iconCls' => $perspectiveConfig['iconCls'] ?? null,
                         'icon' => $perspectiveConfig['icon'] ?? null
@@ -143,26 +143,26 @@ class PerspectiveController extends AdminController {
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => 'elementTree',
+                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTree', [], 'admin'),
                     'type' => 'elementTree',
                     'leaf' => !isset($perspectiveConfig['elementTree']),
                     'expanded' => isset($perspectiveConfig['elementTree']),
-                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/parallel_tasks.svg',
+                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
                     'children' => $this->buildElementTree($treeHelper, $perspectiveConfig),
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => 'dashboard',
+                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_dashboard', [], 'admin'),
                     'type' => 'dashboard',
                     'leaf' => sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) == 0,
                     'expanded'=> sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) != 0,
-                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/star.svg',
+                    'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/dashboard.svg',
                     'config' => $perspectiveConfig['dashboards']['disabledPortlets'] ?? [],
                     'children' => $this->buildDashboardTree($treeHelper, $perspectiveConfig),
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => 'toolbar',
+                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_toolbar', [], 'admin'),
                     'type' => 'toolbar',
                     'leaf' => true,
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
@@ -211,7 +211,7 @@ class PerspectiveController extends AdminController {
                 'text' => $dashboardName,
                 'type' => 'dashboardDefinition',
                 'leaf' => true,
-                'iconCls' => 'pimcore_icon_gridconfig_operator_renderer',
+                'iconCls' => 'pimcore_icon_welcome',
                 'config' => array_merge($dashboardConfig, ['name' => $dashboardName])
             ];
         }
@@ -228,6 +228,7 @@ class PerspectiveController extends AdminController {
             'name' => 'view',
             'type' => 'view',
             'icon' => $viewConfig['icon'] ?? '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
+            'cls' => 'plugin_pimcore_perspective_editor_custom_view_tree_item',
             'leaf' => true,
             'config' => $viewConfig ?? $this->getViewDefaultConfig($viewName)
         ];

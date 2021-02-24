@@ -1,0 +1,11 @@
+.plugin_pimcore_perspective_editor_perspective {
+    background: url(/bundles/pimcoreadmin/img/flat-color-icons/reading.svg) center center no-repeat !important;
+}
+
+.plugin_pimcore_perspective_editor_custom_view_tree_item {
+    padding-bottom: 5px;
+}
+
+.plugin_pimcore_perspective_editor_custom_view_tree_item img {
+    background-color: #393C3F;
+}

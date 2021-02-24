@@ -35,7 +35,7 @@ class ViewEditor{
 
             this.panel = new Ext.Panel({
                 title: t("plugin_pimcore_perspectiveeditor_view_editor"),
-                iconCls: "pimcore_icon_image",
+                iconCls: "pimcore_icon_custom_views",
                 border: false,
                 layout: "border",
                 items: [
@@ -48,10 +48,6 @@ class ViewEditor{
                         split: true,
                         store: this.viewTreeStore,
                         rootVisible: false,
-                        root: {
-                            text: t('plugin_pimcore_perspectiveeditor_views'),
-                            iconCls: 'pimcore_icon_binoculars'
-                        },
                         listeners: {
                             itemclick: function(tree, record){
                                 this.buildViewEditorPanel(record);
@@ -85,7 +81,6 @@ class ViewEditor{
                         tbar: {
                             cls: 'pimcore_toolbar_border_bottom',
                             items: [
-                                '->',
                                 new Ext.Button({
                                     text: t('plugin_pimcore_perspectiveeditor_add_view'),
                                     iconCls: "pimcore_icon_plus",
@@ -98,6 +93,7 @@ class ViewEditor{
                                                     type: 'view',
                                                     icon: '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
                                                     leaf: true,
+                                                    cls: 'plugin_pimcore_perspective_editor_custom_view_tree_item',
                                                     config: {
                                                         name: t('plugin_pimcore_perspectiveeditor_new_view'),
                                                         treetype: 'document',
@@ -117,53 +113,50 @@ class ViewEditor{
                     }),
                     this.viewEditPanel
                 ],
-                bbar: new Ext.toolbar.Toolbar({
-                    style: 'background: #e0e1e2',
-                    items: [
-                        "->",
-                        new Ext.Button({
-                            text: t("reload"),
-                            iconCls: "pimcore_icon_reload",
-                            handler: function(){
-                                Ext.MessageBox.show({
-                                    title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
-                                    msg: t('plugin_pimcore_perspectiveeditor_confirm_reload'),
-                                    buttons: Ext.Msg.OKCANCEL ,
-                                    icon: Ext.MessageBox.INFO ,
-                                    fn: function (button) {
-                                        if (button === 'ok') {
-                                            this.viewTreeStore.reload();
-                                        }
-                                    }.bind(this)
-                                });
-                            }.bind(this)
-                        }),
-                        new Ext.Button({
-                            text: t('save'),
-                            iconCls: "pimcore_icon_save",
-                            handler: function(){
-                                Ext.Ajax.request({
-                                    url: this.routePrefix + '/update',
-                                    params: {
-                                        data: Ext.JSON.encode(this.viewTreeStore.getRoot().serialize())
-                                    },
-                                    method: 'POST',
-                                    success: function(response){
-                                        const responseObject = Ext.decode(response.responseText);
-                                        if(responseObject.success){
-                                            pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
-                                            this.viewTreeStore.reload();
-                                            this.viewEditPanel.removeAll();
-                                        }
-                                        else{
-                                            pimcore.helpers.showNotification(t("error"), responseObject.error, "error")
-                                        }
-                                    }.bind(this)
-                                });
-                            }.bind(this)
-                        })
-                    ]
-                })
+                buttons: [
+                    "->",
+                    new Ext.Button({
+                        text: t("reload"),
+                        iconCls: "pimcore_icon_reload",
+                        handler: function(){
+                            Ext.MessageBox.show({
+                                title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                                msg: t('plugin_pimcore_perspectiveeditor_confirm_reload'),
+                                buttons: Ext.Msg.OKCANCEL ,
+                                icon: Ext.MessageBox.INFO ,
+                                fn: function (button) {
+                                    if (button === 'ok') {
+                                        this.viewTreeStore.reload();
+                                    }
+                                }.bind(this)
+                            });
+                        }.bind(this)
+                    }),
+                    new Ext.Button({
+                        text: t('save'),
+                        iconCls: "pimcore_icon_save",
+                        handler: function(){
+                            Ext.Ajax.request({
+                                url: this.routePrefix + '/update',
+                                params: {
+                                    data: Ext.JSON.encode(this.viewTreeStore.getRoot().serialize())
+                                },
+                                method: 'POST',
+                                success: function(response){
+                                    const responseObject = Ext.decode(response.responseText);
+                                    if(responseObject.success){
+                                        pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
+                                        this.viewTreeStore.reload();
+                                        this.viewEditPanel.removeAll();
+                                    }
+                                    else{
+                                        pimcore.helpers.showNotification(t("error"), responseObject.error, "error")
+                                    }
+                                }.bind(this)
+                            });
+                        }.bind(this)
+                    })
+                ]
             });
         }
 
@@ -185,7 +178,7 @@ class ViewEditor{
             this.viewEditPanel.add(
                 new Ext.form.Panel({
                     title: t('plugin_pimcore_perspectiveeditor_view_selection'),
-                    iconCls: 'pimcore_icon_image_editor_advanced',
+                    iconCls: 'pimcore_icon_custom_views',
                     items: items
                 })
             );
@@ -211,8 +204,7 @@ class ViewEditor{
 
         return [
             new Ext.form.TextField({
-                padding: 10,
-                fieldLabel: t('plugin_pimcore_perspectiveeditor_settings'),
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_name'),
                 value: data.config.name,
                 listeners: {
                     change: function(elem, newValue, oldValue){
@@ -221,7 +213,6 @@ class ViewEditor{
                 }
             }),
             new Ext.form.ComboBox({
-                padding: 10,
                 store: viewTypStore,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_type'),
                 displayField: 'name',
@@ -253,12 +244,10 @@ class ViewEditor{
             {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
-                padding: 10,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_icon'),
                 items: iconItems,
             },
             new Ext.form.ComboBox({
-                padding: 10,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
                 displayField: 'name',
                 valueField: 'position',
@@ -276,10 +265,10 @@ class ViewEditor{
                 },
             }),
             new Ext.form.TextField({
-                padding: 10,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_rootfolder'),
                 value: data.config.rootfolder,
                 fieldCls: "input_drop_target",
+                width: 600,
                 listeners: {
                     render: function (el) {
                         new Ext.dd.DropZone(el.getEl(), {
@@ -323,7 +312,6 @@ class ViewEditor{
                 },
             }),
             new Ext.form.ComboBox({
-                padding: 10,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_show_root'),
                 displayField: 'name',
                 valueField: 'show',
@@ -340,7 +328,6 @@ class ViewEditor{
                 },
             }),
             new Ext.form.NumberField({
-                padding: 10,
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
                 value: data.config.sort,
                 listeners: {
@@ -353,7 +340,6 @@ class ViewEditor{
     }
 
     createSqlPart (record){
-        console.log(record);
         return new Ext.form.FieldSet({
             title: t('plugin_pimcore_perspectiveeditor_sql'),
             margin: '30 0',
@@ -361,7 +347,6 @@ class ViewEditor{
                 new Ext.form.TextArea({
                     fieldLabel: t('plugin_pimcore_perspectiveeditor_sql_having'),
                     value: record.data.config.having,
-                    padding: 10,
                     width: '80%',
                     listeners: {
                         change: function(elem, newValue, oldValue){
@@ -372,7 +357,6 @@ class ViewEditor{
                 new Ext.form.TextArea({
                     fieldLabel: t('plugin_pimcore_perspectiveeditor_sql_where'),
                     value: record.data.config.where,
-                    padding: 10,
                     width: '80%',
                     listeners: {
                         change: function(elem, newValue, oldValue){
