@@ -320,7 +320,6 @@ class PerspectiveEditor{
 
     buildPerspectiveEditorPanel (record){
         this.perspectiveEditPanel.removeAll();
-        console.log(record);
         this.activeRecordId = record.id;
 
         switch(record.data.type){
