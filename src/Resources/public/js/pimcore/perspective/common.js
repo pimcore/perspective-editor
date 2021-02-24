@@ -14,13 +14,16 @@ class PerspectiveViewHelper{
         record.parentNode.expand();
     }
 
-    static generateCheckbox (label, config, key, inverted = false){
+    static generateCheckbox (label, config, key, inverted = false, changeCallback){
         return new Ext.form.Checkbox({
             boxLabel: label,
             checked: inverted ? !config[key] : config[key],
             listeners: {
                 change: function(elem, newValue, oldValue){
                     config[key] = newValue;
+                    if(changeCallback) {
+                        changeCallback();
+                    }
                 }.bind(this)
             },
         });
@@ -52,7 +55,7 @@ class PerspectiveViewHelper{
         }
     }
 
-    static createIconFormPanel (record, id, applyToRecord){
+    static createIconFormPanel (record, id, applyToRecord, changeCallback){
         var iconField = new Ext.form.field.Text({
             id: "iconfield-" + id,
             name: "icon",
@@ -63,6 +66,18 @@ class PerspectiveViewHelper{
                 "afterrender": function (el) {
                     el.inputEl.applyStyles("background:url(" + el.getValue() + ") right center no-repeat;");
                 },
+                change: function(field, newValue) {
+
+                    record.data.config.icon = newValue;
+                    if(applyToRecord){
+                        record.data.icon = newValue;
+                        PerspectiveViewHelper.reloadTreeNode(record);
+                    }
+
+                    if(changeCallback) {
+                        changeCallback();
+                    }
+                }
             },
         });
 
@@ -102,6 +117,10 @@ class PerspectiveViewHelper{
                             if(applyToRecord){
                                 record.data.icon = newValue;
                                 PerspectiveViewHelper.reloadTreeNode(record);
+                            }
+
+                            if(changeCallback) {
+                                changeCallback();
                             }
                             return newValue;
                         }.bind(this),
