@@ -10,6 +10,7 @@ class PerspectiveEditor{
         {name: t('piwik'), value: 'pimcore.layout.portlets.piwik'},
         {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
     ];
+    activeRecordId = null;
 
     constructor () {
         if (!this.panel) {
@@ -57,7 +58,7 @@ class PerspectiveEditor{
                             }.bind(this),
                             itemcontextmenu: function (tree, record, item, index, e, eOpts ) {
                                 e.stopEvent();
-                                var menuItems = this.buildPerspectiveContextMenuItems(record);
+                                var menuItems = this.buildPerspectiveContextMenuItems(record, tree);
                                 if(menuItems.length > 0){
                                     var menu = new Ext.menu.Menu({
                                         items: menuItems
@@ -198,21 +199,21 @@ class PerspectiveEditor{
         return this.panel;
     }
 
-    buildPerspectiveContextMenuItems (record){
+    buildPerspectiveContextMenuItems (record, tree){
         const items = [];
 
         if(record.data.type === 'elementTree'){
-            items.push(this.buildAddDialog(record));
+            items.push(this.buildAddDialog(record, tree));
         }
         if(record.data.type === 'perspective' && record.data.text !== 'default'){
             items.push(this.buildRenameDialog(record));
-            items.push(this.buildDeleteDialog(record));
+            items.push(this.buildDeleteDialog(record, true));
         }
         if(record.data.type === 'elementTreeElement'){
             items.push(this.buildDeleteDialog(record));
         }
         if(record.data.type === 'dashboard'){
-            items.push(this.buildAddDialog(record));
+            items.push(this.buildAddDialog(record, tree));
         }
         if(record.data.type === 'dashboardDefinition'){
             items.push(this.buildRenameDialog(record));
@@ -238,22 +239,22 @@ class PerspectiveEditor{
         });
     }
 
-    buildAddDialog (record){
+    buildAddDialog (record, tree){
         return Ext.menu.Item({
             text: t('plugin_pimcore_perspectiveeditor_add'),
             iconCls: 'pimcore_icon_add',
             handler: function(){
                 switch (record.data.type){
-                    case 'elementTree': this.addElementTree(record); break;
-                    case 'dashboard': this.addDashboard(record); break;
+                    case 'elementTree': this.addElementTree(record, tree); break;
+                    case 'dashboard': this.addDashboard(record, tree); break;
                 }
                 PerspectiveViewHelper.reloadTreeNode(record);
             }.bind(this)
         });
     }
 
-    addElementTree (parent) {
-        parent.appendChild({
+    addElementTree (parent, tree) {
+        const record = parent.appendChild({
             text: 'documents',
             type: 'elementTreeElement',
             leaf: true,
@@ -264,15 +265,19 @@ class PerspectiveEditor{
                 sort: 0,
             },
         });
+
+        parent.expand();
+        tree.getSelectionModel().select(record);
+        this.buildPerspectiveEditorPanel(record);
     }
 
-    addDashboard (parent) {
+    addDashboard (parent, tree) {
         const colDefault = {
             type: '-',
             config: null,
         }
 
-        parent.appendChild({
+        const record = parent.appendChild({
             text: t('plugin_pimcore_perspectiveeditor_new_dashboard_definition'),
             type: 'dashboardDefinition',
             leaf: true,
@@ -284,9 +289,13 @@ class PerspectiveEditor{
                 ]
             }
         });
+
+        parent.expand();
+        tree.getSelectionModel().select(record);
+        this.buildPerspectiveEditorPanel(record);
     }
 
-    buildDeleteDialog (record){
+    buildDeleteDialog (record, forceClose){
         return Ext.menu.Item({
             text: t('delete'),
             iconCls: "pimcore_icon_delete",
@@ -298,6 +307,9 @@ class PerspectiveEditor{
                     icon: Ext.MessageBox.INFO ,
                     fn: function (button) {
                         if (button === 'ok') {
+                            if(forceClose || this.activeRecordId === record.id) {
+                                this.perspectiveEditPanel.removeAll();
+                            }
                             record.parentNode.removeChild(record);
                         }
                     }.bind(this)
@@ -308,6 +320,9 @@ class PerspectiveEditor{
 
     buildPerspectiveEditorPanel (record){
         this.perspectiveEditPanel.removeAll();
+        console.log(record);
+        this.activeRecordId = record.id;
+
         switch(record.data.type){
             case 'icon': this.perspectiveEditPanel.add(PerspectiveViewHelper.createIconFormPanel(record, PerspectiveViewHelper.generateUuid())); break;
             case 'elementTreeElement': this.perspectiveEditPanel.add(this.createElementTreePanel(record)); break;

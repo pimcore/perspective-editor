@@ -1,6 +1,7 @@
 class ViewEditor{
 
     routePrefix = '/admin/perspectives-views/view';
+    activeRecordId = null;
 
     constructor (perspectiveEditor) {
         if (!this.panel) {
@@ -67,6 +68,9 @@ class ViewEditor{
                                                     icon: Ext.MessageBox.INFO ,
                                                     fn: function (button) {
                                                         if (button === 'ok') {
+                                                            if(record.id === this.activeRecordId) {
+                                                                this.viewEditPanel.removeAll();
+                                                            }
                                                             record.parentNode.removeChild(record);
                                                         }
                                                     }.bind(this)
@@ -87,7 +91,7 @@ class ViewEditor{
                                     handler: function () {
                                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_view'), t('plugin_pimcore_perspectiveeditor_new_view'), function (button, value) {
                                             if (button === 'ok' && value.length > 0) {
-                                                this.viewTreeStore.getRoot().appendChild({
+                                                const record = this.viewTreeStore.getRoot().appendChild({
                                                     id: PerspectiveViewHelper.generateUuid(),
                                                     text: value,
                                                     type: 'view',
@@ -95,7 +99,7 @@ class ViewEditor{
                                                     leaf: true,
                                                     cls: 'plugin_pimcore_perspective_editor_custom_view_tree_item',
                                                     config: {
-                                                        name: t('plugin_pimcore_perspectiveeditor_new_view'),
+                                                        name: value,
                                                         treetype: 'document',
                                                         position: 'left',
                                                         rootfolder: '/',
@@ -103,6 +107,8 @@ class ViewEditor{
                                                         sort: 0,
                                                     }
                                                 });
+                                                this.buildViewEditorPanel(record);
+
                                                 PerspectiveViewHelper.reloadTreeNode(this.viewTreeStore.getRoot().lastChild);
                                             }
                                         }.bind(this))
@@ -166,6 +172,7 @@ class ViewEditor{
     buildViewEditorPanel (record){
         if(record.data.type === 'view'){
             this.viewEditPanel.removeAll();
+            this.activeRecordId = record.id;
 
             var items = [];
             items.push(new Ext.form.FieldSet({
