@@ -15,20 +15,11 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
+use Pimcore\Tool;
+
 class ViewAccessor extends AbstractAccessor
 {
     protected $filename = 'customviews.php';
-
-    public function createFile()
-    {
-        $defaultConfig =
-            [
-                'views' => []
-            ];
-
-        $str = "<?php\n return " . $this->pretty_export($defaultConfig) . ';';
-        file_put_contents($this->configDirectory.$this->filename, $str);
-    }
 
     public function getAvailableViews()
     {
@@ -62,5 +53,14 @@ class ViewAccessor extends AbstractAccessor
         }
 
         return $configuration;
+    }
+
+    public function getConfiguration(): array
+    {
+        $views = Tool::getCustomViewConfig();
+        if($views) {
+            return ['views' => Tool::getCustomViewConfig()];
+        }
+        return [];
     }
 }

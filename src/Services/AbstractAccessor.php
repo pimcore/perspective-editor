@@ -15,6 +15,8 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
+use Pimcore\Config;
+
 abstract class AbstractAccessor
 {
     protected $configDirectory;
@@ -46,24 +48,21 @@ abstract class AbstractAccessor
         }
     }
 
-    public function getConfiguration()
-    {
-        if (!file_exists($this->configDirectory.$this->filename)) {
-            return false;
-        }
-
-        return include($this->configDirectory.$this->filename);
-    }
+    /**
+     * @return array
+     */
+    abstract public function getConfiguration(): array;
 
     public function writeConfiguration($treeStore)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
 
+        $file = Config::locateConfigFile($this->filename);
+
         $str = "<?php\n return " . $this->pretty_export($configuration) . ';';
-        file_put_contents($this->configDirectory.$this->filename, $str);
+        file_put_contents($file, $str);
     }
 
     abstract protected function convertTreeStoreToConfiguration($treeStore);
 
-    abstract public function createFile();
 }
