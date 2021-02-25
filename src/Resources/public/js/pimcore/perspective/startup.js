@@ -14,6 +14,8 @@ pimcore.settings.perspectiveview = Class.create({
 
     getTabPanel: function () {
         if (!this.panel) {
+            const user = pimcore.globalmanager.get('user');
+
             this.panel = new Ext.Panel({
                 id: this.panelId,
                 iconCls: 'pimcore_nav_icon_perspective',
@@ -25,7 +27,7 @@ pimcore.settings.perspectiveview = Class.create({
                     new Ext.TabPanel({
                         items: [
                             new pimcore.bundle.perspectiveeditor.PerspectiveEditor(),
-                            new pimcore.bundle.perspectiveeditor.ViewEditor(),
+                            new pimcore.bundle.perspectiveeditor.ViewEditor(!user.admin),
                         ],
                     }),
                 ],
@@ -59,19 +61,25 @@ pimcore.settings.perspectiveview = Class.create({
     },
 
     pimcoreReady: function(){
-        var menu = pimcore.globalmanager.get('layout_toolbar').settingsMenu;
-        menu.add({
-            text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
-            iconCls: 'pimcore_nav_icon_perspective',
-            handler: function(){
-                try{
-                    pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').activate();
-                } catch (e) {
-                    this.getTabPanel();
-                    pimcore.globalmanager.add('plugin_pimcore_perspectiveeditor', this);
-                }
-            }.bind(this)
-        });
+        const perspectiveCfg = pimcore.globalmanager.get('perspective');
+        const user = pimcore.globalmanager.get('user');
+        const menu = pimcore.globalmanager.get('layout_toolbar').settingsMenu;
+
+        if(menu && perspectiveCfg.inToolbar('settings.perspectiveEditor') && user.isAllowed('perspective_editor')) {
+            menu.add({
+                text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
+                iconCls: 'pimcore_nav_icon_perspective',
+                handler: function(){
+                    try{
+                        pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').activate();
+                    } catch (e) {
+                        this.getTabPanel();
+                        pimcore.globalmanager.add('plugin_pimcore_perspectiveeditor', this);
+                    }
+                }.bind(this)
+            });
+        }
+
     },
 });
 

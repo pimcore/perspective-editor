@@ -2,6 +2,7 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
 
+use Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\TreeHelper;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\ViewAccessor;
@@ -22,7 +23,9 @@ class PerspectiveController extends AdminController {
      * @param TreeHelper $treeHelper
      * @return JsonResponse
      */
-    public function getPerspectiveTreeAction(PerspectiveAccessor $perspectiveAccessor, TreeHelper $treeHelper){
+    public function getPerspectiveTreeAction(PerspectiveAccessor $perspectiveAccessor, TreeHelper $treeHelper) {
+        $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
+
         $tree = [];
         $configuration = $perspectiveAccessor->getConfiguration();
 
@@ -41,7 +44,9 @@ class PerspectiveController extends AdminController {
      * @param TreeHelper $treeHelper
      * @return JsonResponse
      */
-    public function getViewTreeAction(ViewAccessor $viewAccessor, TreeHelper $treeHelper){
+    public function getViewTreeAction(ViewAccessor $viewAccessor, TreeHelper $treeHelper) {
+        $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
+
         $tree = [];
 
         $configuration = $viewAccessor->getConfiguration();
@@ -62,11 +67,14 @@ class PerspectiveController extends AdminController {
      * @return JsonResponse
      */
     public function updatePerspectivesAction(PerspectiveAccessor $perspectiveAccessor, Request $request){
+        $this->checkCsrfToken($request);
+        $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
+
         $ret = [
             'success' => true,
             'error' => null
         ];
-        try{
+        try {
             $treeStore = json_decode($request->get('data'), true);
 
             $this->checkForUniqueElements($treeStore);
@@ -87,6 +95,11 @@ class PerspectiveController extends AdminController {
      * @return JsonResponse
      */
     public function updateViewAction(ViewAccessor $viewAccessor, Request $request){
+        $this->checkCsrfToken($request);
+        if(!$this->getAdminUser() || !$this->getAdminUser()->isAdmin()) {
+            throw $this->createAccessDeniedHttpException('Access denied, only Admin users are allowed to update views');
+        }
+
         $ret = [
             'success' => true,
             'error' => null

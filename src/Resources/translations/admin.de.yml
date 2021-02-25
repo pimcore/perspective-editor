@@ -1,6 +1,7 @@
 plugin_pimcore_perspectiveeditor_perspective_view_editor: "Perspektiven / Ansichten"
 plugin_pimcore_perspectiveeditor_no_unique_treeelements: "In den Elementbäumen dürfen max. jeweils einmal den Typ Dokument, Asset und Datenobjekt enthalten"
 
+perspective_editor: "Perspektiveneditor"
 plugin_pimcore_perspectiveeditor_perspective_editor: "Perspektiveneditor"
 plugin_pimcore_perspectiveeditor_available_perspectives: "Verfügbare Perspektiven"
 plugin_pimcore_perspectiveeditor_add_perspective: "Perspektive hinzufügen"
