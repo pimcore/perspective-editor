@@ -34,7 +34,7 @@ class PerspectiveEditor{
                     reader: {
                         type: 'json'
                     }
-                },
+                }
             });
 
             this.panel = new Ext.Panel({
@@ -72,6 +72,9 @@ class PerspectiveEditor{
                                     });
                                     menu.showAt(e.pageX, e.pageY);
                                 }
+                            }.bind(this),
+                            itemmove: function() {
+                                this.setDirty(true);
                             }.bind(this)
                         },
                         tbar: {
@@ -106,7 +109,9 @@ class PerspectiveEditor{
                                                             id: PerspectiveViewHelper.generateUuid(),
                                                             text: t('plugin_pimcore_perspectiveeditor_elementTreeLeft'),
                                                             type: 'elementTree',
-                                                            leaf: true,
+                                                            leaf: false,
+                                                            expanded: true,
+                                                            children: [],
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/left_down2.svg',
                                                             config: {
                                                                 iconCls: null,
@@ -116,7 +121,9 @@ class PerspectiveEditor{
                                                             id: PerspectiveViewHelper.generateUuid(),
                                                             text: t('plugin_pimcore_perspectiveeditor_elementTreeRight'),
                                                             type: 'elementTreeRight',
-                                                            leaf: true,
+                                                            leaf: false,
+                                                            expanded: true,
+                                                            children: [],
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/right_down2.svg',
                                                             config: {
                                                                 iconCls: null,
@@ -809,37 +816,6 @@ class PerspectiveEditor{
                     }
                 }),
                 customViewComboBox,
-                // new Ext.form.ComboBox({
-                //     padding: 10,
-                //     fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
-                //     displayField: 'name',
-                //     valueField: 'position',
-                //     name: 'position',
-                //     editable: false,
-                //     value: config.position,
-                //     readOnly: true,
-                //     store: new Ext.data.Store({
-                //         fields: ['name', 'position'],
-                //         data: [{name: t('plugin_pimcore_perspectiveeditor_left'), position: 'left'}, {name: t('plugin_pimcore_perspectiveeditor_right'), position: 'right'}]
-                //     }),
-                //     listeners: {
-                //         change: function(elem, newValue, oldValue){
-                //             config.position = newValue;
-                //         }
-                //     }
-                // }),
-                // new Ext.form.NumberField({
-                //     padding: 10,
-                //     fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
-                //     value: config.sort,
-                //     width: 150,
-                //     readOnly: true,
-                //     listeners:{
-                //         change: function(elem, newValue, oldValue){
-                //             config.sort = newValue;
-                //         }
-                //     }
-                // }),
                 documentTreeContextMenuGroup,
                 assetTreeContextMenuGroup,
                 objectTreeContextMenuGroup
