@@ -1,4 +1,6 @@
-class PerspectiveViewHelper{
+pimcore.registerNS('pimcore.bundle.perspectiveeditor.PerspectiveViewHelper');
+
+pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
 
     static routePrefix = '/admin/perspectives-views';
 
@@ -79,7 +81,7 @@ class PerspectiveViewHelper{
                     record.data.config.icon = newValue;
                     if(applyToRecord){
                         record.data.icon = newValue;
-                        PerspectiveViewHelper.reloadTreeNode(record);
+                        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
                     }
 
                     if(changeCallback) {
@@ -124,7 +126,7 @@ class PerspectiveViewHelper{
                             record.data.config.icon = newValue;
                             if(applyToRecord){
                                 record.data.icon = newValue;
-                                PerspectiveViewHelper.reloadTreeNode(record);
+                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
                             }
 
                             if(changeCallback) {
