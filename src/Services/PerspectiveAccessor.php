@@ -1,12 +1,26 @@
 <?php
 
+/**
+ * Pimcore
+ *
+ * This source file is available under two different licenses:
+ * - GNU General Public License version 3 (GPLv3)
+ * - Pimcore Enterprise License (PEL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ *  @copyright  Copyright (c) Pimcore GmbH (http://www.pimcore.org)
+ *  @license    http://www.pimcore.org/license     GPLv3 and PEL
+ */
+
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
-class PerspectiveAccessor extends AbstractAccessor {
-
+class PerspectiveAccessor extends AbstractAccessor
+{
     protected $filename = 'perspectives.php';
 
-    public function createFile(){
+    public function createFile()
+    {
         $defaultConfig =
             [
                 'default' => [
@@ -70,27 +84,27 @@ class PerspectiveAccessor extends AbstractAccessor {
             ]
         ];
 
-        $str = "<?php\n return " . $this->pretty_export($defaultConfig) . ";";
+        $str = "<?php\n return " . $this->pretty_export($defaultConfig) . ';';
         file_put_contents($this->configDirectory.$this->filename, $str);
     }
 
-    protected function convertTreeStoreToConfiguration($treeStore){
+    protected function convertTreeStoreToConfiguration($treeStore)
+    {
         $configuration = [];
 
-        foreach($treeStore['children'] as $child){
+        foreach ($treeStore['children'] as $child) {
             $name = $child['name'];
             $configuration[$name] = [];
             $configuration[$name]['elementTree'] = [];
-            foreach($child['children'] as $index => $element){
-                if($element['type'] == 'icon'){
+            foreach ($child['children'] as $index => $element) {
+                if ($element['type'] == 'icon') {
                     $configuration[$name] = array_merge($configuration[$name], $element['config']);
-                }
-                else if($element['type'] == 'elementTree'){
-                    if(isset($element['children'])){
-                        foreach($element['children'] as $sortIndex => $grandchild){
-                            if(isset($grandchild['config']['treeContextMenu'])) {
-                                foreach(array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry){
-                                    if(substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry){
+                } elseif ($element['type'] == 'elementTree') {
+                    if (isset($element['children'])) {
+                        foreach ($element['children'] as $sortIndex => $grandchild) {
+                            if (isset($grandchild['config']['treeContextMenu'])) {
+                                foreach (array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry) {
+                                    if (substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry) {
                                         unset($grandchild['config']['treeContextMenu'][$contextMenuEntry]);
                                     }
                                 }
@@ -100,13 +114,12 @@ class PerspectiveAccessor extends AbstractAccessor {
                             $configuration[$name]['elementTree'][] = $grandchild['config'];
                         }
                     }
-                }
-                else if($element['type'] == 'elementTreeRight'){
-                    if(isset($element['children'])){
-                        foreach($element['children'] as $sortIndex => $grandchild){
-                            if(isset($grandchild['config']['treeContextMenu'])) {
-                                foreach(array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry){
-                                    if(substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry){
+                } elseif ($element['type'] == 'elementTreeRight') {
+                    if (isset($element['children'])) {
+                        foreach ($element['children'] as $sortIndex => $grandchild) {
+                            if (isset($grandchild['config']['treeContextMenu'])) {
+                                foreach (array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry) {
+                                    if (substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry) {
                                         unset($grandchild['config']['treeContextMenu'][$contextMenuEntry]);
                                     }
                                 }
@@ -116,24 +129,22 @@ class PerspectiveAccessor extends AbstractAccessor {
                             $configuration[$name]['elementTree'][] = $grandchild['config'];
                         }
                     }
-                }
-                else if($element['type'] == 'dashboard'){
-                    if(count($element['config']) > 0 || isset($element['children'])){
+                } elseif ($element['type'] == 'dashboard') {
+                    if (count($element['config']) > 0 || isset($element['children'])) {
                         $configuration[$name]['dashboards'] = [];
                     }
 
-                    if(count($element['config']) > 0){
+                    if (count($element['config']) > 0) {
                         $configuration[$name]['dashboards']['disabledPortlets'] = $element['config'];
                     }
 
-                    if(isset($element['children'])){
-                        foreach($element['children'] as $dashboardDefinition){
+                    if (isset($element['children'])) {
+                        foreach ($element['children'] as $dashboardDefinition) {
                             $configuration[$name]['dashboards']['predefined'][$dashboardDefinition['config']['name'] ?? '']['positions'] = $dashboardDefinition['config']['positions'];
                         }
                     }
-                }
-                else if($element['type'] == 'toolbar'){
-                    if(count($element['config']) > 0 || isset($element['children'])){
+                } elseif ($element['type'] == 'toolbar') {
+                    if (count($element['config']) > 0 || isset($element['children'])) {
                         $configuration[$name]['toolbar'] = $element['config'];
                     }
                 }

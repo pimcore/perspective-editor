@@ -1,36 +1,53 @@
 <?php
 
+/**
+ * Pimcore
+ *
+ * This source file is available under two different licenses:
+ * - GNU General Public License version 3 (GPLv3)
+ * - Pimcore Enterprise License (PEL)
+ * Full copyright and license information is available in
+ * LICENSE.md which is distributed with this source code.
+ *
+ *  @copyright  Copyright (c) Pimcore GmbH (http://www.pimcore.org)
+ *  @license    http://www.pimcore.org/license     GPLv3 and PEL
+ */
+
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
 
+use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\TreeHelper;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\ViewAccessor;
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class PerspectiveController
+ *
  * @package Pimcore\Bundle\PerspectiveEditorBundle\Controller\Admin
  */
-class PerspectiveController extends AdminController {
-
+class PerspectiveController extends AdminController
+{
     /**
      * @Route("/perspective/get-tree", name="get-perspective-tree")
+     *
      * @param PerspectiveAccessor $perspectiveAccessor
      * @param TreeHelper $treeHelper
+     *
      * @return JsonResponse
      */
-    public function getPerspectiveTreeAction(PerspectiveAccessor $perspectiveAccessor, TreeHelper $treeHelper) {
+    public function getPerspectiveTreeAction(PerspectiveAccessor $perspectiveAccessor, TreeHelper $treeHelper)
+    {
         $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
 
         $tree = [];
         $configuration = $perspectiveAccessor->getConfiguration();
 
-        if($configuration){
-            foreach($configuration as $perspectiveName => $perspectiveConfig){
+        if ($configuration) {
+            foreach ($configuration as $perspectiveName => $perspectiveConfig) {
                 $tree[] = $this->createPerspectiveEntry($treeHelper, $perspectiveName, $perspectiveConfig);
             }
         }
@@ -40,19 +57,22 @@ class PerspectiveController extends AdminController {
 
     /**
      * @Route("/view/get-tree", name="get-view-tree")
+     *
      * @param ViewAccessor $viewAccessor
      * @param TreeHelper $treeHelper
+     *
      * @return JsonResponse
      */
-    public function getViewTreeAction(ViewAccessor $viewAccessor, TreeHelper $treeHelper) {
+    public function getViewTreeAction(ViewAccessor $viewAccessor, TreeHelper $treeHelper)
+    {
         $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
 
         $tree = [];
 
         $configuration = $viewAccessor->getConfiguration();
 
-        if($configuration){
-            foreach($configuration['views'] as $viewName => $viewConfig){
+        if ($configuration) {
+            foreach ($configuration['views'] as $viewName => $viewConfig) {
                 $tree[] = $this->createViewEntry($treeHelper, $viewName, $viewConfig);
             }
         }
@@ -62,11 +82,14 @@ class PerspectiveController extends AdminController {
 
     /**
      * @Route("/perspective/update", name="update-perspective")
+     *
      * @param PerspectiveAccessor $perspectiveAccessor
      * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function updatePerspectivesAction(PerspectiveAccessor $perspectiveAccessor, Request $request){
+    public function updatePerspectivesAction(PerspectiveAccessor $perspectiveAccessor, Request $request)
+    {
         $this->checkCsrfToken($request);
         $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
 
@@ -80,7 +103,7 @@ class PerspectiveController extends AdminController {
             $this->checkForUniqueElements($treeStore);
 
             $perspectiveAccessor->writeConfiguration($treeStore);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $ret['success'] = false;
             $ret['error'] = $e->getMessage();
         }
@@ -90,13 +113,16 @@ class PerspectiveController extends AdminController {
 
     /**
      * @Route("/view/update", name="update-view")
+     *
      * @param ViewAccessor $viewAccessor
      * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function updateViewAction(ViewAccessor $viewAccessor, Request $request){
+    public function updateViewAction(ViewAccessor $viewAccessor, Request $request)
+    {
         $this->checkCsrfToken($request);
-        if(!$this->getAdminUser() || !$this->getAdminUser()->isAdmin()) {
+        if (!$this->getAdminUser() || !$this->getAdminUser()->isAdmin()) {
             throw $this->createAccessDeniedHttpException('Access denied, only Admin users are allowed to update views');
         }
 
@@ -104,47 +130,48 @@ class PerspectiveController extends AdminController {
             'success' => true,
             'error' => null
         ];
-        try{
+        try {
             $treeStore = json_decode($request->get('data'), true);
             $viewAccessor->writeConfiguration($treeStore);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $ret = ['success' => false, 'error' => $e->getMessage()];
         }
 
         return new JsonResponse($ret);
     }
 
-    protected function checkForUniqueElements(array $treeStore){
-        foreach($treeStore['children'] ?? [] as $perspective){
-            $elementTree = array_values(array_filter($perspective['children'] ?? [], function($entry){
+    protected function checkForUniqueElements(array $treeStore)
+    {
+        foreach ($treeStore['children'] ?? [] as $perspective) {
+            $elementTree = array_values(array_filter($perspective['children'] ?? [], function ($entry) {
                 return $entry['type'] == 'elementTree' || $entry['type'] == 'elementTreeRight';
             }));
 
-            if(sizeof($elementTree) == 0){
+            if (sizeof($elementTree) == 0) {
                 return;
             }
 
             $elementTrees = [];
-            foreach($elementTree as $elementTreeItem) {
+            foreach ($elementTree as $elementTreeItem) {
                 if (isset($elementTreeItem['children'])) {
                     $elementTrees = array_merge($elementTrees, $elementTreeItem['children']);
                 }
             }
 
-            foreach(['assets', 'documents', 'objects'] as $type) {
-                $elements = array_values(array_filter($elementTrees, function($entry) use ($type) {
+            foreach (['assets', 'documents', 'objects'] as $type) {
+                $elements = array_values(array_filter($elementTrees, function ($entry) use ($type) {
                     return $entry['config']['type'] == $type;
                 }));
 
-                if(sizeof($elements) > 1){
+                if (sizeof($elements) > 1) {
                     throw new \Exception('plugin_pimcore_perspectiveeditor_no_unique_treeelements');
                 }
             }
-
         }
     }
 
-    protected function createPerspectiveEntry(TreeHelper $treeHelper, $perspectiveName, $perspectiveConfig){
+    protected function createPerspectiveEntry(TreeHelper $treeHelper, $perspectiveName, $perspectiveConfig)
+    {
         $leftElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'left');
         $rightElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'right');
 
@@ -181,7 +208,7 @@ class PerspectiveController extends AdminController {
                     'allowDrag' => false,
                     'allowDrop' => true,
                     'children' => $leftElementTrees,
-                ],[
+                ], [
                     'id' => $treeHelper->createUuid(),
                     'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTreeRight', [], 'admin'),
                     'type' => 'elementTreeRight',
@@ -197,7 +224,7 @@ class PerspectiveController extends AdminController {
                     'text' => $this->trans('plugin_pimcore_perspectiveeditor_dashboard', [], 'admin'),
                     'type' => 'dashboard',
                     'leaf' => sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) == 0,
-                    'expanded'=> sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) != 0,
+                    'expanded' => sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) != 0,
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/dashboard.svg',
                     'config' => $perspectiveConfig['dashboards']['disabledPortlets'] ?? [],
                     'allowDrag' => false,
@@ -218,8 +245,9 @@ class PerspectiveController extends AdminController {
         ];
     }
 
-    protected function buildElementTree(TreeHelper $treeHelper, $config, $position = 'left'){
-        if(!isset($config['elementTree'])){
+    protected function buildElementTree(TreeHelper $treeHelper, $config, $position = 'left')
+    {
+        if (!isset($config['elementTree'])) {
             return [];
         }
 
@@ -231,9 +259,8 @@ class PerspectiveController extends AdminController {
         ];
 
         $tree = [];
-        foreach($config['elementTree'] as $element) {
-
-            if($position === ($element['position'] ?? 'left')) {
+        foreach ($config['elementTree'] as $element) {
+            if ($position === ($element['position'] ?? 'left')) {
                 $tree[] = [
                     'id' => $treeHelper->createUuid(),
                     'text' => $element['type'],
@@ -246,20 +273,21 @@ class PerspectiveController extends AdminController {
             }
         }
 
-        usort($tree, function($item1, $item2) {
+        usort($tree, function ($item1, $item2) {
             return ($item1['config']['sort'] ?? 0) - ($item2['config']['sort'] ?? 0);
         });
 
         return $tree;
     }
 
-    protected function buildDashboardTree(TreeHelper $treeHelper, $config){
-        if(!isset($config['dashboards'])){
+    protected function buildDashboardTree(TreeHelper $treeHelper, $config)
+    {
+        if (!isset($config['dashboards'])) {
             return [];
         }
 
         $tree = [];
-        foreach($config['dashboards']['predefined'] as $dashboardName => $dashboardConfig){
+        foreach ($config['dashboards']['predefined'] as $dashboardName => $dashboardConfig) {
             $tree[] = [
                 'id' => $treeHelper->createUuid(),
                 'text' => $dashboardName,
@@ -275,7 +303,8 @@ class PerspectiveController extends AdminController {
         return $tree;
     }
 
-    protected function createViewEntry(TreeHelper $treeHelper, $viewName = null, $viewConfig = null){
+    protected function createViewEntry(TreeHelper $treeHelper, $viewName = null, $viewConfig = null)
+    {
         $viewName = $viewName ?? 'new view ' . date('U');
 
         $entry = [
@@ -293,7 +322,8 @@ class PerspectiveController extends AdminController {
         return $entry;
     }
 
-    protected function getViewDefaultConfig($name){
+    protected function getViewDefaultConfig($name)
+    {
         return [
             'name' => $name,
             'treetype' => 'document',
