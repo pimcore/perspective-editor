@@ -80,14 +80,14 @@ class PerspectiveAccessor extends AbstractAccessor {
         foreach($treeStore['children'] as $child){
             $name = $child['name'];
             $configuration[$name] = [];
+            $configuration[$name]['elementTree'] = [];
             foreach($child['children'] as $index => $element){
                 if($element['type'] == 'icon'){
                     $configuration[$name] = array_merge($configuration[$name], $element['config']);
                 }
                 else if($element['type'] == 'elementTree'){
-                    $configuration[$name]['elementTree'] = [];
                     if(isset($element['children'])){
-                        foreach($element['children'] as $grandchild){
+                        foreach($element['children'] as $sortIndex => $grandchild){
                             if(isset($grandchild['config']['treeContextMenu'])) {
                                 foreach(array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry){
                                     if(substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry){
@@ -95,6 +95,24 @@ class PerspectiveAccessor extends AbstractAccessor {
                                     }
                                 }
                             }
+                            $grandchild['config']['sort'] = $sortIndex;
+                            $grandchild['config']['position'] = 'left';
+                            $configuration[$name]['elementTree'][] = $grandchild['config'];
+                        }
+                    }
+                }
+                else if($element['type'] == 'elementTreeRight'){
+                    if(isset($element['children'])){
+                        foreach($element['children'] as $sortIndex => $grandchild){
+                            if(isset($grandchild['config']['treeContextMenu'])) {
+                                foreach(array_keys($grandchild['config']['treeContextMenu']) as $contextMenuEntry){
+                                    if(substr($grandchild['config']['type'], 0, strlen($contextMenuEntry)) != $contextMenuEntry){
+                                        unset($grandchild['config']['treeContextMenu'][$contextMenuEntry]);
+                                    }
+                                }
+                            }
+                            $grandchild['config']['sort'] = $sortIndex;
+                            $grandchild['config']['position'] = 'right';
                             $configuration[$name]['elementTree'][] = $grandchild['config'];
                         }
                     }

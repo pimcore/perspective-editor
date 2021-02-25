@@ -187,6 +187,11 @@ class ViewEditor{
             items.push(this.createSqlPart(record));
             items.push(...this.createViewContextMenuPart(record.data));
 
+            items.push(Ext.create('Ext.form.FieldSet', {
+                title: t('plugin_pimcore_perspectiveeditor_view_default_positioning'),
+                items: this.createDefaultPositionPart(record)
+            }));
+
             this.viewEditPanel.add(
                 new Ext.form.Panel({
                     title: t('plugin_pimcore_perspectiveeditor_view_selection'),
@@ -261,24 +266,6 @@ class ViewEditor{
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_icon'),
                 items: iconItems,
             },
-            new Ext.form.ComboBox({
-                fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
-                displayField: 'name',
-                valueField: 'position',
-                name: 'position',
-                editable: false,
-                value: data.config.position,
-                store: new Ext.data.Store({
-                    fields: ['name', 'position'],
-                    data: [{name: 'left', position: 'left'}, {name: 'right', position: 'right'}]
-                }),
-                listeners: {
-                    change: function(elem, newValue, oldValue){
-                        data.config.position = newValue;
-                        this.setDirty(true);
-                    }.bind(this)
-                },
-            }),
             new Ext.form.TextField({
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_rootfolder'),
                 value: data.config.rootfolder,
@@ -345,7 +332,14 @@ class ViewEditor{
                         this.setDirty(true);
                     }.bind(this)
                 },
-            }),
+            })
+        ];
+    }
+
+    createDefaultPositionPart (record) {
+        var data = record.data;
+
+        return [
             new Ext.form.NumberField({
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_sort'),
                 value: data.config.sort,
@@ -356,6 +350,24 @@ class ViewEditor{
                     }.bind(this)
                 },
             }),
+            new Ext.form.ComboBox({
+                fieldLabel: t('plugin_pimcore_perspectiveeditor_position'),
+                displayField: 'name',
+                valueField: 'position',
+                name: 'position',
+                editable: false,
+                value: data.config.position,
+                store: new Ext.data.Store({
+                    fields: ['name', 'position'],
+                    data: [{name: 'left', position: 'left'}, {name: 'right', position: 'right'}]
+                }),
+                listeners: {
+                    change: function(elem, newValue, oldValue){
+                        data.config.position = newValue;
+                        this.setDirty(true);
+                    }.bind(this)
+                },
+            })
         ];
     }
 
