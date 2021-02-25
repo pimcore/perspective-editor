@@ -266,7 +266,7 @@ class PerspectiveController extends AdminController {
         $viewName = $viewName ?? 'new view ' . date('U');
 
         $entry = [
-            'id' => $treeHelper->createUuid(),
+            'id' => $viewConfig['id'] ?? $treeHelper->createUuid(),
             'text' => $viewConfig['name'] ?? $viewName,
             'name' => 'view',
             'type' => 'view',
