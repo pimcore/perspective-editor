@@ -146,23 +146,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                             type: 'toolbar',
                                                             leaf: true,
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
-                                                            config: {
-                                                                file: {
-                                                                    hidden: false,
-                                                                },
-                                                                extras: {
-                                                                    hidden: false,
-                                                                },
-                                                                marketing: {
-                                                                    hidden: false,
-                                                                },
-                                                                settings: {
-                                                                    hidden: false,
-                                                                },
-                                                                search: {
-                                                                    hidden: false,
-                                                                }
-                                                            },
+                                                            config: {},
                                                         },
                                                     ]
                                                 });
@@ -367,13 +351,29 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         var config = record.data.config;
 
         var structure = {
-            file: ['hidden', 'items.perspectives', 'items.dashboards', 'items.openDocument', 'items.openAsset', 'items.openObject', 'items.searchReplace', 'items.schedule', 'items.seemode', 'items.closeAll', 'items.help', 'items.about'],
-            marketing: ['hidden', 'items.reports', 'items.tagmanagement', 'items.targeting', 'items.seo.hidden', 'items.seo.items.documents', 'items.seo.items.robots', 'items.seo.items.httperrors'],
-            extras: ['hidden', 'items.glossary', 'items.redirects', 'items.translations', 'items.recyclebin', 'items.plugins', 'items.notesEvents', 'items.applicationlog', 'items.gdpr_data_extractor', 'items.emails', 'items.maintenance', 'items.systemtools.hidden', 'items.systemtools.items.phpinfo', 'items.systemtools.items.opcache', 'items.systemtools.items.requirements', 'items.systemtools.items.serverinfo', 'items.systemtools.items.database', 'items.systemtools.items.fileexplorer'],
-            settings: ['hidden', 'items.documentTypes', 'items.predefinedProperties', 'items.predefinedMetadata', 'items.system', 'items.website', 'items.web2print', 'items.users.hidden', 'items.users.items.users', 'items.users.items.roles', 'items.thumbnails', 'items.objects.hidden', 'items.objects.items.classes', 'items.objects.items.fieldcollections', 'items.objects.items.objectbricks', 'items.objects.items.quantityValue', 'items.objects.items.classificationstore', 'items.objects.items.bulkExport', 'items.objects.items.bulkImport', 'items.routes', 'items.cache.hidden', 'items.cache.items.clearAll', 'items.cache.items.clearData', 'items.cache.items.clearSymfony', 'items.cache.items.clearOutput', 'items.cache.items.clearTemp', 'items.cache.items.generatePreviews', 'items.adminTranslations', 'items.tagConfiguration'],
-            search: ['hidden', 'items.documents', 'items.assets', 'items.objects']
+            file: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'file'),
+            marketing: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'marketing'),
+            extras: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'extras'),
+            settings: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'settings'),
+            search: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'search')
         };
         pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.checkAndCreateDataStructure(config, structure);
+
+        let fileMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.file, fileMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_file');
+
+        let marketingMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.marketing, marketingMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_marketing');
+
+        let extrasMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.extras, extrasMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_extras');
+
+        let settingsMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.settings, settingsMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_settings');
+
+        let searchMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.search, searchMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_search');
+
 
         return new Ext.Panel({
             title: t('plugin_pimcore_perspectiveeditor_toolbar_access'),
@@ -387,102 +387,26 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                         new Ext.form.FieldSet({
                             title: t('plugin_pimcore_perspectiveeditor_file'),
                             collapsible: true,
-                            items: [
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_hidden'), config.file, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_perspectives'), config.file.items, 'perspectives', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_dashboards'), config.file.items, 'dashboards', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_openDocument'), config.file.items, 'openDocument', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_openAsset'), config.file.items, 'openAsset', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_openObject'), config.file.items, 'openObject', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_searchReplace'), config.file.items, 'searchReplace', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_schedule'), config.file.items, 'schedule', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_seemode'), config.file.items, 'seemode', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_closeAll'), config.file.items, 'closeAll', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_help'), config.file.items, 'help', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('file_menu_about'), config.file.items, 'about', false, this.setDirty.bind(this, true))
-                            ]
+                            items: fileMenuItems
                         }),
                         new Ext.form.FieldSet({
                             title: t('plugin_pimcore_perspectiveeditor_extras'),
                             collapsible: true,
-                            items: [
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_hidden'), config.extras, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_glossary'), config.extras.items, 'glossary', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_redirects'), config.extras.items, 'redirects', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_translations'), config.extras.items, 'translations', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_recyclebin'), config.extras.items, 'recyclebin', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_plugins'), config.extras.items, 'plugins', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_notesEvents'), config.extras.items, 'notesEvents', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_applicationlog'), config.extras.items, 'applicationlog', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_gdpr_data_extractor'), config.extras.items, 'gdpr_data_extractor', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_emails'), config.extras.items, 'emails', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_maintenance'), config.extras.items, 'maintenance', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_hidden'), config.extras.items.systemtools, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_phpinfo'), config.extras.items.systemtools.items, 'phpinfo', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_opcache'), config.extras.items.systemtools.items, 'opcache', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_requirements'), config.extras.items.systemtools.items, 'requirements', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_serverinfo'), config.extras.items.systemtools.items, 'serverinfo', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_database'), config.extras.items.systemtools.items, 'database', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('extra_menu_systemtools_fileexplorer'), config.extras.items.systemtools.items, 'fileexplorer', false, this.setDirty.bind(this, true))
-                            ]
+                            items: extrasMenuItems
                         }),
                         new Ext.form.FieldSet({
                             title: t('plugin_pimcore_perspectiveeditor_marketing'),
                             collapsible: true,
-                            items: [
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_hidden'), config.marketing, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_reports'), config.marketing.items, 'reports', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_tagmanagement'), config.marketing.items, 'tagmanagement', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_targeting'), config.marketing.items, 'targeting', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_seo_hidden'), config.marketing.items.seo, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_seo_documents'), config.marketing.items.seo.items, 'documents', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_seo_robots'), config.marketing.items.seo.items, 'robots', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('marketing_menu_seo_httperrors'), config.marketing.items.seo.items, 'httperrors', false, this.setDirty.bind(this, true))
-                            ]
+                            items: marketingMenuItems
                         }),
                         new Ext.form.FieldSet({
                             title: t('plugin_pimcore_perspectiveeditor_settings'),
-                            items: [
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_hidden'), config.settings, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_documentTypes'), config.settings.items, 'documentTypes', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_predefinedProperties'), config.settings.items, 'predefinedProperties', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_predefinedMetadata'), config.settings.items, 'predefinedMetadata', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_system'), config.settings.items, 'system', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_website'), config.settings.items, 'website', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_web2print'), config.settings.items, 'web2print', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_users_hidden'), config.settings.items.users, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_users_users'), config.settings.items.users.items, 'users', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_users_roles'), config.settings.items.users.items, 'roles', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_thumbnails'), config.settings.items, 'thumbnails', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_hidden'), config.settings.items.objects, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_classes'), config.settings.items.objects.items, 'classes', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_fieldcollections'), config.settings.items.objects.items, 'fieldcollections', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_objectbricks'), config.settings.items.objects.items, 'objectbricks', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_quantityValue'), config.settings.items.objects.items, 'quantityValue', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_classificationstore'), config.settings.items.objects.items, 'classificationstore', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_bulkExport'), config.settings.items.objects.items, 'bulkExport', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_objects_bulkImport'), config.settings.items.objects.items, 'bulkImport', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_routes'), config.settings.items, 'routes', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_hidden'), config.settings.items.cache, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_clearAll'), config.settings.items.cache.items, 'clearAll', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_clearData'), config.settings.items.cache.items, 'clearData', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_clearSymfony'), config.settings.items.cache.items, 'clearSymfony', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_clearOutput'), config.settings.items.cache.items, 'clearOutput', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_clearTemp'), config.settings.items.cache.items, 'clearTemp', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_cache_generatePreviews'), config.settings.items.cache.items, 'generatePreviews', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_adminTranslations'), config.settings.items, 'adminTranslations', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('settings_menu_tagConfiguration'), config.settings.items, 'tagConfiguration', false, this.setDirty.bind(this, true))
-                            ]
+                            items: settingsMenuItems
                         }),
                         new Ext.form.FieldSet({
                             title: t('plugin_pimcore_perspectiveeditor_search'),
                             collapsible: true,
-                            items: [
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('search_menu_hidden'), config.search, 'hidden', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('search_menu_documents'), config.search.items, 'documents', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('search_menu_assets'), config.search.items, 'assets', false, this.setDirty.bind(this, true)),
-                                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('search_menu_objects'), config.search.items, 'objects', false, this.setDirty.bind(this, true))
-                            ]
+                            items: searchMenuItems
                         })
                     ]
                 })
@@ -690,92 +614,46 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             }
         });
 
-        var structure = {
-            document: ['items.add', 'items.add', 'items.addSnippet', 'items.addLink', 'items.addEmail', 'items.addNewsletter', 'items.addHardlink', 'items.addFolder', 'items.paste', 'items.pasteCut', 'items.copy', 'items.cut', 'items.rename', 'items.unpublish', 'items.publish', 'items.delete', 'items.open', 'items.convert', 'items.searchAndMove', 'items.useAsSite', 'items.editSite', 'items.removeSite', 'items.lock', 'items.unlock', 'items.lockAndPropagate', 'items.unlockAndPropagate', 'items.reload'],
-            asset: ['items.add.items.upload', 'items.add.items.uploadFromUrl', 'items.addFolder', 'items.rename', 'items.paste', 'items.pasteCut', 'items.delete', 'items.searchAndMove', 'items.lock', 'items.unlock', 'items.lockAndPropagate', 'items.unlockAndPropagate', 'items.reload.hidden'],
-            object: ['items.add', 'items.addFolder', 'items.importCsv', 'items.cut', 'items.copy', 'items.delete', 'items.rename', 'items.reload', 'items.searchAndMove', 'items.lock', 'items.unlock', 'items.lockAndPropagate', 'items.unlockAndPropagate', 'items.changeChildrenSortBy']
+        const structure = {
+            document: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('customViewContextMenu', 'document'),
+            asset: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('customViewContextMenu', 'asset'),
+            object: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('customViewContextMenu', 'object')
         };
 
         pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.checkAndCreateDataStructure(config.treeContextMenu, structure);
+
+        let documentContextMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.treeContextMenu.document, documentContextMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_document');
+
 
         var documentTreeContextMenuGroup = new Ext.form.FieldSet({
             title: t('plugin_pimcore_perspectiveeditor_document') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'documents',
             margin: '30 10 0',
             width: 500,
-            items: [
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('add'), config.treeContextMenu.document.items, 'add', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addSnippet'), config.treeContextMenu.document.items, 'addSnippet', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addLink'), config.treeContextMenu.document.items, 'addLink', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addEmail'), config.treeContextMenu.document.items, 'addEmail', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addNewsletter'), config.treeContextMenu.document.items, 'addNewsletter', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addHardlink'), config.treeContextMenu.document.items, 'addHardlink', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addFolder'), config.treeContextMenu.document.items, 'addFolder', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('paste'), config.treeContextMenu.document.items, 'paste', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('pasteCut'), config.treeContextMenu.document.items, 'pasteCut', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('copy'), config.treeContextMenu.document.items, 'copy', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('cut'), config.treeContextMenu.document.items, 'cut', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.document.items, 'rename', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unpublish'), config.treeContextMenu.document.items, 'unpublish', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('publish'), config.treeContextMenu.document.items, 'publish', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.document.items, 'delete', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('open'), config.treeContextMenu.document.items, 'open', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('convert'), config.treeContextMenu.document.items, 'convert', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('searchAndMove'), config.treeContextMenu.document.items, 'searchAndMove', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('useAsSite'), config.treeContextMenu.document.items, 'useAsSite', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('editSite'), config.treeContextMenu.document.items, 'editSite', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('removeSite'), config.treeContextMenu.document.items, 'removeSite', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.document.items, 'lock', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.document.items, 'unlock', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.document.items, 'lockAndPropagate', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.document.items, 'unlockAndPropagate', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('reload'), config.treeContextMenu.document.items, 'reload', false, this.setDirty.bind(this, true))
-            ]
+            items: documentContextMenuItems
         });
 
+        let assetContextMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.treeContextMenu.asset, assetContextMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_asset');
+
         var assetTreeContextMenuGroup = new Ext.form.FieldSet({
-            title: t('asset') + ' - ' + t('contextmenu'),
+            title: t('plugin_pimcore_perspectiveeditor_asset') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'assets',
             margin: '30 10 0',
             width: 500,
-            items: [
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('upload'), config.treeContextMenu.asset.items.add.items, 'upload', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('uploadFromUrl'), config.treeContextMenu.asset.items.add.items, 'uploadFromUrl', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('addFolder'), config.treeContextMenu.asset.items, 'addFolder', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.asset.items, 'rename', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('paste'), config.treeContextMenu.asset.items, 'paste', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('pasteCut'), config.treeContextMenu.asset.items, 'pasteCut', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.asset.items, 'delete', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('searchAndMove'), config.treeContextMenu.asset.items, 'searchAndMove', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.asset.items, 'lock', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.asset.items, 'unlock', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.asset.items, 'lockAndPropagate', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.asset.items, 'unlockAndPropagate', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('hide_reload'), config.treeContextMenu.asset.items.reload, 'hidden', true, this.setDirty.bind(this, true))
-            ]
+            items: assetContextMenuItems
         });
 
+        let objectContextMenuItems = [];
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.treeContextMenu.object, objectContextMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_object');
+
         var objectTreeContextMenuGroup = new Ext.form.FieldSet({
-            title: t('object') + ' - ' + t('contextmenu'),
+            title: t('plugin_pimcore_perspectiveeditor_object') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'objects',
             margin: '30 10 0',
             width: 500,
-            items: [
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('add object'), config.treeContextMenu.object.items, 'add', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('add folder'), config.treeContextMenu.object.items, 'addFolder', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('import csv'), config.treeContextMenu.object.items, 'importCsv', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('cut'), config.treeContextMenu.object.items, 'cut', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('copy'), config.treeContextMenu.object.items, 'copy', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.object.items, 'delete', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.object.items, 'rename', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('reload'), config.treeContextMenu.object.items, 'reload', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('search and move'), config.treeContextMenu.object.items, 'searchAndMove', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.object.items, 'lock', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.object.items, 'unlock', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.object.items, 'lockAndPropagate', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.object.items, 'unlockAndPropagate', false, this.setDirty.bind(this, true)),
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckbox(t('sorting'), config.treeContextMenu.object.items, 'changeChildrenSortBy', false, this.setDirty.bind(this, true))
-            ]
+            items: objectContextMenuItems
         });
 
         return new Ext.form.Panel({
