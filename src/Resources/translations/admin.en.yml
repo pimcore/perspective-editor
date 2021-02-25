@@ -196,6 +196,7 @@ plugin_pimcore_perspectiveeditor_menu_settings_items_users_items_roles: "Roles"
 plugin_pimcore_perspectiveeditor_menu_settings_items_users_items_users: "Users"
 plugin_pimcore_perspectiveeditor_menu_settings_items_web2print: "Web-to-Print Settings"
 plugin_pimcore_perspectiveeditor_menu_settings_items_website: "Website Settings"
+plugin_pimcore_perspectiveeditor_menu_settings_items_perspectiveEditor: "Perspective Editor"
 
 plugin_pimcore_perspectiveeditor_menu_search_hidden: "Hide Search Menu"
 plugin_pimcore_perspectiveeditor_menu_search_items_assets: "Assets"

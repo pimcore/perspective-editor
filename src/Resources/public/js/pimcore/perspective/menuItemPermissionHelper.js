@@ -149,7 +149,8 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.cache.items.clearOutput',
                 'items.cache.items.clearTemp',
                 'items.adminTranslations',
-                'items.tagConfiguration'
+                'items.tagConfiguration',
+                'items.perspectiveEditor'
             ],
             search: [
                 'hidden',
