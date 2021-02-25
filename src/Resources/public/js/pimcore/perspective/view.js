@@ -156,8 +156,6 @@ class ViewEditor{
                                     const responseObject = Ext.decode(response.responseText);
                                     if(responseObject.success){
                                         pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
-                                        this.viewTreeStore.reload();
-                                        this.viewEditPanel.removeAll();
                                         this.setDirty(false);
                                     }
                                     else{
