@@ -72,6 +72,7 @@ class ViewEditor{
                                                                 this.viewEditPanel.removeAll();
                                                             }
                                                             record.parentNode.removeChild(record);
+                                                            this.setDirty(true);
                                                         }
                                                     }.bind(this)
                                                 });
@@ -108,6 +109,7 @@ class ViewEditor{
                                                     }
                                                 });
                                                 this.buildViewEditorPanel(record);
+                                                this.setDirty(true);
 
                                                 PerspectiveViewHelper.reloadTreeNode(this.viewTreeStore.getRoot().lastChild);
                                             }
@@ -133,6 +135,8 @@ class ViewEditor{
                                 fn: function (button) {
                                     if (button === 'ok') {
                                         this.viewTreeStore.reload();
+                                        this.viewEditPanel.removeAll();
+                                        this.setDirty(false);
                                     }
                                 }.bind(this)
                             });
@@ -154,6 +158,7 @@ class ViewEditor{
                                         pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
                                         this.viewTreeStore.reload();
                                         this.viewEditPanel.removeAll();
+                                        this.setDirty(false);
                                     }
                                     else{
                                         pimcore.helpers.showNotification(t("error"), responseObject.error, "error")
@@ -216,7 +221,8 @@ class ViewEditor{
                 listeners: {
                     change: function(elem, newValue, oldValue){
                         data.config.name = newValue;
-                    }
+                        this.setDirty(true);
+                    }.bind(this)
                 }
             }),
             new Ext.form.ComboBox({
@@ -245,6 +251,7 @@ class ViewEditor{
                             this.assetTreeContextMenuGroup.hide();
                             this.objectTreeContextMenuGroup.show();
                         }
+                        this.setDirty(true);
                     }.bind(this)
                 },
             }),
@@ -268,7 +275,8 @@ class ViewEditor{
                 listeners: {
                     change: function(elem, newValue, oldValue){
                         data.config.position = newValue;
-                    }
+                        this.setDirty(true);
+                    }.bind(this)
                 },
             }),
             new Ext.form.TextField({
@@ -277,6 +285,9 @@ class ViewEditor{
                 fieldCls: "input_drop_target",
                 width: 600,
                 listeners: {
+                    change: function() {
+                        this.setDirty(true);
+                    }.bind(this),
                     render: function (el) {
                         new Ext.dd.DropZone(el.getEl(), {
                             reference: this,
@@ -331,7 +342,8 @@ class ViewEditor{
                 listeners: {
                     change: function(elem, newValue, oldValue){
                         data.config.showroot = newValue;
-                    },
+                        this.setDirty(true);
+                    }.bind(this)
                 },
             }),
             new Ext.form.NumberField({
@@ -340,7 +352,8 @@ class ViewEditor{
                 listeners: {
                     change: function(elem, newValue, oldValue){
                         data.config.sort = newValue;
-                    }
+                        this.setDirty(true);
+                    }.bind(this)
                 },
             }),
         ];
@@ -358,7 +371,8 @@ class ViewEditor{
                     listeners: {
                         change: function(elem, newValue, oldValue){
                             record.data.config.having = newValue;
-                        }
+                            this.setDirty(true);
+                        }.bind(this)
                     },
                 }),
                 new Ext.form.TextArea({
@@ -368,7 +382,8 @@ class ViewEditor{
                     listeners: {
                         change: function(elem, newValue, oldValue){
                             record.data.config.where = newValue;
-                        }
+                            this.setDirty(true);
+                        }.bind(this)
                     },
                 }),
             ],
@@ -393,32 +408,32 @@ class ViewEditor{
             hidden: data.config.treetype !== 'document',
             margin: '30 0',
             items: [
-                PerspectiveViewHelper.generateCheckbox(t('add'), config.treeContextMenu.document.items, 'add'),
-                PerspectiveViewHelper.generateCheckbox(t('addSnippet'), config.treeContextMenu.document.items, 'addSnippet'),
-                PerspectiveViewHelper.generateCheckbox(t('addLink'), config.treeContextMenu.document.items, 'addLink'),
-                PerspectiveViewHelper.generateCheckbox(t('addEmail'), config.treeContextMenu.document.items, 'addEmail'),
-                PerspectiveViewHelper.generateCheckbox(t('addNewsletter'), config.treeContextMenu.document.items, 'addNewsletter'),
-                PerspectiveViewHelper.generateCheckbox(t('addHardlink'), config.treeContextMenu.document.items, 'addHardlink'),
-                PerspectiveViewHelper.generateCheckbox(t('addFolder'), config.treeContextMenu.document.items, 'addFolder'),
-                PerspectiveViewHelper.generateCheckbox(t('paste'), config.treeContextMenu.document.items, 'paste'),
-                PerspectiveViewHelper.generateCheckbox(t('pasteCut'), config.treeContextMenu.document.items, 'pasteCut'),
-                PerspectiveViewHelper.generateCheckbox(t('copy'), config.treeContextMenu.document.items, 'copy'),
-                PerspectiveViewHelper.generateCheckbox(t('cut'), config.treeContextMenu.document.items, 'cut'),
-                PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.document.items, 'rename'),
-                PerspectiveViewHelper.generateCheckbox(t('unpublish'), config.treeContextMenu.document.items, 'unpublish'),
-                PerspectiveViewHelper.generateCheckbox(t('publish'), config.treeContextMenu.document.items, 'publish'),
-                PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.document.items, 'delete'),
-                PerspectiveViewHelper.generateCheckbox(t('open'), config.treeContextMenu.document.items, 'open'),
-                PerspectiveViewHelper.generateCheckbox(t('convert'), config.treeContextMenu.document.items, 'convert'),
-                PerspectiveViewHelper.generateCheckbox(t('searchAndMove'), config.treeContextMenu.document.items, 'searchAndMove'),
-                PerspectiveViewHelper.generateCheckbox(t('useAsSite'), config.treeContextMenu.document.items, 'useAsSite'),
-                PerspectiveViewHelper.generateCheckbox(t('editSite'), config.treeContextMenu.document.items, 'editSite'),
-                PerspectiveViewHelper.generateCheckbox(t('removeSite'), config.treeContextMenu.document.items, 'removeSite'),
-                PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.document.items, 'lock'),
-                PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.document.items, 'unlock'),
-                PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.document.items, 'lockAndPropagate'),
-                PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.document.items, 'unlockAndPropagate'),
-                PerspectiveViewHelper.generateCheckbox(t('reload'), config.treeContextMenu.document.items, 'reload')
+                PerspectiveViewHelper.generateCheckbox(t('add'), config.treeContextMenu.document.items, 'add', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addSnippet'), config.treeContextMenu.document.items, 'addSnippet', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addLink'), config.treeContextMenu.document.items, 'addLink', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addEmail'), config.treeContextMenu.document.items, 'addEmail', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addNewsletter'), config.treeContextMenu.document.items, 'addNewsletter', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addHardlink'), config.treeContextMenu.document.items, 'addHardlink', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addFolder'), config.treeContextMenu.document.items, 'addFolder', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('paste'), config.treeContextMenu.document.items, 'paste', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('pasteCut'), config.treeContextMenu.document.items, 'pasteCut', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('copy'), config.treeContextMenu.document.items, 'copy', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('cut'), config.treeContextMenu.document.items, 'cut', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.document.items, 'rename', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('unpublish'), config.treeContextMenu.document.items, 'unpublish', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('publish'), config.treeContextMenu.document.items, 'publish', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.document.items, 'delete', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('open'), config.treeContextMenu.document.items, 'open', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('convert'), config.treeContextMenu.document.items, 'convert', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('searchAndMove'), config.treeContextMenu.document.items, 'searchAndMove', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('useAsSite'), config.treeContextMenu.document.items, 'useAsSite', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('editSite'), config.treeContextMenu.document.items, 'editSite', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('removeSite'), config.treeContextMenu.document.items, 'removeSite', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.document.items, 'lock', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.document.items, 'unlock', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.document.items, 'lockAndPropagate', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.document.items, 'unlockAndPropagate', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('reload'), config.treeContextMenu.document.items, 'reload', false, this.setDirty.bind(this, true))
             ]
         });
 
@@ -427,19 +442,19 @@ class ViewEditor{
             hidden: data.config.treetype !== 'asset',
             margin: '30 0',
             items: [
-                PerspectiveViewHelper.generateCheckbox(t('upload'), config.treeContextMenu.asset.items.add.items, 'upload'),
-                PerspectiveViewHelper.generateCheckbox(t('uploadFromUrl'), config.treeContextMenu.asset.items.add.items, 'uploadFromUrl'),
-                PerspectiveViewHelper.generateCheckbox(t('addFolder'), config.treeContextMenu.asset.items, 'addFolder'),
-                PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.asset.items, 'rename'),
-                PerspectiveViewHelper.generateCheckbox(t('paste'), config.treeContextMenu.asset.items, 'paste'),
-                PerspectiveViewHelper.generateCheckbox(t('pasteCut'), config.treeContextMenu.asset.items, 'pasteCut'),
-                PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.asset.items, 'delete'),
-                PerspectiveViewHelper.generateCheckbox(t('searchAndMove'), config.treeContextMenu.asset.items, 'searchAndMove'),
-                PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.asset.items, 'lock'),
-                PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.asset.items, 'unlock'),
-                PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.asset.items, 'lockAndPropagate'),
-                PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.asset.items, 'unlockAndPropagate'),
-                PerspectiveViewHelper.generateCheckbox(t('hide reload'), config.treeContextMenu.asset.items.reload, 'hidden', true)
+                PerspectiveViewHelper.generateCheckbox(t('upload'), config.treeContextMenu.asset.items.add.items, 'upload', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('uploadFromUrl'), config.treeContextMenu.asset.items.add.items, 'uploadFromUrl', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('addFolder'), config.treeContextMenu.asset.items, 'addFolder', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.asset.items, 'rename', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('paste'), config.treeContextMenu.asset.items, 'paste', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('pasteCut'), config.treeContextMenu.asset.items, 'pasteCut', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.asset.items, 'delete', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('searchAndMove'), config.treeContextMenu.asset.items, 'searchAndMove', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.asset.items, 'lock', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.asset.items, 'unlock', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.asset.items, 'lockAndPropagate', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('unlockAndPropagate'), config.treeContextMenu.asset.items, 'unlockAndPropagate', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('hide reload'), config.treeContextMenu.asset.items.reload, 'hidden', true, this.setDirty.bind(this, true))
             ]
         });
 
@@ -448,20 +463,20 @@ class ViewEditor{
             hidden: data.config.treetype !== 'object',
             margin: '30 0',
             items: [
-                PerspectiveViewHelper.generateCheckbox(t('add object'), config.treeContextMenu.object.items, 'add'),
-                PerspectiveViewHelper.generateCheckbox(t('add folder'), config.treeContextMenu.object.items, 'addFolder'),
-                PerspectiveViewHelper.generateCheckbox(t('import csv'), config.treeContextMenu.object.items, 'importCsv'),
-                PerspectiveViewHelper.generateCheckbox(t('cut'), config.treeContextMenu.object.items, 'cut'),
-                PerspectiveViewHelper.generateCheckbox(t('copy'), config.treeContextMenu.object.items, 'copy'),
-                PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.object.items, 'delete'),
-                PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.object.items, 'rename'),
-                PerspectiveViewHelper.generateCheckbox(t('reload'), config.treeContextMenu.object.items, 'reload'),
-                PerspectiveViewHelper.generateCheckbox(t('search and move'), config.treeContextMenu.object.items, 'searchAndMove'),
-                PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.object.items, 'lock'),
-                PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.object.items, 'unlock'),
-                PerspectiveViewHelper.generateCheckbox(t('lock and propagate'), config.treeContextMenu.object.items, 'lockAndPropagate'),
-                PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.object.items, 'unlockAndPropagate'),
-                PerspectiveViewHelper.generateCheckbox(t('sorting'), config.treeContextMenu.object.items, 'changeChildrenSortBy')
+                PerspectiveViewHelper.generateCheckbox(t('add object'), config.treeContextMenu.object.items, 'add', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('add folder'), config.treeContextMenu.object.items, 'addFolder', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('import csv'), config.treeContextMenu.object.items, 'importCsv', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('cut'), config.treeContextMenu.object.items, 'cut', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('copy'), config.treeContextMenu.object.items, 'copy', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('delete'), config.treeContextMenu.object.items, 'delete', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('rename'), config.treeContextMenu.object.items, 'rename', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('reload'), config.treeContextMenu.object.items, 'reload', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('search and move'), config.treeContextMenu.object.items, 'searchAndMove', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lock'), config.treeContextMenu.object.items, 'lock', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('unlock'), config.treeContextMenu.object.items, 'unlock', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lock and propagate'), config.treeContextMenu.object.items, 'lockAndPropagate', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('lockAndPropagate'), config.treeContextMenu.object.items, 'unlockAndPropagate', false, this.setDirty.bind(this, true)),
+                PerspectiveViewHelper.generateCheckbox(t('sorting'), config.treeContextMenu.object.items, 'changeChildrenSortBy', false, this.setDirty.bind(this, true))
             ]
         });
 
@@ -470,5 +485,17 @@ class ViewEditor{
             this.assetTreeContextMenuGroup,
             this.objectTreeContextMenuGroup
         ];
+    }
+
+    setDirty(dirty) {
+        if(this.dirty !== dirty) {
+            this.dirty = dirty;
+
+            if(dirty) {
+                this.panel.setTitle(t("plugin_pimcore_perspectiveeditor_view_editor") + ' *');
+            } else {
+                this.panel.setTitle(t("plugin_pimcore_perspectiveeditor_view_editor"));
+            }
+        }
     }
 }
