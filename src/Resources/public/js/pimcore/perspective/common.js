@@ -49,6 +49,14 @@ class PerspectiveViewHelper{
                     if(!(keyPath[j] in c)){
                         c[keyPath[j]] = j*1 + 1 === keyPath.length ? 1 : {};
                     }
+
+                    //support inline shortcut definitions
+                    if((Number.isInteger(c[keyPath[j]]) || typeof c[keyPath[j]] === "boolean") && j*1 + 1 < keyPath.length) {
+                        c[keyPath[j]] = {
+                            hidden: !c[keyPath[j]]
+                        };
+                    }
+
                     c = c[keyPath[j]];
                 }
             }
