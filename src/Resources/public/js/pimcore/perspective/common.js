@@ -49,7 +49,12 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
                 var c = config[key];
                 for(let j in keyPath){
                     if(!(keyPath[j] in c)){
-                        c[keyPath[j]] = j*1 + 1 === keyPath.length ? 1 : {};
+                        let defaultValue = true;
+                        if(keyPath[j] == 'hidden') {
+                            defaultValue = false;
+                        }
+
+                        c[keyPath[j]] = j*1 + 1 === keyPath.length ? defaultValue : {};
                     }
 
                     //support inline shortcut definitions
@@ -63,6 +68,34 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
                 }
             }
         }
+    }
+
+    static generateCheckboxesForStructure (configStructure, checkboxItems, callback, labelPrefix) {
+
+        const keys = Object.keys(configStructure);
+        keys.sort();
+
+        for(let i = 0; i<keys.length; ++i){
+            let key = keys[i];
+            if(configStructure.hasOwnProperty(key)) {
+
+                let label = labelPrefix + '_' + key;
+
+                //check if key is permission or has sub-items
+                if(Number.isInteger(configStructure[key]) || typeof configStructure[key] === "boolean") {
+
+                    //create checkbox for permission
+                    checkboxItems.push(this.generateCheckbox(t(label), configStructure, key, false, callback));
+
+                } else {
+
+                    //create checkboxes for sub-items
+                    this.generateCheckboxesForStructure(configStructure[key], checkboxItems, callback, label);
+
+                }
+            }
+        }
+
     }
 
     static createIconFormPanel (record, id, applyToRecord, changeCallback){
