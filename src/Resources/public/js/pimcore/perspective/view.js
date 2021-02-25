@@ -40,9 +40,13 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                 },
                 listeners: {
                     datachanged: function(treestore){
-                        const availableViewsStoreData = treestore.getRoot().serialize().children.map(function(view){
-                            return {id: view.id, name: view.config.name + ' (type: ' + view.config.treetype + ', folder: ' + view.config.rootfolder +')'};
-                        });
+                        let availableViewsStoreData = [];
+                        const viewData = treestore.getRoot().serialize();
+                        if(viewData.children) {
+                            availableViewsStoreData = viewData.children.map(function(view){
+                                return {id: view.id, name: view.config.name + ' (type: ' + view.config.treetype + ', folder: ' + view.config.rootfolder +')'};
+                            });
+                        }
                         const availableViewsStore = Ext.getStore('availableViewsStore');
                         availableViewsStore.setData(availableViewsStoreData);
                     }.bind(this),

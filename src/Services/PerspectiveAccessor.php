@@ -15,78 +15,11 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
+use Pimcore\Config;
+
 class PerspectiveAccessor extends AbstractAccessor
 {
     protected $filename = 'perspectives.php';
-
-    public function createFile()
-    {
-        $defaultConfig =
-            [
-                'default' => [
-                'iconCls' => 'pimcore_icon_perspective',
-                'elementTree' => [
-                    [
-                        'type' => 'documents',
-                        'position' => 'left',
-                        'expanded' => false,
-                        'hidden' => false,
-                        'sort' => -3
-                    ],
-                    [
-                        'type' => 'assets',
-                        'position' => 'left',
-                        'expanded' => false,
-                        'hidden' => false,
-                        'sort' => -2
-                    ],
-                    [
-                        'type' => 'objects',
-                        'position' => 'left',
-                        'expanded' => false,
-                        'hidden' => false,
-                        'sort' => -1
-                    ]
-
-                ],
-                'dashboards' => [
-                    'predefined' => [
-                        'welcome' => [
-                            'positions' => [
-                                [
-                                    [
-                                        'id' => 1,
-                                        'type' => 'pimcore.layout.portlets.modificationStatistic',
-                                        'config' => null
-                                    ],
-                                    [
-                                        'id' => 2,
-                                        'type' => 'pimcore.layout.portlets.modifiedAssets',
-                                        'config' => null
-                                    ]
-                                ],
-                                [
-                                    [
-                                        'id' => 3,
-                                        'type' => 'pimcore.layout.portlets.modifiedObjects',
-                                        'config' => null
-                                    ],
-                                    [
-                                        'id' => 4,
-                                        'type' => 'pimcore.layout.portlets.modifiedDocuments',
-                                        'config' => null
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $str = "<?php\n return " . $this->pretty_export($defaultConfig) . ';';
-        file_put_contents($this->configDirectory.$this->filename, $str);
-    }
 
     protected function convertTreeStoreToConfiguration($treeStore)
     {
@@ -152,5 +85,11 @@ class PerspectiveAccessor extends AbstractAccessor
         }
 
         return $configuration;
+    }
+
+    public function getConfiguration(): array
+    {
+        $config = Config::getPerspectivesConfig();
+        return $config->toArray();
     }
 }
