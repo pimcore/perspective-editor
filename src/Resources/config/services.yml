@@ -13,3 +13,7 @@ services:
 
     Pimcore\Bundle\PerspectiveEditorBundle\Services\:
         resource: '../../Services'
+
+
+    Pimcore\Bundle\PerspectiveEditorBundle\Installer:
+        public: true

@@ -16,10 +16,11 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
         record.parentNode.expand();
     }
 
-    static generateCheckbox (label, config, key, inverted = false, changeCallback){
+    static generateCheckbox (label, config, key, inverted = false, changeCallback = null, readOnly = false){
         return new Ext.form.Checkbox({
             boxLabel: label,
             checked: inverted ? !config[key] : config[key],
+            readOnly: readOnly,
             listeners: {
                 change: function(elem, newValue, oldValue){
                     config[key] = newValue;
@@ -70,7 +71,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
         }
     }
 
-    static generateCheckboxesForStructure (configStructure, checkboxItems, callback, labelPrefix) {
+    static generateCheckboxesForStructure (configStructure, checkboxItems, callback, labelPrefix, readOnly) {
 
         const keys = Object.keys(configStructure);
         keys.sort();
@@ -85,12 +86,12 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
                 if(Number.isInteger(configStructure[key]) || typeof configStructure[key] === "boolean") {
 
                     //create checkbox for permission
-                    checkboxItems.push(this.generateCheckbox(t(label), configStructure, key, false, callback));
+                    checkboxItems.push(this.generateCheckbox(t(label), configStructure, key, false, callback, readOnly));
 
                 } else {
 
                     //create checkboxes for sub-items
-                    this.generateCheckboxesForStructure(configStructure[key], checkboxItems, callback, label);
+                    this.generateCheckboxesForStructure(configStructure[key], checkboxItems, callback, label, readOnly);
 
                 }
             }
