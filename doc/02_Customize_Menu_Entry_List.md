@@ -12,4 +12,4 @@ bundle.
     }
 ``` 
 
-For all available entries have a look at [MenuItemPermissionHelper](../src/Resources/public/js/pimcore/perspective/menuItemPermissionHelper.js).
+For all available entries have a look at [MenuItemPermissionHelper](https://github.com/pimcore/perspective-editor/blob/main/src/Resources/public/js/pimcore/perspective/menuItemPermissionHelper.js).
