@@ -16,6 +16,7 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
 
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use Pimcore\Bundle\AdminBundle\Security\CsrfProtectionHandler;
 use Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\TreeHelper;
@@ -86,11 +87,12 @@ class PerspectiveController extends AdminController
      * @param PerspectiveAccessor $perspectiveAccessor
      * @param Request $request
      *
+     * @param CsrfProtectionHandler $csrfProtectionHandler
      * @return JsonResponse
      */
-    public function updatePerspectivesAction(PerspectiveAccessor $perspectiveAccessor, Request $request)
+    public function updatePerspectivesAction(PerspectiveAccessor $perspectiveAccessor, Request $request, CsrfProtectionHandler $csrfProtectionHandler)
     {
-        $this->checkCsrfToken($request);
+        $csrfProtectionHandler->checkCsrfToken($request);
         $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
 
         $ret = [
@@ -117,11 +119,12 @@ class PerspectiveController extends AdminController
      * @param ViewAccessor $viewAccessor
      * @param Request $request
      *
+     * @param CsrfProtectionHandler $csrfProtectionHandler
      * @return JsonResponse
      */
-    public function updateViewAction(ViewAccessor $viewAccessor, Request $request)
+    public function updateViewAction(ViewAccessor $viewAccessor, Request $request, CsrfProtectionHandler $csrfProtectionHandler)
     {
-        $this->checkCsrfToken($request);
+        $csrfProtectionHandler->checkCsrfToken($request);
         if (!$this->getAdminUser() || !$this->getAdminUser()->isAdmin()) {
             throw $this->createAccessDeniedHttpException('Access denied, only Admin users are allowed to update views');
         }
