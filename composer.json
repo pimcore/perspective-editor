@@ -9,7 +9,8 @@
     }
   },
   "require": {
-    "pimcore/pimcore": "^6.9 || ^10.0"
+    "pimcore/pimcore": "^6.9 || ^10.0",
+    "symfony/symfony": "^4.2 || ^5.2"
   },
   "extra": {
     "pimcore": {

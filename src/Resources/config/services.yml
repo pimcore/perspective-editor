@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $configDirectory: "%kernel.root_dir%/config/pimcore/"
+            $configDirectory: "%kernel.project_dir%/config/pimcore/"
 
     Pimcore\Bundle\PerspectiveEditorBundle\Controller\:
         resource: '../../Controller'
