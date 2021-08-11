@@ -10,7 +10,7 @@ composer require pimcore/perspective-editor
 
 Installation routine just adds an additional permission to `users_permission_definitions` table. 
 
-Also, make sure, that `customvies.php` and `perspectives.php` files are writeable for php.
+Also, make sure, that `customviews.php` and `perspectives.php` files are writeable for php.
 They can be located at Pimcore default locations for config files: 
 `PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY` or `PIMCORE_CONFIGURATION_DIRECTORY`. 
 
