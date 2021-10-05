@@ -177,6 +177,8 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
     };
 
     static loadPermissions(context, menu) {
+        pimcore.plugin.broker.fireEvent("onPerspectiveEditorLoadPermissions", context, menu, this.permissions);
+
         return this.permissions[context][menu];
     }
 
