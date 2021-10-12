@@ -137,7 +137,8 @@ class PerspectiveController extends AdminController
         ];
         try {
             $treeStore = json_decode($request->get('data'), true);
-            $viewAccessor->writeConfiguration($treeStore, null);
+            $deletedRecords = json_decode($request->get('deletedRecords'), true);
+            $viewAccessor->writeConfiguration($treeStore, $deletedRecords);
         } catch (\Exception $e) {
             $ret = ['success' => false, 'error' => $e->getMessage()];
         }
@@ -330,6 +331,9 @@ class PerspectiveController extends AdminController
     protected function createViewEntry(TreeHelper $treeHelper, $viewName = null, $viewConfig = null)
     {
         $viewName = $viewName ?? 'new view ' . date('U');
+        $disabledClass = '';
+        if($viewConfig)
+            $disabledClass = $viewConfig["writeable"] ? '' : ' ' . $this->disabledCssClass;
 
         $entry = [
             'id' => $viewConfig['id'] ?? $treeHelper->createUuid(),
@@ -337,9 +341,10 @@ class PerspectiveController extends AdminController
             'name' => 'view',
             'type' => 'view',
             'icon' => $viewConfig['icon'] ?? '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
-            'cls' => 'plugin_pimcore_perspective_editor_custom_view_tree_item',
+            'cls' => 'plugin_pimcore_perspective_editor_custom_view_tree_item' . $disabledClass,
             'leaf' => true,
             'allowDrag' => true,
+            'writeable' => $viewConfig['writeable'],
             'config' => $viewConfig ?? $this->getViewDefaultConfig($viewName)
         ];
 

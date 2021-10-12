@@ -18,6 +18,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
 
     routePrefix = '/admin/perspectives-views/view';
     activeRecordId = null;
+    deletedRecords = [];
 
     constructor (readOnly) {
         if (!this.panel) {
@@ -82,6 +83,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                 toolbarButtons.push(new Ext.Button({
                     text: t('plugin_pimcore_perspectiveeditor_add_view'),
                     iconCls: "pimcore_icon_plus",
+                    disabled: !pimcore.settings['custom-views-writeable'],
                     handler: function () {
                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_view'), t('plugin_pimcore_perspectiveeditor_new_view'), function (button, value) {
                             if (button === 'ok' && value.length > 0) {
@@ -92,6 +94,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                                     icon: '/bundles/pimcoreadmin/img/flat-color-icons/view_details.svg',
                                     leaf: true,
                                     cls: 'plugin_pimcore_perspective_editor_custom_view_tree_item',
+                                    writeable: true,
                                     config: {
                                         name: value,
                                         treetype: 'document',
@@ -117,7 +120,8 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                         Ext.Ajax.request({
                             url: this.routePrefix + '/update',
                             params: {
-                                data: Ext.JSON.encode(this.viewTreeStore.getRoot().serialize())
+                                data: Ext.JSON.encode(this.viewTreeStore.getRoot().serialize()),
+                                deletedRecords: Ext.JSON.encode(this.deletedRecords)
                             },
                             method: 'POST',
                             success: function(response){
@@ -125,6 +129,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                                 if(responseObject.success){
                                     pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
                                     this.setDirty(false);
+                                    this.deletedRecords = [];
                                 }
                                 else{
                                     pimcore.helpers.showNotification(t("error"), responseObject.error, "error")
@@ -164,21 +169,27 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                                                 text: t('delete'),
                                                 iconCls: "pimcore_icon_delete",
                                                 handler: function(){
-                                                    Ext.MessageBox.show({
-                                                        title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
-                                                        msg: t('plugin_pimcore_perspectiveeditor_all_content_will_be_lost'),
-                                                        buttons: Ext.Msg.OKCANCEL ,
-                                                        icon: Ext.MessageBox.INFO ,
-                                                        fn: function (button) {
-                                                            if (button === 'ok') {
-                                                                if(record.id === this.activeRecordId) {
-                                                                    this.viewEditPanel.removeAll();
+                                                    if(record.data['writeable']) {
+                                                        Ext.MessageBox.show({
+                                                            title: t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                                                            msg: t('plugin_pimcore_perspectiveeditor_all_content_will_be_lost'),
+                                                            buttons: Ext.Msg.OKCANCEL,
+                                                            icon: Ext.MessageBox.INFO,
+                                                            fn: function (button) {
+                                                                if (button === 'ok') {
+                                                                    if (record.id === this.activeRecordId) {
+                                                                        this.viewEditPanel.removeAll();
+                                                                    }
+                                                                    this.deletedRecords.push(record.data.id);
+                                                                    record.parentNode.removeChild(record);
+                                                                    this.setDirty(true);
                                                                 }
-                                                                record.parentNode.removeChild(record);
-                                                                this.setDirty(true);
-                                                            }
-                                                        }.bind(this)
-                                                    });
+                                                            }.bind(this)
+                                                        });
+                                                    }
+                                                    else {
+                                                        pimcore.helpers.showNotification(t("info"), t("config_not_writeable"), "info");
+                                                    }
                                                 }.bind(this)
                                             })
                                         ]
@@ -223,6 +234,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                 new Ext.form.Panel({
                     title: t('plugin_pimcore_perspectiveeditor_view_selection'),
                     iconCls: 'pimcore_icon_custom_views',
+                    disabled: !record.data["writeable"],
                     items: items
                 })
             );
