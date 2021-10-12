@@ -30,6 +30,7 @@ class PerspectiveAccessor extends AbstractAccessor
             $configuration[$name] = [];
             $configuration[$name]['elementTree'] = [];
             foreach ($child['children'] as $index => $element) {
+                $configuration[$name]["writeable"] = $element["writeable"];
                 if ($element['type'] == 'icon') {
                     $configuration[$name] = array_merge($configuration[$name], $element['config']);
                 } elseif ($element['type'] == 'elementTree') {
@@ -93,8 +94,14 @@ class PerspectiveAccessor extends AbstractAccessor
 
     public function getConfiguration(): array
     {
-        $config = Config::getPerspectivesConfig();
+        $config = \Pimcore\Perspective\Config::get();
 
         return $config->toArray();
+    }
+
+    public function writeConfiguration($treeStore, ?array $deletedRecords)
+    {
+        $configuration = $this->convertTreeStoreToConfiguration($treeStore);
+        \Pimcore\Perspective\Config::save($configuration, $deletedRecords);
     }
 }
