@@ -53,7 +53,7 @@ abstract class AbstractAccessor
      */
     abstract public function getConfiguration(): array;
 
-    public function writeConfiguration($treeStore)
+    public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
 
