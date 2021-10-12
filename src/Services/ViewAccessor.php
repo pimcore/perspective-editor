@@ -15,8 +15,6 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
-use Pimcore\CustomView;
-
 class ViewAccessor extends AbstractAccessor
 {
     protected $filename = 'customviews.php';
@@ -62,7 +60,8 @@ class ViewAccessor extends AbstractAccessor
         return [];
     }
 
-    public function writeConfiguration($treeStore, ?array $deletedRecords) {
+    public function writeConfiguration($treeStore, ?array $deletedRecords)
+    {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
         \Pimcore\CustomView\Config::save($configuration, $deletedRecords);
     }
