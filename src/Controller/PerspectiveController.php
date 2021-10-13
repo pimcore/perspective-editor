@@ -32,7 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PerspectiveController extends AdminController
 {
-    protected $disabledCssClass = "pimcore_tree_node_disabled";
+    protected $disabledCssClass = 'pimcore_tree_node_disabled';
 
     /**
      * @Route("/perspective/get-tree", name="get-perspective-tree")
@@ -180,7 +180,7 @@ class PerspectiveController extends AdminController
     {
         $leftElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'left');
         $rightElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'right');
-        $disabledClass = $perspectiveConfig["writeable"] ? '' : $this->disabledCssClass;
+        $disabledClass = $perspectiveConfig['writeable'] ? '' : $this->disabledCssClass;
 
         return [
             'id' => $treeHelper->createUuid(),
@@ -192,7 +192,7 @@ class PerspectiveController extends AdminController
             'allowDrag' => false,
             'allowDrop' => false,
             'cls' => $disabledClass,
-            'writeable' => $perspectiveConfig["writeable"],
+            'writeable' => $perspectiveConfig['writeable'],
             'children' => [
                 [
                     'id' => $treeHelper->createUuid(),
@@ -203,7 +203,7 @@ class PerspectiveController extends AdminController
                     'allowDrag' => false,
                     'allowDrop' => false,
                     'cls' => $disabledClass,
-                    'writeable' => $perspectiveConfig["writeable"],
+                    'writeable' => $perspectiveConfig['writeable'],
                     'config' => [
                         'iconCls' => $perspectiveConfig['iconCls'] ?? null,
                         'icon' => $perspectiveConfig['icon'] ?? null
@@ -219,7 +219,7 @@ class PerspectiveController extends AdminController
                     'allowDrag' => false,
                     'allowDrop' => true,
                     'cls' => $disabledClass,
-                    'writeable' => $perspectiveConfig["writeable"],
+                    'writeable' => $perspectiveConfig['writeable'],
                     'children' => $leftElementTrees,
                 ], [
                     'id' => $treeHelper->createUuid(),
@@ -232,7 +232,7 @@ class PerspectiveController extends AdminController
                     'allowDrop' => true,
                     'cls' => $disabledClass,
                     'children' => $rightElementTrees,
-                    'writeable' => $perspectiveConfig["writeable"]
+                    'writeable' => $perspectiveConfig['writeable']
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
@@ -245,7 +245,7 @@ class PerspectiveController extends AdminController
                     'allowDrag' => false,
                     'allowDrop' => false,
                     'cls' => $disabledClass,
-                    'writeable' => $perspectiveConfig["writeable"],
+                    'writeable' => $perspectiveConfig['writeable'],
                     'children' => $this->buildDashboardTree($treeHelper, $perspectiveConfig),
                 ],
                 [
@@ -257,7 +257,7 @@ class PerspectiveController extends AdminController
                     'allowDrag' => false,
                     'allowDrop' => false,
                     'cls' => $disabledClass,
-                    'writeable' => $perspectiveConfig["writeable"],
+                    'writeable' => $perspectiveConfig['writeable'],
                     'config' => $perspectiveConfig['toolbar'] ?? []
                 ]
             ]
@@ -269,7 +269,7 @@ class PerspectiveController extends AdminController
         if (!isset($config['elementTree'])) {
             return [];
         }
-        $disabledClass = $config["writeable"] ? '' : $this->disabledCssClass;
+        $disabledClass = $config['writeable'] ? '' : $this->disabledCssClass;
 
         $treeIcons = [
             'documents' => 'pimcore_icon_document',
@@ -290,7 +290,7 @@ class PerspectiveController extends AdminController
                     'iconCls' => $treeIcons[$element['type']],
                     'config' => $element,
                     'cls' => $disabledClass,
-                    'writeable' => $config["writeable"],
+                    'writeable' => $config['writeable'],
                 ];
             }
         }
@@ -307,7 +307,7 @@ class PerspectiveController extends AdminController
         if (!isset($config['dashboards'])) {
             return [];
         }
-        $disabledClass = $config["writeable"] ? '' : $this->disabledCssClass;
+        $disabledClass = $config['writeable'] ? '' : $this->disabledCssClass;
 
         $tree = [];
         foreach ($config['dashboards']['predefined'] as $dashboardName => $dashboardConfig) {
@@ -320,7 +320,7 @@ class PerspectiveController extends AdminController
                 'allowDrop' => false,
                 'iconCls' => 'pimcore_icon_welcome',
                 'cls' => $disabledClass,
-                'writeable' => $config["writeable"],
+                'writeable' => $config['writeable'],
                 'config' => array_merge($dashboardConfig, ['name' => $dashboardName])
             ];
         }
@@ -332,8 +332,9 @@ class PerspectiveController extends AdminController
     {
         $viewName = $viewName ?? 'new view ' . date('U');
         $disabledClass = '';
-        if($viewConfig)
-            $disabledClass = $viewConfig["writeable"] ? '' : ' ' . $this->disabledCssClass;
+        if ($viewConfig) {
+            $disabledClass = $viewConfig['writeable'] ? '' : ' ' . $this->disabledCssClass;
+        }
 
         $entry = [
             'id' => $viewConfig['id'] ?? $treeHelper->createUuid(),

@@ -15,8 +15,6 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
-use Pimcore\Config;
-
 class PerspectiveAccessor extends AbstractAccessor
 {
     protected $filename = 'perspectives.php';
