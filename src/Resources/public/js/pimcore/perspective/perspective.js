@@ -265,6 +265,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         return Ext.menu.Item({
             text: t('plugin_pimcore_perspectiveeditor_rename'),
             iconCls: 'pimcore_icon_edit',
+            disabled: !record.data["writeable"],
             handler: function(){
                 if(record.data["writeable"] === true) {
                     Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
@@ -360,6 +361,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         return Ext.menu.Item({
             text: t('delete'),
             iconCls: "pimcore_icon_delete",
+            disabled: !record.data["writeable"],
             handler: function(){
                 if(record.data["writeable"] === true) {
                     Ext.MessageBox.show({

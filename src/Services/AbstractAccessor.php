@@ -53,6 +53,13 @@ abstract class AbstractAccessor
      */
     abstract public function getConfiguration(): array;
 
+    /**
+     * @deprecated Will be removed with Pimcore 11
+     *
+     * @param $treeStore
+     * @param array|null $deletedRecords
+     *
+     */
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);

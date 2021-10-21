@@ -168,6 +168,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                                             Ext.menu.Item({
                                                 text: t('delete'),
                                                 iconCls: "pimcore_icon_delete",
+                                                disabled: !record.data["writeable"],
                                                 handler: function(){
                                                     if(record.data['writeable']) {
                                                         Ext.MessageBox.show({
