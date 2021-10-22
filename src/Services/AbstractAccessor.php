@@ -75,7 +75,7 @@ abstract class AbstractAccessor
     }
 
     /**
-     * @deprecated Will be removed with Pimcore 11
+     * @deprecated
      *
      * @param $treeStore
      * @param array|null $deletedRecords
