@@ -105,6 +105,13 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                     handler: function(){
                                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_perspective'), t('plugin_pimcore_perspectiveeditor_new_perspective'), function (button, value) {
                                             if (button === 'ok' && value.length > 0) {
+                                                //check for configs with same name
+                                                let match = this.perspectiveTreeStore.findExact("name", value);
+                                                if (match !== -1) {
+                                                    Ext.MessageBox.alert(t("error"), t("name_already_in_use"));
+                                                    return;
+                                                }
+
                                                 this.perspectiveTreeStore.getRoot().appendChild({
                                                     id: pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateUuid(),
                                                     text: value,
@@ -270,8 +277,17 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                 if(record.data["writeable"] === true) {
                     Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
                         if (button === 'ok' && value !== record.data.text) {
-                            if(record.data.type === 'perspective' && record.data.text !== 'default')
+                            //check for configs with same name
+                            let match = this.perspectiveTreeStore.findExact("name", value);
+                            if (match !== -1) {
+                                Ext.MessageBox.alert(t("error"), t("name_already_in_use"));
+                                return;
+                            }
+
+                            if (record.data.type === 'perspective' && record.data.text !== 'default') {
                                 this.deletedRecords.push(record.data.name);
+                            }
+
                             record.data.text = value;
                             record.data.name = value;
                             pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
