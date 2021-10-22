@@ -54,7 +54,7 @@ abstract class AbstractAccessor
     abstract public function getConfiguration(): array;
 
     /**
-     * @deprecated Will be removed with Pimcore 11
+     * @deprecated
      *
      * @param $treeStore
      * @param array|null $deletedRecords
