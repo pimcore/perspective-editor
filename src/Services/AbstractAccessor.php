@@ -63,6 +63,7 @@ abstract class AbstractAccessor
         $configurationDefinition = new \Pimcore\Bundle\CoreBundle\DependencyInjection\Configuration();
         $processor = new Processor();
         foreach ($configuration as $key => $value) {
+            unset($value['writeable']);
             $processor->processConfiguration($configurationDefinition,
                 ['pimcore' => [
                     $namespace => [
