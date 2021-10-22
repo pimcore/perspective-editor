@@ -217,6 +217,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                         new Ext.Button({
                             text: t("save"),
                             iconCls: "pimcore_icon_apply",
+                            disabled: !pimcore.settings['perspectives-writeable'],
                             handler: function () {
                                 Ext.Ajax.request({
                                     url: this.routePrefix + '/update',
