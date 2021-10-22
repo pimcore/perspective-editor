@@ -16,6 +16,7 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
 use Pimcore\Config;
+use Symfony\Component\Config\Definition\Processor;
 
 abstract class AbstractAccessor
 {
@@ -53,7 +54,36 @@ abstract class AbstractAccessor
      */
     abstract public function getConfiguration(): array;
 
-    public function writeConfiguration($treeStore)
+    /**
+     * @param $namespace
+     * @param $configuration
+     */
+    public function validateConfig($namespace, $configuration)
+    {
+        $configurationDefinition = new \Pimcore\Bundle\CoreBundle\DependencyInjection\Configuration();
+        $processor = new Processor();
+        foreach ($configuration as $key => $value) {
+            unset($value['writeable']);
+            $processor->processConfiguration($configurationDefinition,
+                ['pimcore' => [
+                    $namespace => [
+                        'definitions' => [
+                            $key => $value
+                        ]
+                    ]
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * @deprecated
+     *
+     * @param $treeStore
+     * @param array|null $deletedRecords
+     *
+     */
+    public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
 

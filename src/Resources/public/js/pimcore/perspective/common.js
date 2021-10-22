@@ -86,7 +86,6 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
     }
 
     static generateCheckboxesForStructure (configStructure, checkboxItems, callback, labelPrefix, readOnly) {
-
         const keys = Object.keys(configStructure);
         keys.sort();
 
@@ -154,6 +153,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
         });
 
         return new Ext.form.Panel({
+            disabled: !record.data["writeable"],
             title: t('plugin_pimcore_perspectiveeditor_icon_selection'),
             iconCls: 'pimcore_icon_asset',
             layout: "hbox",

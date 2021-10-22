@@ -15,8 +15,6 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
-use Pimcore\Config;
-
 class PerspectiveAccessor extends AbstractAccessor
 {
     protected $filename = 'perspectives.php';
@@ -93,8 +91,15 @@ class PerspectiveAccessor extends AbstractAccessor
 
     public function getConfiguration(): array
     {
-        $config = Config::getPerspectivesConfig();
+        $config = \Pimcore\Perspective\Config::get();
 
         return $config->toArray();
+    }
+
+    public function writeConfiguration($treeStore, ?array $deletedRecords)
+    {
+        $configuration = $this->convertTreeStoreToConfiguration($treeStore);
+        $this->validateConfig('perspectives', $configuration);
+        \Pimcore\Perspective\Config::save($configuration, $deletedRecords);
     }
 }

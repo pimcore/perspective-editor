@@ -27,6 +27,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
     ];
     activeRecordId = null;
+    deletedRecords = [];
 
     constructor () {
         if (!this.panel) {
@@ -68,6 +69,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                         split: true,
                         store: this.perspectiveTreeStore,
                         rootVisible: false,
+                        id: "treePanel",
                         viewConfig: {
                             plugins: {
                                 ptype: 'treeviewdragdrop',
@@ -99,9 +101,17 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                 new Ext.Button({
                                     text: t("plugin_pimcore_perspectiveeditor_add_perspective"),
                                     iconCls: "pimcore_icon_plus",
+                                    disabled: !pimcore.settings['perspectives-writeable'],
                                     handler: function(){
                                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_perspective'), t('plugin_pimcore_perspectiveeditor_new_perspective'), function (button, value) {
                                             if (button === 'ok' && value.length > 0) {
+                                                //check for configs with same name
+                                                let match = this.perspectiveTreeStore.findExact("name", value);
+                                                if (match !== -1) {
+                                                    Ext.MessageBox.alert(t("error"), t("name_already_in_use"));
+                                                    return;
+                                                }
+
                                                 this.perspectiveTreeStore.getRoot().appendChild({
                                                     id: pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateUuid(),
                                                     text: value,
@@ -109,6 +119,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                     type: 'perspective',
                                                     icon: '/bundles/pimcoreadmin/img/flat-color-icons/reading.svg',
                                                     expanded: true,
+                                                    writeable: true,
                                                     children: [
                                                         {
                                                             id: pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateUuid(),
@@ -116,9 +127,10 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                             type: 'icon',
                                                             leaf: true,
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/marker.svg',
+                                                            writeable: true,
                                                             config: {
                                                                 iconCls: null,
-                                                                icon: null,
+                                                                icon: null
                                                             },
                                                         },
                                                         {
@@ -129,6 +141,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                             expanded: true,
                                                             children: [],
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/left_down2.svg',
+                                                            writeable: true,
                                                             config: {
                                                                 iconCls: null,
                                                                 icon: null,
@@ -141,9 +154,10 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                             expanded: true,
                                                             children: [],
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/right_down2.svg',
+                                                            writeable: true,
                                                             config: {
                                                                 iconCls: null,
-                                                                icon: null,
+                                                                icon: null
                                                             },
                                                         },
                                                         {
@@ -152,7 +166,9 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                             type: 'dashboard',
                                                             leaf: true,
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/dashboard.svg',
-                                                            config: [],
+                                                            writeable: true,
+                                                            config: {
+                                                            },
                                                         },
                                                         {
                                                             id: pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateUuid(),
@@ -160,7 +176,9 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                                             type: 'toolbar',
                                                             leaf: true,
                                                             icon: '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
-                                                            config: {},
+                                                            writeable: true,
+                                                            config: {
+                                                            },
                                                         },
                                                     ]
                                                 });
@@ -199,17 +217,20 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                         new Ext.Button({
                             text: t("save"),
                             iconCls: "pimcore_icon_apply",
+                            disabled: !pimcore.settings['perspectives-writeable'],
                             handler: function () {
                                 Ext.Ajax.request({
                                     url: this.routePrefix + '/update',
                                     params: {
-                                        data: Ext.JSON.encode(this.perspectiveTreeStore.getRoot().serialize())
+                                        data: Ext.JSON.encode(this.perspectiveTreeStore.getRoot().serialize()),
+                                        deletedRecords: Ext.JSON.encode(this.deletedRecords)
                                     },
                                     method: 'POST', success: function (response) {
                                         const responseObject = Ext.decode(response.responseText);
                                         if (responseObject.success) {
                                             pimcore.helpers.showNotification(t("success"), t("saved_successfully"), "success");
                                             this.setDirty(false);
+                                            this.deletedRecords = [];
                                         } else {
                                             pimcore.helpers.showNotification(t("error"), t(responseObject.error), "error");
                                         }
@@ -227,20 +248,20 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
     buildPerspectiveContextMenuItems (record, tree){
         const items = [];
 
-        if(record.data.type === 'elementTree' || record.data.type === 'elementTreeRight'){
+        if (record.data.type === 'elementTree' || record.data.type === 'elementTreeRight') {
             items.push(this.buildAddDialog(record, tree));
         }
-        if(record.data.type === 'perspective' && record.data.text !== 'default'){
+        if (record.data.type === 'perspective' && record.data.text !== 'default') {
             items.push(this.buildRenameDialog(record));
             items.push(this.buildDeleteDialog(record, true));
         }
-        if(record.data.type === 'elementTreeElement'){
+        if (record.data.type === 'elementTreeElement') {
             items.push(this.buildDeleteDialog(record));
         }
-        if(record.data.type === 'dashboard'){
+        if (record.data.type === 'dashboard') {
             items.push(this.buildAddDialog(record, tree));
         }
-        if(record.data.type === 'dashboardDefinition'){
+        if (record.data.type === 'dashboardDefinition') {
             items.push(this.buildRenameDialog(record));
             items.push(this.buildDeleteDialog(record));
         }
@@ -252,15 +273,32 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         return Ext.menu.Item({
             text: t('plugin_pimcore_perspectiveeditor_rename'),
             iconCls: 'pimcore_icon_edit',
+            disabled: !record.data["writeable"],
             handler: function(){
-                Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
-                    if (button === 'ok' && value !== record.data.text) {
-                        record.data.text = value;
-                        record.data.name = value;
-                        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
-                        this.setDirty(true);
-                    }
-                }.bind(this), this, false, record.data.text);
+                if(record.data["writeable"] === true) {
+                    Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
+                        if (button === 'ok' && value !== record.data.text) {
+                            //check for configs with same name
+                            let match = this.perspectiveTreeStore.findExact("name", value);
+                            if (match !== -1) {
+                                Ext.MessageBox.alert(t("error"), t("name_already_in_use"));
+                                return;
+                            }
+
+                            if (record.data.type === 'perspective' && record.data.text !== 'default') {
+                                this.deletedRecords.push(record.data.name);
+                            }
+
+                            record.data.text = value;
+                            record.data.name = value;
+                            pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
+                            this.setDirty(true);
+                        }
+                    }.bind(this), this, false, record.data.text);
+                }
+                else {
+                    pimcore.helpers.showNotification(t("info"), t("config_not_writeable"), "info");
+                }
             }.bind(this)
         });
     }
@@ -270,13 +308,24 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             text: t('plugin_pimcore_perspectiveeditor_add'),
             iconCls: 'pimcore_icon_add',
             handler: function(){
-                switch (record.data.type){
-                    case 'elementTree': this.addElementTree(record, tree, 'left'); break;
-                    case 'elementTreeRight': this.addElementTree(record, tree, 'right'); break;
-                    case 'dashboard': this.addDashboard(record, tree); break;
+                if(record.data["writeable"] === true) {
+                    switch (record.data.type) {
+                        case 'elementTree':
+                            this.addElementTree(record, tree, 'left');
+                            break;
+                        case 'elementTreeRight':
+                            this.addElementTree(record, tree, 'right');
+                            break;
+                        case 'dashboard':
+                            this.addDashboard(record, tree);
+                            break;
+                    }
+                    pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
+                    this.setDirty(true);
                 }
-                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
-                this.setDirty(true);
+                else {
+                    pimcore.helpers.showNotification(t("info"), t("config_not_writeable"), "info");
+                }
             }.bind(this)
         });
     }
@@ -287,6 +336,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             type: 'elementTreeElement',
             leaf: true,
             iconCls: 'pimcore_icon_document',
+            writeable: true,
             config: {
                 type: 'documents',
                 position: position,
@@ -310,6 +360,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             type: 'dashboardDefinition',
             leaf: true,
             iconCls: 'pimcore_icon_welcome',
+            writeable: true,
             config: {
                 positions: [
                     [colDefault],
@@ -327,22 +378,31 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         return Ext.menu.Item({
             text: t('delete'),
             iconCls: "pimcore_icon_delete",
+            disabled: !record.data["writeable"],
             handler: function(){
-                Ext.MessageBox.show({
-                    title:t('plugin_pimcore_perspectiveeditor_are_you_sure'),
-                    msg: t('plugin_pimcore_perspectiveeditor_confirm_delete'),
-                    buttons: Ext.Msg.OKCANCEL ,
-                    icon: Ext.MessageBox.INFO ,
-                    fn: function (button) {
-                        if (button === 'ok') {
-                            if(forceClose || this.activeRecordId === record.id) {
-                                this.perspectiveEditPanel.removeAll();
+                if(record.data["writeable"] === true) {
+                    Ext.MessageBox.show({
+                        title: t('plugin_pimcore_perspectiveeditor_are_you_sure'),
+                        msg: t('plugin_pimcore_perspectiveeditor_confirm_delete'),
+                        buttons: Ext.Msg.OKCANCEL,
+                        icon: Ext.MessageBox.INFO,
+                        fn: function (button) {
+                            if (button === 'ok') {
+                                if (forceClose || this.activeRecordId === record.id) {
+                                    this.perspectiveEditPanel.removeAll();
+                                }
+                                if(record.data.type === 'perspective' && record.data.text !== 'default')
+                                    this.deletedRecords.push(record.data.name);
+                                record.parentNode.removeChild(record);
+
+                                this.setDirty(true);
                             }
-                            record.parentNode.removeChild(record);
-                            this.setDirty(true);
-                        }
-                    }.bind(this)
-                });
+                        }.bind(this)
+                    });
+                }
+                else {
+                    pimcore.helpers.showNotification(t("info"), t("config_not_writeable"), "info");
+                }
             }.bind(this)
         });
     }
@@ -392,6 +452,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         return new Ext.Panel({
             title: t('plugin_pimcore_perspectiveeditor_toolbar_access'),
             iconCls: 'pimcore_icon_support',
+            disabled: !record.data["writeable"],
             items: [
                 new Ext.Panel({
                     width: '50%',
@@ -468,6 +529,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         });
 
         return new Ext.form.Panel({
+            disabled: !record.data["writeable"],
             title: t('plugin_pimcore_perspectiveeditor_dashboard_assignment'),
             items: [
                 new Ext.grid.Panel({
@@ -587,6 +649,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         }
 
         return new Ext.form.Panel({
+            disabled: !record.data["writeable"],
             title: t('plugin_pimcore_perspectiveeditor_dashboard_forbidden'),
             items: items
         });
@@ -671,6 +734,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         });
 
         return new Ext.form.Panel({
+            disabled: !record.data["writeable"],
             title: t('plugin_pimcore_perspectiveeditor_tree_element_selection'),
             icon: '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
             items: [

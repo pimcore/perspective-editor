@@ -15,8 +15,6 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
-use Pimcore\Tool;
-
 class ViewAccessor extends AbstractAccessor
 {
     protected $filename = 'customviews.php';
@@ -37,10 +35,7 @@ class ViewAccessor extends AbstractAccessor
 
     protected function convertTreeStoreToConfiguration($treeStore)
     {
-        $configuration = [
-            'views' => []
-        ];
-
+        $configuration = [];
         foreach ($treeStore['children'] as $child) {
             if (!empty($child['config']['treeContextMenu'])) {
                 foreach (array_keys($child['config']['treeContextMenu']) as $contextMenuEntry) {
@@ -49,7 +44,7 @@ class ViewAccessor extends AbstractAccessor
                     }
                 }
             }
-            $configuration['views'][] = array_merge(['id' => $child['id']], $child['config']);
+            $configuration[$child['id']] = $child['config'];
         }
 
         return $configuration;
@@ -57,11 +52,18 @@ class ViewAccessor extends AbstractAccessor
 
     public function getConfiguration(): array
     {
-        $views = Tool::getCustomViewConfig();
+        $views = \Pimcore\CustomView\Config::get();
         if ($views) {
-            return ['views' => Tool::getCustomViewConfig()];
+            return ['views' => $views];
         }
 
         return [];
+    }
+
+    public function writeConfiguration($treeStore, ?array $deletedRecords)
+    {
+        $configuration = $this->convertTreeStoreToConfiguration($treeStore);
+        $this->validateConfig('custom_views', $configuration);
+        \Pimcore\CustomView\Config::save($configuration, $deletedRecords);
     }
 }
