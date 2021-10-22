@@ -63,6 +63,7 @@ class ViewAccessor extends AbstractAccessor
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
+        $this->validateConfig("custom_views", $configuration);
         \Pimcore\CustomView\Config::save($configuration, $deletedRecords);
     }
 }

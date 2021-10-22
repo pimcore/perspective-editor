@@ -16,6 +16,7 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Services;
 
 use Pimcore\Config;
+use Symfony\Component\Config\Definition\Processor;
 
 abstract class AbstractAccessor
 {
@@ -52,6 +53,26 @@ abstract class AbstractAccessor
      * @return array
      */
     abstract public function getConfiguration(): array;
+
+    /**
+     * @param $namespace
+     * @param $configuration
+     */
+    public function validateConfig($namespace, $configuration) {
+        $configurationDefinition = new \Pimcore\Bundle\CoreBundle\DependencyInjection\Configuration();
+        $processor = new Processor();
+        foreach($configuration as $key => $value) {
+            $processor->processConfiguration($configurationDefinition,
+                ['pimcore' => [
+                    $namespace => [
+                        'definitions' => [
+                            $key => $value
+                        ]
+                    ]
+                ]
+            ]);
+        }
+    }
 
     /**
      * @deprecated Will be removed with Pimcore 11
