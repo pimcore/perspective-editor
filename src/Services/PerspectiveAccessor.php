@@ -99,7 +99,7 @@ class PerspectiveAccessor extends AbstractAccessor
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
-        $this->validateConfig("perspectives", $configuration);
+        $this->validateConfig('perspectives', $configuration);
         \Pimcore\Perspective\Config::save($configuration, $deletedRecords);
     }
 }

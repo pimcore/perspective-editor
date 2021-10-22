@@ -58,10 +58,11 @@ abstract class AbstractAccessor
      * @param $namespace
      * @param $configuration
      */
-    public function validateConfig($namespace, $configuration) {
+    public function validateConfig($namespace, $configuration)
+    {
         $configurationDefinition = new \Pimcore\Bundle\CoreBundle\DependencyInjection\Configuration();
         $processor = new Processor();
-        foreach($configuration as $key => $value) {
+        foreach ($configuration as $key => $value) {
             $processor->processConfiguration($configurationDefinition,
                 ['pimcore' => [
                     $namespace => [
