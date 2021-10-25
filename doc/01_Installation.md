@@ -2,8 +2,18 @@
 
 The installation of this bundle follows Pimcore standards. To install use following commands: 
 
+For Pimcore version >= 10.2:
 ```bash
 composer require pimcore/perspective-editor
+```
+
+For Pimcore version >= 10.0 < 10.2:
+```bash
+composer require pimcore/perspective-editor:~1.1.0
+```
+
+Then run:
+```bash
 ./bin/console pimcore:bundle:enable PimcorePerspectiveEditorBundle
 ./bin/console pimcore:bundle:install PimcorePerspectiveEditorBundle
 ```
