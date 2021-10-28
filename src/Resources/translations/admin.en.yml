@@ -204,3 +204,6 @@ plugin_pimcore_perspectiveeditor_menu_search_items_assets: "Assets"
 plugin_pimcore_perspectiveeditor_menu_search_items_documents: "Documents"
 plugin_pimcore_perspectiveeditor_menu_search_items_objects: "Objects"
 plugin_pimcore_perspectiveeditor_menu_search_items_quickSearch: "Quick Search"
+
+plugin_pimcore_perspectiveeditor_datahub: "Data-Hub"
+plugin_pimcore_perspectiveeditor_menu_datahub_hidden: "Hide Data-Hub"

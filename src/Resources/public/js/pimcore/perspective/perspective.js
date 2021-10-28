@@ -423,31 +423,38 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
     createToolbarFormPanel (record){
         record.data.config = Object.assign({}, record.data.config);
         var config = record.data.config;
-
+        let additionalStructures = pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadStructureForPermissions('toolbar');
         var structure = {
             file: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'file'),
             marketing: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'marketing'),
             extras: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'extras'),
             settings: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'settings'),
-            search: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'search')
+            search: pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', 'search'),
         };
+        Object.entries(additionalStructures).forEach((kvp) => {
+            let key = kvp[0];
+            structure[key] = pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper.loadPermissions('toolbar', key);
+        });
+
         pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.checkAndCreateDataStructure(config, structure);
 
-        let fileMenuItems = [];
-        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.file, fileMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_file');
+        let fieldSetItems = [];
+        Object.entries(config).forEach((kvp) => {
+            let menuItems = [];
+            let key = kvp[0];
+            let value = kvp[1];
+            pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(value, menuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_' + key);
 
-        let marketingMenuItems = [];
-        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.marketing, marketingMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_marketing');
+            fieldSetItems.push(new Ext.form.FieldSet({
+                title: t('plugin_pimcore_perspectiveeditor_' + key),
+                collapsible: true,
+                items: menuItems
+            }));
+        });
 
-        let extrasMenuItems = [];
-        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.extras, extrasMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_extras');
-
-        let settingsMenuItems = [];
-        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.settings, settingsMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_settings');
-
-        let searchMenuItems = [];
-        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.search, searchMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_menu_search');
-
+        fieldSetItems.sort((a,b) => {
+            return a.title.localeCompare(b.title);
+        })
 
         return new Ext.Panel({
             title: t('plugin_pimcore_perspectiveeditor_toolbar_access'),
@@ -458,32 +465,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                     width: '50%',
                     padding: '10',
                     autoscroll: true,
-                    items: [
-                        new Ext.form.FieldSet({
-                            title: t('plugin_pimcore_perspectiveeditor_file'),
-                            collapsible: true,
-                            items: fileMenuItems
-                        }),
-                        new Ext.form.FieldSet({
-                            title: t('plugin_pimcore_perspectiveeditor_extras'),
-                            collapsible: true,
-                            items: extrasMenuItems
-                        }),
-                        new Ext.form.FieldSet({
-                            title: t('plugin_pimcore_perspectiveeditor_marketing'),
-                            collapsible: true,
-                            items: marketingMenuItems
-                        }),
-                        new Ext.form.FieldSet({
-                            title: t('plugin_pimcore_perspectiveeditor_settings'),
-                            items: settingsMenuItems
-                        }),
-                        new Ext.form.FieldSet({
-                            title: t('plugin_pimcore_perspectiveeditor_search'),
-                            collapsible: true,
-                            items: searchMenuItems
-                        })
-                    ]
+                    items: fieldSetItems
                 })
             ]
         });
