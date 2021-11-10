@@ -182,4 +182,11 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
         return this.permissions[context][menu];
     }
 
+    static loadStructureForPermissions(context) {
+        let structure = {};
+        pimcore.plugin.broker.fireEvent("onPerspectiveEditorLoadStructureForPermissions", context, structure);
+
+        return structure;
+    }
+
 }
