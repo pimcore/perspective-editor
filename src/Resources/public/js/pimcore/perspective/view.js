@@ -265,6 +265,23 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
             return item;
         }.bind(this));
 
+        var classesStore = new Ext.data.JsonStore({
+            autoDestroy: true,
+            proxy: {
+                type: 'ajax',
+                url: Routing.generate('pimcore_admin_dataobject_class_gettree')
+            },
+            fields: ["id", "text"]
+        });
+
+        classesStore.load({
+            "callback": function (classes, success) {
+                if (success && classes) {
+                    Ext.getCmp('allowed_object_classes').setValue(classes.join(","));
+                }
+            }.bind(this, data.config.classes)
+        });
+
         return [
             new Ext.form.TextField({
                 fieldLabel: t('plugin_pimcore_perspectiveeditor_name'),
@@ -290,16 +307,25 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                         data.config.treetype = newValue;
 
                         if(newValue === 'document'){
+                            Ext.getCmp('allowed_object_classes').hide();
+                            delete data.config["classes"];
+
                             this.documentTreeContextMenuGroup.show();
                             this.assetTreeContextMenuGroup.hide();
                             this.objectTreeContextMenuGroup.hide();
                         }
                         else if(newValue === 'asset'){
+                            Ext.getCmp('allowed_object_classes').hide();
+                            delete data.config["classes"];
+
                             this.documentTreeContextMenuGroup.hide();
                             this.assetTreeContextMenuGroup.show();
                             this.objectTreeContextMenuGroup.hide();
                         }
                         else if(newValue === 'object'){
+                            Ext.getCmp('allowed_object_classes').show().setValue();
+                            data.config.classes = "";
+
                             this.documentTreeContextMenuGroup.hide();
                             this.assetTreeContextMenuGroup.hide();
                             this.objectTreeContextMenuGroup.show();
@@ -382,6 +408,25 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                         this.setDirty(true);
                     }.bind(this)
                 },
+            }),
+            new Ext.ux.form.MultiSelect({
+                store: classesStore,
+                fieldLabel: t("plugin_pimcore_perspectiveeditor_allowed_classes") + '<br />' + t('plugin_pimcore_perspectiveeditor_allowed_types_hint'),
+                name: 'classes',
+                displayField: 'text',
+                valueField: 'id',
+                id: 'allowed_object_classes',
+                readOnly: this.readOnly,
+                width: 400,
+                hidden: data.config.treetype == 'object' ? false : true,
+                listeners: {
+                    change: function(elem, newValue, oldValue){
+                        if (newValue != null) {
+                            data.config.classes = newValue.join(',');
+                            this.setDirty(true);
+                        }
+                    }.bind(this)
+                }
             })
         ];
     }
