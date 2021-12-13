@@ -15,11 +15,11 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle;
 
-use Pimcore\Db;
-use Pimcore\Extension\Bundle\Installer\AbstractInstaller;
+use Pimcore\Bundle\PerspectiveEditorBundle\Migrations\Version20211213110000;
+use Pimcore\Extension\Bundle\Installer\SettingsStoreAwareInstaller;
 use Pimcore\Model\User\Permission\Definition;
 
-class Installer extends AbstractInstaller
+class Installer extends SettingsStoreAwareInstaller
 {
     public function needsReloadAfterInstall(): bool
     {
@@ -29,29 +29,18 @@ class Installer extends AbstractInstaller
     /**
      * {@inheritdoc}
      */
-    public function canBeInstalled(): bool
-    {
-        return !$this->isInstalled();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isInstalled(): bool
-    {
-        $db = Db::get();
-        $check = $db->fetchOne('SELECT `key` FROM users_permission_definitions where `key` = ?', [PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR]);
-
-        return (bool)$check;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function install()
     {
         Definition::create(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
+        Definition::create(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT);
+
+        parent::install();
 
         return true;
+    }
+
+    public function getLastMigrationVersionClassName(): ?string
+    {
+        return Version20211213110000::class;
     }
 }

@@ -60,9 +60,22 @@ class ViewAccessor extends AbstractAccessor
         return [];
     }
 
+    protected function verifySql(array $configuration) {
+
+        foreach($configuration as $viewConfiguration) {
+            foreach([$viewConfiguration['having'] ?? '', $viewConfiguration['where'] ?? ''] as $sql) {
+                if (preg_match('/(ALTER|CREATE|DROP|RENAME|TRUNCATE|UPDATE|DELETE|SET) /i', $sql, $matches)) {
+                    throw new \InvalidArgumentException('Invalid SQL definition, possible SQL injection?');
+                }
+            }
+        }
+
+    }
+
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);
+        $this->verifySql($configuration);
         $this->validateConfig('custom_views', $configuration);
         \Pimcore\CustomView\Config::save($configuration, $deletedRecords);
     }
