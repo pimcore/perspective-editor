@@ -17,3 +17,6 @@ services:
 
     Pimcore\Bundle\PerspectiveEditorBundle\Installer:
         public: true
+        arguments:
+            # fetch the bundle via expression language
+            $bundle: "@=service('kernel').getBundle('PimcorePerspectiveEditorBundle')"

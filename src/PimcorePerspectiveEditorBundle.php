@@ -23,6 +23,7 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
     use PackageVersionTrait;
 
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
+    const PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT = 'perspective_editor_view_edit';
 
     public function getJsPaths()
     {

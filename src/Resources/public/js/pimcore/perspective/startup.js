@@ -41,7 +41,7 @@ pimcore.settings.perspectiveview = Class.create({
                     new Ext.TabPanel({
                         items: [
                             new pimcore.bundle.perspectiveeditor.PerspectiveEditor(),
-                            new pimcore.bundle.perspectiveeditor.ViewEditor(!user.admin),
+                            new pimcore.bundle.perspectiveeditor.ViewEditor(!user.isAllowed('perspective_editor_view_edit')),
                         ],
                     }),
                 ],

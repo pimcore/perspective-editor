@@ -127,9 +127,8 @@ class PerspectiveController extends AdminController
     public function updateViewAction(ViewAccessor $viewAccessor, Request $request, CsrfProtectionHandler $csrfProtectionHandler)
     {
         $csrfProtectionHandler->checkCsrfToken($request);
-        if (!$this->getAdminUser() || !$this->getAdminUser()->isAdmin()) {
-            throw $this->createAccessDeniedHttpException('Access denied, only Admin users are allowed to update views');
-        }
+        $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
+        $this->checkPermission(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT);
 
         $ret = [
             'success' => true,
