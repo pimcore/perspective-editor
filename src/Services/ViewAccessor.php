@@ -58,9 +58,9 @@ class ViewAccessor extends AbstractAccessor
         $views = \Pimcore\CustomView\Config::get();
 
         if ($views) {
-            foreach($views as $key => $view) {
-                if(isset($views[$key]["classes"])) {
-                    $views[$key]["classes"] = array_keys($view["classes"]);
+            foreach ($views as $key => $view) {
+                if (isset($views[$key]['classes'])) {
+                    $views[$key]['classes'] = array_keys($view['classes']);
                 }
             }
 
