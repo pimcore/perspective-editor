@@ -341,6 +341,8 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                 type: 'documents',
                 position: position,
                 sort: 0,
+                expanded: false,
+                hidden: false
             },
         });
 
@@ -754,6 +756,28 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                     }
                 }),
                 customViewComboBox,
+                new Ext.form.Checkbox({
+                    boxLabel: t('plugin_pimcore_perspectiveeditor_view_expanded'),
+                    padding: "10 10 0",
+                    checked: config.expanded,
+                    listeners: {
+                        change: function(elem, newValue, oldValue){
+                            record.data.config.expanded = newValue;
+                            this.setDirty(true);
+                        }.bind(this)
+                    },
+                }),
+                new Ext.form.Checkbox({
+                    boxLabel: t('plugin_pimcore_perspectiveeditor_view_hidden'),
+                    checked: config.hidden,
+                    padding: "10 10 0",
+                    listeners: {
+                        change: function(elem, newValue, oldValue){
+                            record.data.config.hidden = newValue;
+                            this.setDirty(true);
+                        }.bind(this)
+                    },
+                }),
                 documentTreeContextMenuGroup,
                 assetTreeContextMenuGroup,
                 objectTreeContextMenuGroup
