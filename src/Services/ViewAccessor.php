@@ -36,15 +36,18 @@ class ViewAccessor extends AbstractAccessor
     protected function convertTreeStoreToConfiguration($treeStore)
     {
         $configuration = [];
-        foreach ($treeStore['children'] as $child) {
-            if (!empty($child['config']['treeContextMenu'])) {
-                foreach (array_keys($child['config']['treeContextMenu']) as $contextMenuEntry) {
-                    if (substr($child['config']['treetype'], 0, strlen($contextMenuEntry)) != $contextMenuEntry) {
-                        unset($child['config']['treeContextMenu'][$contextMenuEntry]);
+
+        if (isset($treeStore['children'])) {
+            foreach ($treeStore['children'] as $child) {
+                if (!empty($child['config']['treeContextMenu'])) {
+                    foreach (array_keys($child['config']['treeContextMenu']) as $contextMenuEntry) {
+                        if (substr($child['config']['treetype'], 0, strlen($contextMenuEntry)) != $contextMenuEntry) {
+                            unset($child['config']['treeContextMenu'][$contextMenuEntry]);
+                        }
                     }
                 }
+                $configuration[$child['id']] = $child['config'];
             }
-            $configuration[$child['id']] = $child['config'];
         }
 
         return $configuration;
@@ -53,7 +56,14 @@ class ViewAccessor extends AbstractAccessor
     public function getConfiguration(): array
     {
         $views = \Pimcore\CustomView\Config::get();
+
         if ($views) {
+            foreach ($views as $key => $view) {
+                if (isset($views[$key]['classes'])) {
+                    $views[$key]['classes'] = array_keys($view['classes']);
+                }
+            }
+
             return ['views' => $views];
         }
 
