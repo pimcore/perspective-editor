@@ -23,6 +23,11 @@ abstract class AbstractAccessor
     protected $configDirectory;
     protected $configuration;
 
+    /**
+     * @var null|string
+     */
+    protected $filename = null;
+
     public function __construct(string $configDirectory)
     {
         $this->configDirectory = $configDirectory;
@@ -55,8 +60,8 @@ abstract class AbstractAccessor
     abstract public function getConfiguration(): array;
 
     /**
-     * @param $namespace
-     * @param $configuration
+     * @param string $namespace
+     * @param array $configuration
      */
     public function validateConfig($namespace, $configuration)
     {
@@ -79,7 +84,7 @@ abstract class AbstractAccessor
     /**
      * @deprecated
      *
-     * @param $treeStore
+     * @param mixed $treeStore
      * @param array|null $deletedRecords
      *
      */
