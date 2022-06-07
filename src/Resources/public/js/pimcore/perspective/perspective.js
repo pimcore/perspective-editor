@@ -23,7 +23,6 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         {name: t('modifiedAssets'), value: 'pimcore.layout.portlets.modifiedAssets'},
         {name: t('modifiedObjects'), value: 'pimcore.layout.portlets.modifiedObjects'},
         {name: t('analytics'), value: 'pimcore.layout.portlets.analytics'},
-        {name: t('piwik'), value: 'pimcore.layout.portlets.piwik'},
         {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
     ];
     activeRecordId = null;
