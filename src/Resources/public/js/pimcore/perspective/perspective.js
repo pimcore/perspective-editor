@@ -17,19 +17,12 @@ pimcore.registerNS('pimcore.bundle.perspectiveeditor.PerspectiveEditor');
 pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
 
     routePrefix = '/admin/perspectives-views/perspective';
-    availablePortlets = [
-        {name: t('modificationStatistic'), value: 'pimcore.layout.portlets.modificationStatistic'},
-        {name: t('modifiedDocuments'), value: 'pimcore.layout.portlets.modifiedDocuments'},
-        {name: t('modifiedAssets'), value: 'pimcore.layout.portlets.modifiedAssets'},
-        {name: t('modifiedObjects'), value: 'pimcore.layout.portlets.modifiedObjects'},
-        {name: t('analytics'), value: 'pimcore.layout.portlets.analytics'},
-        {name: t('piwik'), value: 'pimcore.layout.portlets.piwik'},
-        {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
-    ];
+    availablePortlets = [];
     activeRecordId = null;
     deletedRecords = [];
 
     constructor () {
+        this.setAvailablePortlets();
         if (!this.panel) {
             this.availableViewsStore = new Ext.data.Store({
                 storeId: 'availableViewsStore',
@@ -243,6 +236,27 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         }
 
         return this.panel;
+    }
+
+    setAvailablePortlets (){
+        var portletMenu = [];
+        var portlets = Object.keys(pimcore.layout.portlets);
+
+        for (var i = 0; i < portlets.length; i++) {
+            var portletType = portlets[i];
+
+            if (!pimcore.layout.portlets[portletType].prototype.isAvailable()) {
+                continue;
+            }
+
+            if (portletType != "abstract") {
+                portletMenu.push({
+                    name: pimcore.layout.portlets[portletType].prototype.getName(),
+                    value: 'pimcore.layout.portlets.' + portletType
+                });
+            }
+        }
+        this.availablePortlets = portletMenu;
     }
 
     buildPerspectiveContextMenuItems (record, tree){
