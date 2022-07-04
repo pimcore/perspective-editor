@@ -483,7 +483,6 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         var config = record.data.config;
         var forbiddenPortlets = Object.keys(record.parentNode.data.config);
 
-        config['name'] = t('plugin_pimcore_perspectiveeditor_new_dashboard_definition');
         var selectablePortlets = this.availablePortlets.filter(function(availablePortlet){
             return !in_array(availablePortlet.value, forbiddenPortlets);
         }.bind(this));
