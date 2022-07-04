@@ -309,7 +309,7 @@ class PerspectiveController extends AdminController
         $disabledClass = $config['writeable'] ? '' : $this->disabledCssClass;
 
         $tree = [];
-        if(isset($config['dashboards']['predefined'])) {
+        if (isset($config['dashboards']['predefined'])) {
             foreach ($config['dashboards']['predefined'] as $dashboardName => $dashboardConfig) {
                 $tree[] = [
                     'id' => $treeHelper->createUuid(),
