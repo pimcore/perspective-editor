@@ -17,7 +17,14 @@ pimcore.registerNS('pimcore.bundle.perspectiveeditor.PerspectiveEditor');
 pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
 
     routePrefix = '/admin/perspectives-views/perspective';
-    availablePortlets = [];
+    availablePortlets = [
+        {name: t('modificationStatistic'), value: 'pimcore.layout.portlets.modificationStatistic'},
+        {name: t('modifiedDocuments'), value: 'pimcore.layout.portlets.modifiedDocuments'},
+        {name: t('modifiedAssets'), value: 'pimcore.layout.portlets.modifiedAssets'},
+        {name: t('modifiedObjects'), value: 'pimcore.layout.portlets.modifiedObjects'},
+        {name: t('analytics'), value: 'pimcore.layout.portlets.analytics'},
+        {name: t('customreports'), value: 'pimcore.layout.portlets.customreports'}
+    ];
     activeRecordId = null;
     deletedRecords = [];
 
@@ -305,6 +312,12 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
 
                             record.data.text = value;
                             record.data.name = value;
+
+                            if(record.data.type === 'dashboardDefinition') {
+                                let config = record.data.config;
+                                config['name'] = value;
+                            }
+
                             pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
                             this.setDirty(true);
                         }
@@ -626,6 +639,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
     }
 
     createDashboardFormPanel (record){
+        record.data.config = Object.assign({}, record.data.config);
         var config = record.data.config;
         var data = this.availablePortlets;
         var items = [];

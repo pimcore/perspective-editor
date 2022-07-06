@@ -309,19 +309,21 @@ class PerspectiveController extends AdminController
         $disabledClass = $config['writeable'] ? '' : $this->disabledCssClass;
 
         $tree = [];
-        foreach ($config['dashboards']['predefined'] as $dashboardName => $dashboardConfig) {
-            $tree[] = [
-                'id' => $treeHelper->createUuid(),
-                'text' => $dashboardName,
-                'type' => 'dashboardDefinition',
-                'leaf' => true,
-                'allowDrag' => false,
-                'allowDrop' => false,
-                'iconCls' => 'pimcore_icon_welcome',
-                'cls' => $disabledClass,
-                'writeable' => $config['writeable'],
-                'config' => array_merge($dashboardConfig, ['name' => $dashboardName])
-            ];
+        if (isset($config['dashboards']['predefined'])) {
+            foreach ($config['dashboards']['predefined'] as $dashboardName => $dashboardConfig) {
+                $tree[] = [
+                    'id' => $treeHelper->createUuid(),
+                    'text' => $dashboardName,
+                    'type' => 'dashboardDefinition',
+                    'leaf' => true,
+                    'allowDrag' => false,
+                    'allowDrop' => false,
+                    'iconCls' => 'pimcore_icon_welcome',
+                    'cls' => $disabledClass,
+                    'writeable' => $config['writeable'],
+                    'config' => array_merge($dashboardConfig, ['name' => $dashboardName])
+                ];
+            }
         }
 
         return $tree;
