@@ -290,6 +290,12 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
 
                             record.data.text = value;
                             record.data.name = value;
+
+                            if(record.data.type === 'dashboardDefinition') {
+                                let config = record.data.config;
+                                config['name'] = value;
+                            }
+
                             pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
                             this.setDirty(true);
                         }
@@ -611,6 +617,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
     }
 
     createDashboardFormPanel (record){
+        record.data.config = Object.assign({}, record.data.config);
         var config = record.data.config;
         var data = this.availablePortlets;
         var items = [];
