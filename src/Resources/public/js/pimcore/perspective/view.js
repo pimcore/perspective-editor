@@ -277,7 +277,11 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
         classesStore.load({
             "callback": function (classes, success) {
                 if (success && classes) {
-                    Ext.getCmp('allowed_object_classes').setValue(classes.join(","));
+                    let value = classes;
+                    if(typeof classes !== "string") {
+                        value = classes.join(",");
+                    }
+                    Ext.getCmp('allowed_object_classes').setValue(value);
                 }
             }.bind(this, data.config.classes)
         });
