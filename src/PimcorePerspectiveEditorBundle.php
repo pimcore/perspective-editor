@@ -33,6 +33,7 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
             '/bundles/pimcoreperspectiveeditor/js/pimcore/perspective/view.js',
             '/bundles/pimcoreperspectiveeditor/js/pimcore/perspective/common.js',
             '/bundles/pimcoreperspectiveeditor/js/pimcore/perspective/startup.js',
+            '/bundles/pimcoreperspectiveeditor/js/pimcore/perspective/event.js',
         ];
     }
 

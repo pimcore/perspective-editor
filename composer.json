@@ -9,7 +9,7 @@
     }
   },
   "require": {
-    "pimcore/pimcore": "^10.2",
+    "pimcore/pimcore": "^10.5",
     "symfony/config": "^5.2.0",
     "symfony/dependency-injection": "^5.2.0",
     "symfony/http-foundation": "^5.2.0",

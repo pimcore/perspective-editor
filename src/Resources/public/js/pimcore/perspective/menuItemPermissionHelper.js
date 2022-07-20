@@ -177,14 +177,31 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
     };
 
     static loadPermissions(context, menu) {
-        pimcore.plugin.broker.fireEvent("onPerspectiveEditorLoadPermissions", context, menu, this.permissions);
+
+        const onPerspectiveEditorLoadPermissions = new CustomEvent(pimcore.events.onPerspectiveEditorLoadPermissions, {
+            detail: {
+                context: context,
+                menu: menu,
+                permissions: this.permissions
+            }
+        });
+
+        document.dispatchEvent(onPerspectiveEditorLoadPermissions);
 
         return this.permissions[context][menu];
     }
 
     static loadStructureForPermissions(context) {
         let structure = {};
-        pimcore.plugin.broker.fireEvent("onPerspectiveEditorLoadStructureForPermissions", context, structure);
+
+        const onPerspectiveEditorLoadStructureForPermissions = new CustomEvent(pimcore.events.onPerspectiveEditorLoadStructureForPermissions, {
+            detail: {
+                context: context,
+                structure: structure
+            }
+        });
+
+        document.dispatchEvent(onPerspectiveEditorLoadStructureForPermissions);
 
         return structure;
     }
