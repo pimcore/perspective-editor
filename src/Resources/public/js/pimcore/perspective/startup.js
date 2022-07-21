@@ -18,10 +18,6 @@ pimcore.settings.perspectiveview = Class.create({
 
     panelId: 'perspective_view_panel_id',
 
-    initialize: function(){
-
-    },
-
     activate: function () {
        Ext.getCmp('pimcore_panel_tabs').setActiveItem(this.getTabPanel());
     },
@@ -72,10 +68,6 @@ pimcore.settings.perspectiveview = Class.create({
         pimcoreTabPanel.setActiveItem(id);
 
         pimcore.layout.refresh();
-    },
-
-    pimcoreReady: function(){
-
     },
 });
 
