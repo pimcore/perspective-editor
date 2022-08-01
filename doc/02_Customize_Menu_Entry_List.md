@@ -18,34 +18,43 @@ Add one or both events to the `pimcoreReady` hook of your bundle.
 
 Example 1: Add a custom visibility setting to one of the built-in entries:
 ```javascript
-onPerspectiveEditorLoadPermissions: function (context, menu, permissions) {
+document.addEventListener(pimcore.events.onPerspectiveEditorLoadPermissions, (e) => {
+    const context = e.detail.context;
+    const menu = e.detail.menu;
+    const permissions = e.detail.permissions;
+    
     if(context == 'toolbar' && menu == 'search' &&
         permissions[context][menu].indexOf('items.advancedObjectSearch') == -1) {
         permissions[context][menu].push('items.advancedObjectSearch');
     }
-}
+}); 
 ``` 
 
 Example 2: Add your custom structure with custom entries
 
 ```javascript
-onPerspectiveEditorLoadStructureForPermissions: function (context, structure) {
-    if(context == 'toolbar') {
-        structure['customEntry'] = {};
+document.addEventListener(pimcore.events.onPerspectiveEditorLoadStructureForPermissions, (e) => {
+    if(e.detail.context == 'toolbar') {
+        e.detail.structure['customEntry'] = {};
     }
-},
+});
 
-onPerspectiveEditorLoadPermissions: function (context, menu, permissions) {
+document.addEventListener(pimcore.events.onPerspectiveEditorLoadPermissions, (e) => {
+    const context = e.detail.context;
+    const menu = e.detail.menu;
+    const permissions = e.detail.permissions;
+
     if(context == 'toolbar' && menu == 'customEntry') {
         if(permissions[context][menu] == undefined) {
             permissions[context][menu] = [];
         }
         if(permissions[context][menu].indexOf('hidden') == -1) {
             permissions[context][menu].push('hidden');
-            ...
+        ...
         }
     }
-}
+});
+
 ``` 
 
 For all available built-in entries please have a look at [MenuItemPermissionHelper](https://github.com/pimcore/perspective-editor/blob/main/src/Resources/public/js/pimcore/perspective/menuItemPermissionHelper.js).
