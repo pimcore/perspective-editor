@@ -15,3 +15,29 @@ composer.lock
 # NetBeans
 nbproject
 
+
+# symfony default
+/.web-server-pid
+/app/config/parameters.yml
+/build/
+/phpunit.xml
+/web/bundles/
+/web/var/
+
+
+# composer
+/composer.lock
+
+# Test env
+/bin
+/cache
+/config
+/kernel
+/public
+/templates
+/var
+/vendor
+/.env
+/.htaccess
+/auth.json
+/config.json

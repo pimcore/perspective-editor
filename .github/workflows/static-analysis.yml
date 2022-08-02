@@ -37,6 +37,10 @@ jobs:
               run: |
                   .github/ci/scripts/setup-pimcore-environment.sh
 
+            - name: "Add authentication for private pimcore packages"
+              run: |
+                  composer config --global --auth http-basic.enterprise.repo.pimcore.com token ${{ secrets.COMPOSER_PIMCORE_REPO_TOKEN }}
+
             - name: "Update Pimcore version"
               env:
                   PIMCORE_VERSION: "${{ matrix.pimcore_version }}"
