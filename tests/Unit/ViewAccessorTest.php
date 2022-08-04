@@ -57,8 +57,8 @@ class ViewAccessorTest extends \Codeception\Test\Unit
 
         $this->assertEquals(13, count($config[1]));
         $this->assertEquals('object', $config[1]['treetype']);
-        $this->assertEquals(4, count($config[1]['treeContextMenu']['items']));
-        $this->assertEquals(true, $config[1]['treeContextMenu']['items']['addFolder']);
+        $this->assertEquals(4, count($config[1]['treeContextMenu']['object']['items']));
+        $this->assertEquals(true, $config[1]['treeContextMenu']['object']['items']['addFolder']);
     }
 
     private static function getMethod($class, $name)
