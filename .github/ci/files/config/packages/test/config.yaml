@@ -1,6 +1,5 @@
 imports:
     - { resource: ../../config.yaml }
-    - { resource: ./unittest.yaml }
 
 # this cache is used during tests when setting up pimcore
 framework:
