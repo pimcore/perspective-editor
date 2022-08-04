@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu -o xtrace
+set -eu
 
 #cp -rv .github/ci/files/var .
 

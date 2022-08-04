@@ -1,10 +1,7 @@
 actor: UnitTester
 modules:
     enabled:
-        - \Pimcore\Tests\Helper\ClassManager
-        - Pimcore\Tests\Helper\DataType\TestDataHelper
         - \Pimcore\Tests\Helper\Pimcore:
               connect_db: true
               cache_router: false
         - \Pimcore\Bundle\PerspectiveEditorBundle\Tests\Helper\Unit
-        - \Pimcore\Bundle\PerspectiveEditorBundle\Tests\Helper\UnitModel

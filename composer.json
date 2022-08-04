@@ -3,9 +3,11 @@
   "license": "GPL-3.0+",
   "type": "pimcore-bundle",
   "description": "Pimcore Perspective Editor",
-  "autoload": {
-    "psr-4": {
-      "Pimcore\\Bundle\\PerspectiveEditorBundle\\": "src/"
+  "config": {
+    "sort-packages": true,
+    "preferred-install": {
+      "pimcore/pimcore": "source",
+      "*": "dist"
     }
   },
   "require": {
@@ -24,6 +26,11 @@
     "codeception/module-asserts": "^2",
     "codeception/module-symfony":"^2"
   },
+  "autoload": {
+    "psr-4": {
+      "Pimcore\\Bundle\\PerspectiveEditorBundle\\": "src/"
+    }
+  },
   "autoload-dev": {
     "psr-4": {
       "Pimcore\\Bundle\\PerspectiveEditorBundle\\Tests\\": "tests"
@@ -37,12 +44,6 @@
       "bundles": [
         "Pimcore\\Bundle\\PerspectiveEditorBundle\\PimcorePerspectiveEditorBundle"
       ]
-    }
-  },
-  "repositories": {
-    "pimcore_enterprise": {
-      "type": "composer",
-      "url": "https://enterprise.repo.pimcore.com/"
     }
   }
 }

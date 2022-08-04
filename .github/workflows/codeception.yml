@@ -18,6 +18,7 @@ env:
     APP_ENV: test
     PIMCORE_TEST: 1
     PIMCORE_TEST_DB_DSN: "mysql://root@127.0.0.1:33006/pimcore_test"
+    PIMCORE_ELASTIC_SEARCH_HOST: 'localhost:39200'
 
 jobs:
     codeception-tests:
@@ -27,7 +28,7 @@ jobs:
         strategy:
             matrix:
                 include:
-                    - { php-version: 8.0, database: "mariadb:10.7", pimcore_version: "", dependencies: lowest, experimental: false }
+                    - { php-version: 8.0, database: "mariadb:10.7", pimcore_version: "", dependencies: highest, experimental: false }
                     - { php-version: 8.1, database: "mariadb:10.7", pimcore_version: "", dependencies: highest, experimental: false }
                     - { php-version: 8.1, database: "mariadb:10.7", pimcore_version: "11.x-dev", dependencies: highest, experimental: true }
         services:
@@ -56,14 +57,12 @@ jobs:
                   while ! mysqladmin ping --silent; do
                     sleep 1
                   done
+
             - name: "Setup Pimcore environment"
               run: |
                   mysql -e "CREATE DATABASE pimcore_test CHARSET=utf8mb4;"
                   chmod 755 .github/ci/scripts/setup-pimcore-environment.sh
                   .github/ci/scripts/setup-pimcore-environment.sh
-            - name: "Add authentication for private pimcore packages"
-              run: |
-                  composer config --global --auth http-basic.enterprise.repo.pimcore.com token ${{ secrets.COMPOSER_PIMCORE_REPO_TOKEN }}
 
             - name: "Update Pimcore version"
               env:
@@ -71,7 +70,8 @@ jobs:
               run: |
                   if [ ! -z "$PIMCORE_VERSION" ]; then
                         composer require --no-update pimcore/pimcore:"${PIMCORE_VERSION} as 10.99.9"
-                  fi
+                  fi    
+
             - name: "Install dependencies with Composer"
               uses: "ramsey/composer-install@v1"
               with:
