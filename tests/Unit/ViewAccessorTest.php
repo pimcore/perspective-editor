@@ -56,7 +56,7 @@ class ViewAccessorTest extends \Codeception\Test\Unit
         $config = $convTreeToConfig->invokeArgs($accessor, [$treeStore]);
 
         $this->assertEquals(13, count($config[1]));
-        $this->assertEquals('object', count($config[1]['treetype']));
+        $this->assertEquals('object', $config[1]['treetype']);
         $this->assertEquals(4, count($config[1]['treeContextMenu']['items']));
         $this->assertEquals(true, $config[1]['treeContextMenu']['items']['addFolder']);
     }
