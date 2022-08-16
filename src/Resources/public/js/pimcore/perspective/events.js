@@ -26,10 +26,11 @@ pimcore.events.onPerspectiveEditorLoadStructureForPermissions = "pimcore.perspec
 
 
 //TODO: delete in Pimcore11 and update dependency in composer.json
-let eventMappings = [];
-eventMappings["onPerspectiveEditorLoadPermissions"] = pimcore.events.onPerspectiveEditorLoadPermissions;
-eventMappings["onPerspectiveEditorLoadStructureForPermissions"] = pimcore.events.onPerspectiveEditorLoadStructureForPermissions;
-addEventListenerCompatibilityForPlugins(eventMappings);
-
-
-
+if(typeof addEventListenerCompatibilityForPlugins === "function") {
+    let eventMappings = [];
+    eventMappings["onPerspectiveEditorLoadPermissions"] = pimcore.events.onPerspectiveEditorLoadPermissions;
+    eventMappings["onPerspectiveEditorLoadStructureForPermissions"] = pimcore.events.onPerspectiveEditorLoadStructureForPermissions;
+    addEventListenerCompatibilityForPlugins(eventMappings);
+} else {
+    console.error("Delete addEventListenerCompatibilityForPlugins in the perspective-editor")
+}
