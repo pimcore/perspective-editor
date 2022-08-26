@@ -92,8 +92,11 @@ class PerspectiveAccessor extends AbstractAccessor
     public function getConfiguration(): array
     {
         $config = \Pimcore\Perspective\Config::get();
-
-        return $config->toArray();
+        if (is_array($config)) {
+            return $config;
+        } else {
+            return $config->toArray();
+        }
     }
 
     public function writeConfiguration($treeStore, ?array $deletedRecords)
