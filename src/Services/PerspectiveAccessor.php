@@ -92,10 +92,9 @@ class PerspectiveAccessor extends AbstractAccessor
     public function getConfiguration(): array
     {
         $config = \Pimcore\Perspective\Config::get();
-        if(is_array($config)) {
+        if (is_array($config)) {
             return $config;
-        }
-        else {
+        } else {
             return $config->toArray();
         }
     }
