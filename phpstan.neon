@@ -7,3 +7,5 @@ parameters:
         - phpstan-bootstrap.php
     excludePaths:
         - src/Tests/*
+includes:
+    - phpstan-baseline.neon
