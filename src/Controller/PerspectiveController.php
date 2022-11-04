@@ -132,8 +132,8 @@ class PerspectiveController extends AdminController
     }
 
     /**
-    * @return void
-    */
+     * @return void
+     */
     protected function checkForUniqueElements(array $treeStore)
     {
         foreach ($treeStore['children'] ?? [] as $perspective) {
@@ -167,6 +167,7 @@ class PerspectiveController extends AdminController
     /**
      * @param string $perspectiveName
      * @param mixed $perspectiveConfig
+     *
      * @return array
      */
     protected function createPerspectiveEntry(TreeHelper $treeHelper, $perspectiveName, $perspectiveConfig)
@@ -260,6 +261,7 @@ class PerspectiveController extends AdminController
     /**
      * @param mixed $config
      * @param string $position
+     *
      * @return array
      */
     protected function buildElementTree(TreeHelper $treeHelper, $config, $position = 'left')
@@ -302,6 +304,7 @@ class PerspectiveController extends AdminController
 
     /**
      * @param mixed $config
+     *
      * @return array
      */
     protected function buildDashboardTree(TreeHelper $treeHelper, $config)
@@ -335,6 +338,7 @@ class PerspectiveController extends AdminController
     /**
      * @param string $viewName
      * @param mixed $viewConfig
+     *
      * @return array
      */
     protected function createViewEntry(TreeHelper $treeHelper, $viewName = null, $viewConfig = null)
@@ -363,6 +367,7 @@ class PerspectiveController extends AdminController
 
     /**
      * @param string $name
+     *
      * @return array
      */
     protected function getViewDefaultConfig($name)

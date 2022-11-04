@@ -36,6 +36,7 @@ abstract class AbstractAccessor
     /**
      * @param mixed $var
      * @param string $indent
+     *
      * @return mixed|string|null
      */
     protected function pretty_export($var, $indent = '')

@@ -38,6 +38,7 @@ class ViewAccessor extends AbstractAccessor
 
     /**
      * @param mixed $treeStore
+     *
      * @return array
      */
     protected function convertTreeStoreToConfiguration($treeStore)
@@ -93,7 +94,9 @@ class ViewAccessor extends AbstractAccessor
 
     /**
      * @param mixed $treeStore
+     *
      * @return void
+     *
      * @throws \Exception
      */
     public function writeConfiguration($treeStore, ?array $deletedRecords)
