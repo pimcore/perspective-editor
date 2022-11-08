@@ -19,6 +19,11 @@ class PerspectiveAccessor extends AbstractAccessor
 {
     protected $filename = 'perspectives.php';
 
+    /**
+     * @param array $treeStore
+     *
+     * @return array
+     */
     protected function convertTreeStoreToConfiguration($treeStore)
     {
         $configuration = [];
@@ -99,6 +104,13 @@ class PerspectiveAccessor extends AbstractAccessor
         }
     }
 
+    /**
+     * @param array $treeStore
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);

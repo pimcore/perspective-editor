@@ -19,6 +19,9 @@ class ViewAccessor extends AbstractAccessor
 {
     protected $filename = 'customviews.php';
 
+    /**
+     * @return array
+     */
     public function getAvailableViews()
     {
         $configuration = $this->getConfiguration();
@@ -33,6 +36,11 @@ class ViewAccessor extends AbstractAccessor
         return $availableViews;
     }
 
+    /**
+     * @param array $treeStore
+     *
+     * @return array
+     */
     protected function convertTreeStoreToConfiguration($treeStore)
     {
         $configuration = [];
@@ -70,6 +78,9 @@ class ViewAccessor extends AbstractAccessor
         return [];
     }
 
+    /**
+     * @return void
+     */
     protected function verifySql(array $configuration)
     {
         foreach ($configuration as $viewConfiguration) {
@@ -81,6 +92,13 @@ class ViewAccessor extends AbstractAccessor
         }
     }
 
+    /**
+     * @param array $treeStore
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
         $configuration = $this->convertTreeStoreToConfiguration($treeStore);

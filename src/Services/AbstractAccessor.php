@@ -33,6 +33,12 @@ abstract class AbstractAccessor
         $this->configDirectory = $configDirectory;
     }
 
+    /**
+     * @param mixed $var
+     * @param string $indent
+     *
+     * @return mixed
+     */
     protected function pretty_export($var, $indent = '')
     {
         switch (gettype($var)) {
@@ -54,14 +60,13 @@ abstract class AbstractAccessor
         }
     }
 
-    /**
-     * @return array
-     */
     abstract public function getConfiguration(): array;
 
     /**
      * @param string $namespace
      * @param array $configuration
+     *
+     * @return void
      */
     public function validateConfig($namespace, $configuration)
     {
@@ -84,9 +89,9 @@ abstract class AbstractAccessor
     /**
      * @deprecated
      *
-     * @param mixed $treeStore
-     * @param array|null $deletedRecords
+     * @param array $treeStore
      *
+     * @return void
      */
     public function writeConfiguration($treeStore, ?array $deletedRecords)
     {
@@ -98,5 +103,10 @@ abstract class AbstractAccessor
         file_put_contents($file, $str);
     }
 
+    /**
+     * @param array $treeStore
+     *
+     * @return array
+     */
     abstract protected function convertTreeStoreToConfiguration($treeStore);
 }

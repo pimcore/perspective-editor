@@ -25,6 +25,9 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
     const PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT = 'perspective_editor_view_edit';
 
+    /**
+     * @return string[]
+     */
     public function getJsPaths()
     {
         return [
@@ -37,6 +40,9 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function getCssPaths()
     {
         return [
@@ -49,6 +55,9 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
         return 'pimcore/perspective-editor';
     }
 
+    /**
+     * @return object|\Pimcore\Extension\Bundle\Installer\InstallerInterface|null
+     */
     public function getInstaller()
     {
         return $this->container->get(Installer::class);

@@ -37,9 +37,6 @@ class PerspectiveController extends AdminController
     /**
      * @Route("/perspective/get-tree", name="get-perspective-tree")
      *
-     * @param PerspectiveAccessor $perspectiveAccessor
-     * @param TreeHelper $treeHelper
-     *
      * @return JsonResponse
      */
     public function getPerspectiveTreeAction(PerspectiveAccessor $perspectiveAccessor, TreeHelper $treeHelper)
@@ -60,9 +57,6 @@ class PerspectiveController extends AdminController
 
     /**
      * @Route("/view/get-tree", name="get-view-tree")
-     *
-     * @param ViewAccessor $viewAccessor
-     * @param TreeHelper $treeHelper
      *
      * @return JsonResponse
      */
@@ -85,10 +79,6 @@ class PerspectiveController extends AdminController
 
     /**
      * @Route("/perspective/update", name="update-perspective")
-     *
-     * @param PerspectiveAccessor $perspectiveAccessor
-     * @param Request $request
-     * @param CsrfProtectionHandler $csrfProtectionHandler
      *
      * @return JsonResponse
      */
@@ -118,10 +108,6 @@ class PerspectiveController extends AdminController
     /**
      * @Route("/view/update", name="update-view")
      *
-     * @param ViewAccessor $viewAccessor
-     * @param Request $request
-     * @param CsrfProtectionHandler $csrfProtectionHandler
-     *
      * @return JsonResponse
      */
     public function updateViewAction(ViewAccessor $viewAccessor, Request $request, CsrfProtectionHandler $csrfProtectionHandler)
@@ -145,6 +131,9 @@ class PerspectiveController extends AdminController
         return new JsonResponse($ret);
     }
 
+    /**
+     * @return void
+     */
     protected function checkForUniqueElements(array $treeStore)
     {
         foreach ($treeStore['children'] ?? [] as $perspective) {
@@ -175,6 +164,12 @@ class PerspectiveController extends AdminController
         }
     }
 
+    /**
+     * @param string $perspectiveName
+     * @param array $perspectiveConfig
+     *
+     * @return array
+     */
     protected function createPerspectiveEntry(TreeHelper $treeHelper, $perspectiveName, $perspectiveConfig)
     {
         $leftElementTrees = $this->buildElementTree($treeHelper, $perspectiveConfig, 'left');
@@ -263,6 +258,12 @@ class PerspectiveController extends AdminController
         ];
     }
 
+    /**
+     * @param array $config
+     * @param string $position
+     *
+     * @return array
+     */
     protected function buildElementTree(TreeHelper $treeHelper, $config, $position = 'left')
     {
         if (!isset($config['elementTree'])) {
@@ -301,6 +302,11 @@ class PerspectiveController extends AdminController
         return $tree;
     }
 
+    /**
+     * @param array $config
+     *
+     * @return array
+     */
     protected function buildDashboardTree(TreeHelper $treeHelper, $config)
     {
         if (!isset($config['dashboards'])) {
@@ -329,6 +335,12 @@ class PerspectiveController extends AdminController
         return $tree;
     }
 
+    /**
+     * @param string|null $viewName
+     * @param array|null $viewConfig
+     *
+     * @return array
+     */
     protected function createViewEntry(TreeHelper $treeHelper, $viewName = null, $viewConfig = null)
     {
         $viewName = $viewName ?? 'new view ' . date('U');
@@ -353,6 +365,11 @@ class PerspectiveController extends AdminController
         return $entry;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return array
+     */
     protected function getViewDefaultConfig($name)
     {
         return [
