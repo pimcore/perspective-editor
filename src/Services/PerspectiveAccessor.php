@@ -20,7 +20,7 @@ class PerspectiveAccessor extends AbstractAccessor
     protected $filename = 'perspectives.php';
 
     /**
-     * @param mixed $treeStore
+     * @param array $treeStore
      *
      * @return array
      */
@@ -105,7 +105,7 @@ class PerspectiveAccessor extends AbstractAccessor
     }
 
     /**
-     * @param mixed $treeStore
+     * @param array $treeStore
      *
      * @return void
      *

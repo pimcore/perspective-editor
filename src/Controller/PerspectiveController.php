@@ -166,7 +166,7 @@ class PerspectiveController extends AdminController
 
     /**
      * @param string $perspectiveName
-     * @param mixed $perspectiveConfig
+     * @param array $perspectiveConfig
      *
      * @return array
      */
@@ -259,7 +259,7 @@ class PerspectiveController extends AdminController
     }
 
     /**
-     * @param mixed $config
+     * @param array $config
      * @param string $position
      *
      * @return array
@@ -303,7 +303,7 @@ class PerspectiveController extends AdminController
     }
 
     /**
-     * @param mixed $config
+     * @param array $config
      *
      * @return array
      */
@@ -336,8 +336,8 @@ class PerspectiveController extends AdminController
     }
 
     /**
-     * @param string $viewName
-     * @param mixed $viewConfig
+     * @param string|null $viewName
+     * @param array|null $viewConfig
      *
      * @return array
      */

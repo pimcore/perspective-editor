@@ -37,7 +37,7 @@ abstract class AbstractAccessor
      * @param mixed $var
      * @param string $indent
      *
-     * @return mixed|string|null
+     * @return mixed
      */
     protected function pretty_export($var, $indent = '')
     {
@@ -89,7 +89,7 @@ abstract class AbstractAccessor
     /**
      * @deprecated
      *
-     * @param mixed $treeStore
+     * @param array $treeStore
      *
      * @return void
      */
@@ -103,5 +103,9 @@ abstract class AbstractAccessor
         file_put_contents($file, $str);
     }
 
+    /**
+     * @param array $treeStore
+     * @return array
+     */
     abstract protected function convertTreeStoreToConfiguration($treeStore);
 }

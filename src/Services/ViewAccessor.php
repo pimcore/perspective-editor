@@ -37,7 +37,7 @@ class ViewAccessor extends AbstractAccessor
     }
 
     /**
-     * @param mixed $treeStore
+     * @param array $treeStore
      *
      * @return array
      */
@@ -93,7 +93,7 @@ class ViewAccessor extends AbstractAccessor
     }
 
     /**
-     * @param mixed $treeStore
+     * @param array $treeStore
      *
      * @return void
      *
