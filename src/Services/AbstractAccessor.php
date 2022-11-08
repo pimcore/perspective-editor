@@ -105,6 +105,7 @@ abstract class AbstractAccessor
 
     /**
      * @param array $treeStore
+     *
      * @return array
      */
     abstract protected function convertTreeStoreToConfiguration($treeStore);
