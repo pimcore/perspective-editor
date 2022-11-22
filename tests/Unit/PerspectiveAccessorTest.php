@@ -5,8 +5,9 @@ namespace Pimcore\Bundle\PerspectiveEditorBundle\Tests;
 
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\AbstractAccessor;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
+use Codeception\Test\Unit;
 
-class PerspectiveAccessorTest extends \Codeception\Test\Unit
+class PerspectiveAccessorTest extends Unit
 {
     const TREE_STORE = [
         'parentId' => null,
