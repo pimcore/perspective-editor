@@ -10,8 +10,6 @@
       "*": "dist"
     }
   },
-  "prefer-stable": true,
-  "minimum-stability": "dev",
   "require": {
     "pimcore/pimcore": "^10.6",
     "symfony/config": "^5.2.0",
