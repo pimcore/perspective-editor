@@ -27,7 +27,7 @@ class Version20211213110000 extends BundleAwareMigration
         return 'PimcorePerspectiveEditorBundle';
     }
 
-    protected function checkBundleInstalled()
+    protected function checkBundleInstalled(): bool
     {
         //need to always return true here, as the migration is setting the bundle installed
         return true;
