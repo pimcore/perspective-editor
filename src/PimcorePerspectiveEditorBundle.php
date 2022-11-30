@@ -16,6 +16,7 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 
 class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
@@ -25,10 +26,7 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
     const PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT = 'perspective_editor_view_edit';
 
-    /**
-     * @return string[]
-     */
-    public function getJsPaths()
+    public function getJsPaths(): array
     {
         return [
             '/bundles/pimcoreperspectiveeditor/js/pimcore/perspective/menuItemPermissionHelper.js',
@@ -40,10 +38,7 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
         ];
     }
 
-    /**
-     * @return string[]
-     */
-    public function getCssPaths()
+    public function getCssPaths(): array
     {
         return [
             '/bundles/pimcoreperspectiveeditor/css/icons.css'
@@ -55,10 +50,7 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
         return 'pimcore/perspective-editor';
     }
 
-    /**
-     * @return object|\Pimcore\Extension\Bundle\Installer\InstallerInterface|null
-     */
-    public function getInstaller()
+    public function getInstaller(): InstallerInterface
     {
         return $this->container->get(Installer::class);
     }
