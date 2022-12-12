@@ -19,6 +19,7 @@
     "phpstan/phpstan": "^1.2",
     "phpunit/phpunit": "^9.3",
     "codeception/codeception": "^4.1.12 || ^5.0.3",
+    "codeception/module-symfony":"^1.6.0 || ^3.1.0",
     "codeception/phpunit-wrapper": "^9",
     "codeception/module-asserts": "^2"
   },
