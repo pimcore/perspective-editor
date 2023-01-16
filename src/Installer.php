@@ -29,14 +29,12 @@ class Installer extends SettingsStoreAwareInstaller
     /**
      * {@inheritdoc}
      */
-    public function install()
+    public function install(): void
     {
         Definition::create(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR);
         Definition::create(PimcorePerspectiveEditorBundle::PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT);
 
         parent::install();
-
-        return true;
     }
 
     public function getLastMigrationVersionClassName(): ?string
