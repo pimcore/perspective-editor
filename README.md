@@ -8,12 +8,12 @@ and configure most of the possible configuration options directly in the user in
 
 <div class="image-as-lightbox"></div>
 
-![Execution](doc/img/perspectives.png)
+![Execution](./doc/img/perspectives.png)
 
 
 <div class="image-as-lightbox"></div>
 
-![Execution](doc/img/custom_views.png)
+![Execution](./doc/img/custom_views.png)
 
 ## Further Information
 - [Installation & Configuration](./doc/01_Installation.md)
