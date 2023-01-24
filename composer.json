@@ -24,7 +24,7 @@
     "codeception/codeception": "^4.1.12",
     "codeception/phpunit-wrapper": "^9",
     "codeception/module-asserts": "^2",
-    "codeception/module-symfony":"^2"
+    "codeception/module-symfony":"^1.6"
   },
   "autoload": {
     "psr-4": {
