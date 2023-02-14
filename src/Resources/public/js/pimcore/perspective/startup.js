@@ -108,6 +108,7 @@ pimcore.settings.perspectiveview = Class.create({
         const user = pimcore.globalmanager.get('user');
         if (user.admin || user.isAllowed('perspective_editor')) {
             let menu = pimcore.globalmanager.get('layout_toolbar').settingsMenu;
+
             menu.add({
                 text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
                 iconCls: 'pimcore_nav_icon_perspective',
