@@ -108,44 +108,6 @@ pimcore.settings.perspectiveview = Class.create({
         pimcore.layout.refresh();
     },
 
-    preMenuBuild: function (e) {
-        const perspectiveCfg = pimcore.globalmanager.get('perspective');
-
-        if(!perspectiveCfg.inToolbar('settings.perspectiveEditor')){
-            return;
-        }
-
-        const user = pimcore.globalmanager.get('user');
-        if (user.admin || user.isAllowed('perspective_editor')) {
-            let menu = e.detail.menu.settings;
-
-            menu.items.push({
-                text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
-                iconCls: 'pimcore_nav_icon_perspective',
-                handler: this.openPerspectiveEditor.bind(this)
-            });
-        }
-    },
-
-    pimcoreReady: function () {
-        const perspectiveCfg = pimcore.globalmanager.get('perspective');
-
-        if(!perspectiveCfg.inToolbar('settings.perspectiveEditor')){
-            return;
-        }
-
-        const user = pimcore.globalmanager.get('user');
-        if (user.admin || user.isAllowed('perspective_editor')) {
-            let menu = pimcore.globalmanager.get('layout_toolbar').settingsMenu;
-
-            menu.add({
-                text: t('plugin_pimcore_perspectiveeditor_perspective_view_editor'),
-                iconCls: 'pimcore_nav_icon_perspective',
-                handler: this.openPerspectiveEditor.bind(this)
-            });
-        }
-    },
-
     openPerspectiveEditor: function () {
         try{
             pimcore.globalmanager.get('plugin_pimcore_perspectiveeditor').activate();
