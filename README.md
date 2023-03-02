@@ -1,3 +1,7 @@
+---
+title: Perspective Editor
+---
+
 # Pimcore Perspective Editor
 
 This bundle provides an editor for Pimcore that allows to 
