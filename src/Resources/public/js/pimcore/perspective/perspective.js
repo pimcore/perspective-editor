@@ -105,6 +105,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                     handler: function(){
                                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_perspective'), t('plugin_pimcore_perspectiveeditor_new_perspective'), function (button, value) {
                                             if (button === 'ok' && value.length > 0) {
+                                                value = value.replace(/[^a-zA-Z0-9_\-+]/g,'');
                                                 //check for configs with same name
                                                 let match = this.perspectiveTreeStore.findExact("name", value);
                                                 if (match !== -1) {
