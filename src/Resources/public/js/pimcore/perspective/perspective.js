@@ -104,6 +104,8 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                     disabled: !pimcore.settings['perspectives-writeable'],
                                     handler: function(){
                                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_perspective'), t('plugin_pimcore_perspectiveeditor_new_perspective'), function (button, value) {
+                                            value = pimcore.helpers.sanitizeString(value);
+
                                             if (button === 'ok' && value.length > 0) {
                                                 //check for configs with same name
                                                 let match = this.perspectiveTreeStore.findExact("name", value);

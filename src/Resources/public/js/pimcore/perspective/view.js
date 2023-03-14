@@ -86,6 +86,8 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                     disabled: !pimcore.settings['custom-views-writeable'],
                     handler: function () {
                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_view'), t('plugin_pimcore_perspectiveeditor_new_view'), function (button, value) {
+                            value = pimcore.helpers.sanitizeString(value);
+
                             if (button === 'ok' && value.length > 0) {
                                 const record = this.viewTreeStore.getRoot().appendChild({
                                     id: pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateUuid(),
