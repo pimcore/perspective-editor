@@ -39,7 +39,7 @@ class ViewAccessor extends AbstractAccessor
 
         if (isset($treeStore['children'])) {
             foreach ($treeStore['children'] as $child) {
-                if(array_key_exists('name', $child['config'])) {
+                if (array_key_exists('name', $child['config'])) {
                     $child['config']['name'] = htmlspecialchars($child['config']['name']);
                 }
 
