@@ -39,7 +39,9 @@ class ViewAccessor extends AbstractAccessor
 
         if (isset($treeStore['children'])) {
             foreach ($treeStore['children'] as $child) {
-                $child['config']['name'] = htmlspecialchars($child['config']['name']);
+                if(array_key_exists('name', $child['config'])) {
+                    $child['config']['name'] = htmlspecialchars($child['config']['name']);
+                }
 
                 if (!empty($child['config']['treeContextMenu'])) {
                     foreach (array_keys($child['config']['treeContextMenu']) as $contextMenuEntry) {
