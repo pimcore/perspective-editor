@@ -104,7 +104,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                     disabled: !pimcore.settings['perspectives-writeable'],
                                     handler: function(){
                                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_perspective'), t('plugin_pimcore_perspectiveeditor_new_perspective'), function (button, value) {
-                                            value = pimcore.helpers.sanitizeString(value);
+                                            value = this.sanitizeName(value);
 
                                             if (button === 'ok' && value.length > 0) {
                                                 //check for configs with same name
@@ -825,5 +825,9 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                 this.panel.setTitle(t("plugin_pimcore_perspectiveeditor_perspective_editor"));
             }
         }
+    }
+
+    sanitizeName (name) {
+        return name.replace(/[^a-z0-9_\-.+]/gi,'');
     }
 }

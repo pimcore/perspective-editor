@@ -86,7 +86,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                     disabled: !pimcore.settings['custom-views-writeable'],
                     handler: function () {
                         Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_new_view'), t('plugin_pimcore_perspectiveeditor_new_view'), function (button, value) {
-                            value = pimcore.helpers.sanitizeString(value);
+                            value = this.sanitizeName(value);
 
                             if (button === 'ok' && value.length > 0) {
                                 const record = this.viewTreeStore.getRoot().appendChild({
@@ -568,5 +568,9 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                 this.panel.setTitle(t("plugin_pimcore_perspectiveeditor_view_editor"));
             }
         }
+    }
+
+    sanitizeName (name) {
+        return name.replace(/[^a-z0-9_\-.+]/gi,'');
     }
 }
