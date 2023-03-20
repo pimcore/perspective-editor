@@ -137,11 +137,11 @@ class PerspectiveController extends AdminController
     protected function checkForUniqueElements(array $treeStore)
     {
         foreach ($treeStore['children'] ?? [] as $perspective) {
-            $elementTree = array_values(array_filter($perspective['children'] ?? [], function ($entry) {
-                return $entry['type'] == 'elementTree' || $entry['type'] == 'elementTreeRight';
+            $elementTree = array_values(array_filter($perspective['children'] ?? [], static function ($entry) {
+                return $entry['type'] === 'elementTree' || $entry['type'] === 'elementTreeRight';
             }));
 
-            if (sizeof($elementTree) == 0) {
+            if (empty($elementTree)) {
                 return;
             }
 
@@ -153,11 +153,11 @@ class PerspectiveController extends AdminController
             }
 
             foreach (['assets', 'documents', 'objects'] as $type) {
-                $elements = array_values(array_filter($elementTrees, function ($entry) use ($type) {
-                    return $entry['config']['type'] == $type;
+                $elements = array_values(array_filter($elementTrees, static function ($entry) use ($type) {
+                    return $entry['config']['type'] === $type;
                 }));
 
-                if (sizeof($elements) > 1) {
+                if (!empty($elements)) {
                     throw new \Exception('plugin_pimcore_perspectiveeditor_no_unique_treeelements');
                 }
             }
@@ -232,8 +232,8 @@ class PerspectiveController extends AdminController
                     'id' => $treeHelper->createUuid(),
                     'text' => $this->trans('plugin_pimcore_perspectiveeditor_dashboard', [], 'admin'),
                     'type' => 'dashboard',
-                    'leaf' => sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) == 0,
-                    'expanded' => sizeof(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])) != 0,
+                    'leaf' => empty(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])),
+                    'expanded' => !empty(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])),
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/dashboard.svg',
                     'config' => $perspectiveConfig['dashboards']['disabledPortlets'] ?? [],
                     'allowDrag' => false,
