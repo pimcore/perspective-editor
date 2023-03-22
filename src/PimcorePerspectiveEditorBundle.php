@@ -15,12 +15,15 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle;
 
+use Pimcore\Bundle\AdminBundle\Support\BundleAdminSupportTrait;
+use Pimcore\Bundle\AdminBundle\Support\PimcoreBundleAdminSupportInterface;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 
-class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle
+class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements PimcoreBundleAdminSupportInterface
 {
+    use BundleAdminSupportTrait;
     use PackageVersionTrait;
 
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
