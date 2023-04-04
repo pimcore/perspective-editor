@@ -4,7 +4,7 @@ title: Perspective Editor
 
 # Pimcore Perspective Editor
 
-This bundle provides an editor for Pimcore to manage data display with custom views and perspectives.
+This bundle provides an editor for Pimcore to manage custom views and perspectives.
 
 ## Features in a nutshell
 - Possibility to add, remove or edit custom views.
@@ -21,6 +21,6 @@ This bundle provides an editor for Pimcore to manage data display with custom vi
 ![Execution](./doc/img/custom_views.png)
 *Sample View Editor*
 
-## Further Information
+## Documentation Overview
 - [Installation & Configuration](./doc/01_Installation.md)
 - [Customize Menu Entry List](./doc/02_Customize_Menu_Entry_List.md)
