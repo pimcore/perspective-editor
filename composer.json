@@ -13,7 +13,8 @@
   "prefer-stable": true,
   "minimum-stability": "dev",
   "require": {
-    "pimcore/pimcore": "^10.6 || ^11.0"
+    "pimcore/pimcore": "^10.6 || ^11.0",
+    "pimcore/compatibility-bridge-v10": "1.x-dev"
   },
   "require-dev": {
     "phpstan/phpstan": "^1.2",

@@ -29,7 +29,7 @@ class PerspectiveAccessor extends AbstractAccessor
         $configuration = [];
 
         foreach ($treeStore['children'] as $child) {
-            $name = $child['name'];
+            $name = htmlspecialchars($child['name']);
             $configuration[$name] = [];
             $configuration[$name]['elementTree'] = [];
             foreach ($child['children'] as $index => $element) {
