@@ -141,6 +141,7 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.predefinedProperties',
                 'items.predefinedMetadata',
                 'items.system',
+                'items.appearance',
                 'items.website',
                 'items.web2print',
                 'items.users.hidden',
