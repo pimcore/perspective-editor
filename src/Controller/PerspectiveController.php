@@ -37,7 +37,6 @@ class PerspectiveController extends UserAwareController
 
     public function __construct(protected TranslatorInterface $translator)
     {
-
     }
 
     /**
