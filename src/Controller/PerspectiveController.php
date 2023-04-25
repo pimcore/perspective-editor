@@ -24,6 +24,7 @@ use Pimcore\Controller\UserAwareController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class PerspectiveController
@@ -33,6 +34,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class PerspectiveController extends UserAwareController
 {
     protected $disabledCssClass = 'pimcore_tree_node_disabled';
+
+    public function __construct(protected TranslatorInterface $translator)
+    {
+
+    }
 
     /**
      * @Route("/perspective/get-tree", name="get-perspective-tree")
@@ -205,7 +211,7 @@ class PerspectiveController extends UserAwareController
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTreeLeft', [], 'admin'),
+                    'text' => $this->translator->trans('plugin_pimcore_perspectiveeditor_elementTreeLeft', [], 'admin'),
                     'type' => 'elementTree',
                     'leaf' => false,
                     'expanded' => !empty($leftElementTrees),
@@ -217,7 +223,7 @@ class PerspectiveController extends UserAwareController
                     'children' => $leftElementTrees,
                 ], [
                     'id' => $treeHelper->createUuid(),
-                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_elementTreeRight', [], 'admin'),
+                    'text' => $this->translator->trans('plugin_pimcore_perspectiveeditor_elementTreeRight', [], 'admin'),
                     'type' => 'elementTreeRight',
                     'leaf' => false,
                     'expanded' => !empty($rightElementTrees),
@@ -230,7 +236,7 @@ class PerspectiveController extends UserAwareController
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_dashboard', [], 'admin'),
+                    'text' => $this->translator->trans('plugin_pimcore_perspectiveeditor_dashboard', [], 'admin'),
                     'type' => 'dashboard',
                     'leaf' => empty(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])),
                     'expanded' => !empty(array_diff(array_keys($perspectiveConfig['dashboards'] ?? []), ['disabledPortlets'])),
@@ -244,7 +250,7 @@ class PerspectiveController extends UserAwareController
                 ],
                 [
                     'id' => $treeHelper->createUuid(),
-                    'text' => $this->trans('plugin_pimcore_perspectiveeditor_toolbar', [], 'admin'),
+                    'text' => $this->translator->trans('plugin_pimcore_perspectiveeditor_toolbar', [], 'admin'),
                     'type' => 'toolbar',
                     'leaf' => true,
                     'icon' => '/bundles/pimcoreadmin/img/flat-color-icons/support.svg',
