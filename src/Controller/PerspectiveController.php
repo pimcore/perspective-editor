@@ -15,12 +15,12 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
 
-use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Bundle\AdminBundle\Security\CsrfProtectionHandler;
 use Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\TreeHelper;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\ViewAccessor;
+use Pimcore\Controller\UserAwareController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @package Pimcore\Bundle\PerspectiveEditorBundle\Controller\Admin
  */
-class PerspectiveController extends AdminController
+class PerspectiveController extends UserAwareController
 {
     protected $disabledCssClass = 'pimcore_tree_node_disabled';
 
