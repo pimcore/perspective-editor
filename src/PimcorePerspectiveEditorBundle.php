@@ -32,7 +32,6 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements Pi
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
     const PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT = 'perspective_editor_view_edit';
 
-
     public static function registerDependentBundles(BundleCollection $collection): void
     {
         $collection->addBundle(new PimcoreAdminBundle(), 60);
