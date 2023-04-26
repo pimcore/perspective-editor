@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'Pimcore\\Bundle\\EcommerceFrameworkBundle\\PimcoreEcommerceFrameworkBundle' => ['all' => false],
-    'Pimcore\\Bundle\\PerspectiveEditorBundle\\PimcorePerspectiveEditorBundle' => ['all' => true],
+    \Pimcore\Bundle\AdminBundle\PimcoreAdminBundle::class => ['all' => true],
+    \Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle::class => ['all' => true]
 ];
