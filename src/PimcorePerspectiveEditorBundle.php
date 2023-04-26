@@ -15,19 +15,28 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle;
 
+use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Pimcore\Extension\Bundle\PimcoreBundleAdminClassicInterface;
 use Pimcore\Extension\Bundle\Traits\BundleAdminClassicTrait;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
-class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements PimcoreBundleAdminClassicInterface
+class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements PimcoreBundleAdminClassicInterface, DependentBundleInterface
 {
     use BundleAdminClassicTrait;
     use PackageVersionTrait;
 
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
     const PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT = 'perspective_editor_view_edit';
+
+
+    public static function registerDependentBundles(BundleCollection $collection): void
+    {
+        $collection->addBundle(new PimcoreAdminBundle(), 60);
+    }
 
     public function getJsPaths(): array
     {
