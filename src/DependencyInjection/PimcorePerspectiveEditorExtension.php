@@ -16,6 +16,7 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle\DependencyInjection;
 
 use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
+use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
