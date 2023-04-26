@@ -15,6 +15,8 @@
 
 namespace Pimcore\Bundle\PerspectiveEditorBundle\DependencyInjection;
 
+use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -26,7 +28,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @link http://symfony.com/doc/current/cookbook/bundles/extension.html
  */
-class PimcorePerspectiveEditorExtension extends Extension implements PrependExtensionInterface
+class PimcorePerspectiveEditorExtension extends Extension implements PrependExtensionInterface, DependentBundleInterface
 {
     /**
      * {@inheritdoc}
@@ -38,6 +40,11 @@ class PimcorePerspectiveEditorExtension extends Extension implements PrependExte
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+    public static function registerDependentBundles(BundleCollection $collection): void
+    {
+        $collection->addBundle(new PimcoreAdminBundle(), 60);
     }
 
     /**
