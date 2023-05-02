@@ -162,7 +162,7 @@ class PerspectiveController extends UserAwareController
                     return $entry['config']['type'] === $type;
                 }));
 
-                if (!empty($elements)) {
+                if (count($elements) > 1) {
                     throw new \Exception('plugin_pimcore_perspectiveeditor_no_unique_treeelements');
                 }
             }
