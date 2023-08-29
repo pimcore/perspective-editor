@@ -63,6 +63,9 @@ class PerspectiveAccessor extends AbstractAccessor
                                         unset($grandchild['config']['treeContextMenu'][$contextMenuEntry]);
                                     }
                                 }
+                                if (empty($grandchild['config']['treeContextMenu'])) {
+                                    unset($grandchild['config']['treeContextMenu']);
+                                }                                
                             }
                             $grandchild['config']['sort'] = $sortIndex;
                             $grandchild['config']['position'] = 'right';
