@@ -45,7 +45,7 @@ class PerspectiveAccessor extends AbstractAccessor
                                     }
                                 }
 
-                                if (empty($grandchild['config']['treeContextMenu'])) {
+                                if ($grandchild['config']['treeContextMenu'] === []) {
                                     unset($grandchild['config']['treeContextMenu']);
                                 }
                             }
@@ -63,7 +63,7 @@ class PerspectiveAccessor extends AbstractAccessor
                                         unset($grandchild['config']['treeContextMenu'][$contextMenuEntry]);
                                     }
                                 }
-                                if (empty($grandchild['config']['treeContextMenu'])) {
+                                if ($grandchild['config']['treeContextMenu'] === []) {
                                     unset($grandchild['config']['treeContextMenu']);
                                 }                                
                             }
