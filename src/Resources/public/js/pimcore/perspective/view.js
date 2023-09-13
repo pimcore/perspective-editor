@@ -120,10 +120,16 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                     iconCls: "pimcore_icon_save",
                     disabled: !pimcore.settings['custom-views-writeable'],
                     handler: function(){
+                        const serializedViews = this.viewTreeStore.getRoot().serialize();
+                        for (let child of serializedViews.children) {
+                            if(child.config.classes && Array.isArray(child.config.classes)) {
+                                child.config.classes = child.config.classes.join(',');
+                            }
+                        }
                         Ext.Ajax.request({
                             url: this.routePrefix + '/update',
                             params: {
-                                data: Ext.JSON.encode(this.viewTreeStore.getRoot().serialize()),
+                                data: Ext.JSON.encode(serializedViews),
                                 deletedRecords: Ext.JSON.encode(this.deletedRecords)
                             },
                             method: 'POST',
@@ -428,8 +434,11 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                 listeners: {
                     change: function(elem, newValue, oldValue){
                         if (newValue != null) {
-                            data.config.classes = newValue.join(',');
-                            this.setDirty(true);
+                            const newClasses = newValue.join(',');
+                            if(newClasses !== data.config.classes) {
+                                data.config.classes = newClasses;
+                                this.setDirty(true);
+                            }
                         }
                     }.bind(this)
                 }
