@@ -119,8 +119,8 @@ plugin_pimcore_perspectiveeditor_asset_items_unlockAndPropagate: Freischalten un
   Verbreiten
 plugin_pimcore_perspectiveeditor_object_items_add: "hinzuf\xFCgen"
 plugin_pimcore_perspectiveeditor_object_items_addFolder: "Ordner hinzuf\xFCgen"
-plugin_pimcore_perspectiveeditor_object_items_changeChildrenSortBy: "Kinder \xE4ndern
-  SortBy"
+plugin_pimcore_perspectiveeditor_object_items_changeChildrenSortBy: "Sortierung von
+  Kindelementen \xE4ndern"
 plugin_pimcore_perspectiveeditor_object_items_copy: Kopieren
 plugin_pimcore_perspectiveeditor_object_items_cut: Ausschneiden
 plugin_pimcore_perspectiveeditor_object_items_delete: "L\xF6schen"
@@ -194,7 +194,7 @@ plugin_pimcore_perspectiveeditor_menu_settings_items_cache_items_clearTemp: "Cac
   > Tempor\xE4re Dateien l\xF6schen"
 plugin_pimcore_perspectiveeditor_menu_settings_items_customReports: Benutzerdefinierte
   Berichte
-plugin_pimcore_perspectiveeditor_menu_settings_items_documentTypes: Dokumenttypen
+plugin_pimcore_perspectiveeditor_menu_settings_items_documentTypes: Dokument-Typen
 plugin_pimcore_perspectiveeditor_menu_settings_items_marketingReports: Marketing-Berichte
 plugin_pimcore_perspectiveeditor_menu_settings_items_objects_hidden: "Men\xFC Datenobjekte
   ausblenden"
