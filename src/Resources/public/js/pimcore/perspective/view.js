@@ -122,7 +122,7 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                     handler: function(){
                         const serializedViews = this.viewTreeStore.getRoot().serialize();
                         for (let child of serializedViews.children) {
-                            if(child.config.classes && Array.isArray(child.config.classes)) {
+                            if (child.config.classes && Array.isArray(child.config.classes)) {
                                 child.config.classes = child.config.classes.join(',');
                             }
                         }
