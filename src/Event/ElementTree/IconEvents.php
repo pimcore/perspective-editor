@@ -20,5 +20,5 @@ final class IconEvents
     /**
      * @var string
      */
-    public const ADD_ELEMENT_TREE_ICON = 'pimcore.perspective.editor.add.elementTreeIcon';
+    public const ADD_ELEMENT_TREE_ICON = 'pimcore.perspectiveEditor.elementTreeIcon.add';
 }
