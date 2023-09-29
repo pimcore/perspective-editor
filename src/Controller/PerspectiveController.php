@@ -16,6 +16,8 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle\Controller;
 
 use Pimcore\Bundle\AdminBundle\Security\CsrfProtectionHandler;
+use Pimcore\Bundle\PerspectiveEditorBundle\Event\ElementTree\IconEvents;
+use Pimcore\Bundle\PerspectiveEditorBundle\Event\ElementTree\Model\IconAddEvent;
 use Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\PerspectiveAccessor;
 use Pimcore\Bundle\PerspectiveEditorBundle\Services\TreeHelper;
@@ -24,6 +26,7 @@ use Pimcore\Controller\UserAwareController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -35,7 +38,7 @@ class PerspectiveController extends UserAwareController
 {
     protected $disabledCssClass = 'pimcore_tree_node_disabled';
 
-    public function __construct(protected TranslatorInterface $translator)
+    public function __construct(protected TranslatorInterface $translator, protected EventDispatcherInterface $eventDispatcher)
     {
     }
 
@@ -275,24 +278,17 @@ class PerspectiveController extends UserAwareController
             return [];
         }
         $disabledClass = $config['writeable'] ? '' : $this->disabledCssClass;
-
-        $treeIcons = [
-            'documents' => 'pimcore_icon_document',
-            'assets' => 'pimcore_icon_asset',
-            'objects' => 'pimcore_icon_object',
-            'customview' => 'pimcore_icon_custom_views'
-        ];
-
+        $elementTreeIcons = $this->getElementTreeIcons();
         $tree = [];
         foreach ($config['elementTree'] as $element) {
             if ($position === ($element['position'] ?? 'left')) {
                 $tree[] = [
                     'id' => $treeHelper->createUuid(),
-                    'text' => $element['type'],
+                    'text' => preg_replace("/[\-_]/", ' ', $element['type']),
                     'type' => 'elementTreeElement',
                     'leaf' => true,
                     'allowDrag' => true,
-                    'iconCls' => $treeIcons[$element['type']],
+                    'iconCls' =>  $elementTreeIcons[$element['type']] ?? '',
                     'config' => $element,
                     'cls' => $disabledClass,
                     'writeable' => $config['writeable'],
@@ -305,6 +301,25 @@ class PerspectiveController extends UserAwareController
         });
 
         return $tree;
+    }
+
+    /**
+     * get All Icons related to perspective element tree
+     *
+     * @return array
+     */
+    private function getElementTreeIcons(): array
+    {
+        $elementTreeIcons = [
+            'documents' => 'pimcore_icon_document',
+            'assets' => 'pimcore_icon_asset',
+            'objects' => 'pimcore_icon_object',
+            'customview' => 'pimcore_icon_custom_views'
+        ];
+        $elementTreeIconAddEvent = new IconAddEvent($elementTreeIcons);
+        $this->eventDispatcher->dispatch($elementTreeIconAddEvent, IconEvents::ADD_ELEMENT_TREE_ICON);
+
+        return $elementTreeIconAddEvent->getElementTreeIcons();
     }
 
     /**
