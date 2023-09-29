@@ -288,7 +288,7 @@ class PerspectiveController extends UserAwareController
                     'type' => 'elementTreeElement',
                     'leaf' => true,
                     'allowDrag' => true,
-                    'iconCls' =>  $elementTreeIcons[$element['type']] ?? '',
+                    'iconCls' => $elementTreeIcons[$element['type']] ?? '',
                     'config' => $element,
                     'cls' => $disabledClass,
                     'writeable' => $config['writeable'],
