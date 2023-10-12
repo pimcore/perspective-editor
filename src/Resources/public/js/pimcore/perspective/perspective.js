@@ -674,8 +674,8 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         if(!config.treeContextMenu){
             config.treeContextMenu = {};
         }
-        let elementTreeTypeStoreId = 'perspective_editor_element_tree_type_store';
-        let elementTreeTypeStore = new Ext.data.Store({
+        const elementTreeTypeStoreId = 'perspective_editor_element_tree_type_store';
+        const elementTreeTypeStore = new Ext.data.Store({
             fields: ['name', 'value'],
             id: elementTreeTypeStoreId,
             data: [
@@ -769,8 +769,8 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         const addPerspectiveEditorElementTreeIcon = new CustomEvent(pimcore.events.addPerspectiveEditorElementTreeIcon);
         addPerspectiveEditorElementTreeIcon.data = elementTreeIcons;
         document.dispatchEvent(addPerspectiveEditorElementTreeIcon);
-        let elementTreeSettingsFormId = 'perspective_element_tree_settings_form';
-        let elementTreeSettingsForm = new Ext.form.Panel({
+        const elementTreeSettingsFormId = 'perspective_element_tree_settings_form';
+        const elementTreeSettingsForm = new Ext.form.Panel({
             disabled: !record.data["writeable"],
             id: elementTreeSettingsFormId,
             title: t('plugin_pimcore_perspectiveeditor_tree_element_selection'),
@@ -790,8 +790,8 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                         change: function(elem, newValue, oldValue){
                             config.type = newValue;
                             Ext.each(elementTreeSettingsForm.query('[name^=perspective_editor]'), function(component) {
-                                let componentName = 'perspective_editor_'+newValue;
-                                component.setHidden(component.name == componentName ? false : true);
+                                let componentName = 'perspective_editor_' + newValue;
+                                component.setHidden(component.name !== componentName);
                             });
                             record.data.text = t(newValue);
                             record.data.iconCls = elementTreeIcons[newValue];
