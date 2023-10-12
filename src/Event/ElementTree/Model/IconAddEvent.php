@@ -27,7 +27,7 @@ class IconAddEvent
         return $this->elementTrees;
     }
 
-    public function setElementTreeIcons($elementTrees): void
+    public function setElementTreeIcons(array $elementTrees): void
     {
         $this->elementTrees = $elementTrees;
     }
