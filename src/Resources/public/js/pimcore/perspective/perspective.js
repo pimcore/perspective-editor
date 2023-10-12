@@ -674,9 +674,10 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         if(!config.treeContextMenu){
             config.treeContextMenu = {};
         }
-
-        var treeElementTypStore = new Ext.data.Store({
+        const elementTreeTypeStoreId = 'perspective_editor_element_tree_type_store';
+        const elementTreeTypeStore = new Ext.data.Store({
             fields: ['name', 'value'],
+            id: elementTreeTypeStoreId,
             data: [
                 {name: t('plugin_pimcore_perspectiveeditor_document'), value: 'documents'},
                 {name: t('plugin_pimcore_perspectiveeditor_asset'), value: 'assets'},
@@ -684,8 +685,15 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                 {name: t('plugin_pimcore_perspectiveeditor_custom_view'), value: 'customview'}
             ]
         });
+        const postCreatePerspectiveEditorElementTreeTypeStore = new CustomEvent(pimcore.events.postCreatePerspectiveEditorElementTreeTypeStore, {
+            detail: {
+                elementTreeTypeStoreId: elementTreeTypeStoreId,
+            }
+        });
+        document.dispatchEvent(postCreatePerspectiveEditorElementTreeTypeStore);
 
         var customViewComboBox = new Ext.form.ComboBox({
+            name: 'perspective_editor_customview',
             padding: 10,
             width: '75%',
             fieldLabel: t('plugin_pimcore_perspectiveeditor_custom_view'),
@@ -693,14 +701,16 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             store: this.availableViewsStore,
             displayField: 'name',
             valueField: 'id',
-            name: 'view-id',
-            editable: true,
+            editable: false,
             value: config.id,
+            forceSelection:true,
             hidden: config.type !== 'customview',
             listeners: {
                 change: function(elem, newValue, oldValue){
-                    config.id = newValue;
-                    this.setDirty(true);
+                    if(config.type == 'customview'){
+                        config.id = newValue;
+                        this.setDirty(true);
+                    }
                 }.bind(this)
             }
         });
@@ -718,6 +728,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
 
 
         var documentTreeContextMenuGroup = new Ext.form.FieldSet({
+            name: 'perspective_editor_documents',
             title: t('plugin_pimcore_perspectiveeditor_document') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'documents',
             margin: '30 10 0',
@@ -729,6 +740,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.treeContextMenu.asset, assetContextMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_asset');
 
         var assetTreeContextMenuGroup = new Ext.form.FieldSet({
+            name: 'perspective_editor_assets',
             title: t('plugin_pimcore_perspectiveeditor_asset') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'assets',
             margin: '30 10 0',
@@ -740,6 +752,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.generateCheckboxesForStructure(config.treeContextMenu.object, objectContextMenuItems, this.setDirty.bind(this, true), 'plugin_pimcore_perspectiveeditor_object');
 
         var objectTreeContextMenuGroup = new Ext.form.FieldSet({
+            name: 'perspective_editor_objects',
             title: t('plugin_pimcore_perspectiveeditor_object') + ' - ' + t('plugin_pimcore_perspectiveeditor_contextmenu'),
             hidden: config.type !== 'objects',
             margin: '30 10 0',
@@ -747,8 +760,19 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             items: objectContextMenuItems
         });
 
-        return new Ext.form.Panel({
+        const elementTreeIcons = {
+            documents: 'pimcore_icon_document',
+            assets: 'pimcore_icon_asset',
+            objects: 'pimcore_icon_object',
+            customview: 'pimcore_icon_custom_views',
+        }
+        const addPerspectiveEditorElementTreeIcon = new CustomEvent(pimcore.events.addPerspectiveEditorElementTreeIcon);
+        addPerspectiveEditorElementTreeIcon.data = elementTreeIcons;
+        document.dispatchEvent(addPerspectiveEditorElementTreeIcon);
+        const elementTreeSettingsFormId = 'perspective_element_tree_settings_form';
+        const elementTreeSettingsForm = new Ext.form.Panel({
             disabled: !record.data["writeable"],
+            id: elementTreeSettingsFormId,
             title: t('plugin_pimcore_perspectiveeditor_tree_element_selection'),
             icon: '/bundles/pimcoreadmin/img/flat-color-icons/genealogy.svg',
             items: [
@@ -756,7 +780,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                     padding: 10,
                     fieldLabel: t('plugin_pimcore_perspectiveeditor_view_type'),
                     queryMode: 'local',
-                    store: treeElementTypStore,
+                    store: elementTreeTypeStore,
                     displayField: 'name',
                     valueField: 'value',
                     name: 'type',
@@ -765,21 +789,12 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                     listeners: {
                         change: function(elem, newValue, oldValue){
                             config.type = newValue;
-                            customViewComboBox.setHidden(newValue !== 'customview');
-
-                            documentTreeContextMenuGroup.setHidden(newValue !== 'documents');
-                            assetTreeContextMenuGroup.setHidden(newValue !== 'assets');
-                            objectTreeContextMenuGroup.setHidden(newValue !== 'objects');
-
-                            const iconCls = {
-                                documents: 'pimcore_icon_document',
-                                assets: 'pimcore_icon_asset',
-                                objects: 'pimcore_icon_object',
-                                customview: 'pimcore_icon_custom_views',
-                            }
-
-                            record.data.text = newValue;
-                            record.data.iconCls = iconCls[newValue];
+                            Ext.each(elementTreeSettingsForm.query('[name^=perspective_editor]'), function(component) {
+                                let componentName = 'perspective_editor_' + newValue;
+                                component.setHidden(component.name !== componentName);
+                            });
+                            record.data.text = t(newValue);
+                            record.data.iconCls = elementTreeIcons[newValue];
                             pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(record);
                             this.setDirty(true);
                         }.bind(this)
@@ -813,6 +828,16 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                 objectTreeContextMenuGroup
             ]
         });
+
+        const preAddElementTreeSettingsForm = new CustomEvent(pimcore.events.preAddPerspectiveEditorElementTreeSettingsForm, {
+            detail: {
+                record: record,
+                elementTreeSettingsFormId : elementTreeSettingsFormId,
+                setDirtyCallBack: this.setDirty.bind(this),
+            }
+        });
+        document.dispatchEvent(preAddElementTreeSettingsForm);
+        return elementTreeSettingsForm;
     }
 
     setDirty(dirty) {
@@ -830,4 +855,5 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
     sanitizeName (name) {
         return name.replace(/[^a-z0-9_\-.+]/gi,'');
     }
+
 }
