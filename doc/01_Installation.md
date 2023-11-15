@@ -1,6 +1,6 @@
 # Installation
 ## Bundle Installation
-### For Pimcore >= 10.5 & <= 10.6
+### For Pimcore >= 10.5 & \<= 10.6
 To install Pimcore Perspective Editor for Pimcore 10.5 or higher, follow the three steps below:
 
 1. Install the required dependencies:
