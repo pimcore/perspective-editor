@@ -655,7 +655,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                 checked: config[data[dataIndex].value] === 1,
                 listeners: {
                     change: function(elem, newValue, oldValue){
-                        newValue ? config[elem.portletValue] = 1 : delete config[elem.name];
+                        newValue ? config[elem.portletValue] = 1 : delete config[elem.portletValue];
                         this.setDirty(true);
                     }.bind(this)
                 }
