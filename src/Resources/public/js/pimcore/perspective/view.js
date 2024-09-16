@@ -121,9 +121,11 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                     disabled: !pimcore.settings['custom-views-writeable'],
                     handler: function(){
                         const serializedViews = this.viewTreeStore.getRoot().serialize();
-                        for (let child of serializedViews.children) {
-                            if (child.config.classes && Array.isArray(child.config.classes)) {
-                                child.config.classes = child.config.classes.join(',');
+                        if (serializedViews.children !== undefined) {
+                            for (let child of serializedViews.children) {
+                                if (child.config.classes && Array.isArray(child.config.classes)) {
+                                    child.config.classes = child.config.classes.join(',');
+                                }
                             }
                         }
                         Ext.Ajax.request({
