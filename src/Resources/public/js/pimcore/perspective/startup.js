@@ -13,16 +13,14 @@
 
 
 pimcore.registerNS('pimcore.settings.perspectiveview');
-console.log("test");
+
 pimcore.settings.perspectiveview = Class.create({
 
     panelId: 'perspective_view_panel_id',
 
     initialize: function () {
-        console.log("here");
         // if the new event exists, we use this
         if (pimcore.events.preMenuBuild) {
-            console.log("here");
             document.addEventListener(pimcore.events.preMenuBuild, this.createNavigationEntry.bind(this));
         } else {
             document.addEventListener(pimcore.events.pimcoreReady, this.createNavigationEntry.bind(this));
@@ -34,7 +32,6 @@ pimcore.settings.perspectiveview = Class.create({
     },
 
     createNavigationEntry: function (e) {
-        console.log("hello");
         const perspectiveCfg = pimcore.globalmanager.get('perspective');
 
         if(!perspectiveCfg.inToolbar('settings.perspectiveEditor')){
@@ -57,7 +54,7 @@ pimcore.settings.perspectiveview = Class.create({
 
             if(e.type === pimcore.events.pimcoreReady){
                 let menu = pimcore.globalmanager.get('layout_toolbar').settingsMenu;
-                console.log("hello");
+
                 menu.add(navigationItem);
             }
         }
