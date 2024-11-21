@@ -14,7 +14,7 @@
   "minimum-stability": "dev",
   "require": {
     "pimcore/compatibility-bridge-v10": "^1.0",
-    "pimcore/admin-ui-classic-bundle": "^1.6",
+    "pimcore/admin-ui-classic-bundle": "^1.0",
     "pimcore/pimcore": "^11.2",
     "symfony/http-foundation": "^6.3"
   },
@@ -25,9 +25,6 @@
     "codeception/module-symfony":"^1.6.0 || ^3.1.0",
     "codeception/phpunit-wrapper": "^9",
     "codeception/module-asserts": "^2"
-  },
-  "suggest": {
-    "pimcore/admin-ui-classic-bundle": "Required for Pimcore 11"
   },
   "autoload": {
     "psr-4": {

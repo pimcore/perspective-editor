@@ -39,15 +39,3 @@ pimcore.events.postCreatePerspectiveEditorElementTreeTypeStore = "pimcore.perspe
  * fired after ElementTreeIcons Array was  initialized
  */
 pimcore.events.addPerspectiveEditorElementTreeIcon = 'pimcore.perspectiveEditor.elementTreeIcon.add';
-
-
-
-
-//TODO: delete once support for Pimcore 10.6 is dropped
-if(typeof addEventListenerCompatibilityForPlugins === "function") {
-    let eventMappings = [];
-    eventMappings["onPerspectiveEditorLoadPermissions"] = pimcore.events.onPerspectiveEditorLoadPermissions;
-    eventMappings["onPerspectiveEditorLoadStructureForPermissions"] = pimcore.events.onPerspectiveEditorLoadStructureForPermissions;
-    addEventListenerCompatibilityForPlugins(eventMappings);
-    console.warn("Deprecation: addEventListenerCompatibilityForPlugins will be not supported in Pimcore 11.");
-}
