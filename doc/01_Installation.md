@@ -1,7 +1,5 @@
 # Installation
 ## Bundle Installation
-### For Pimcore >= 10.5 & \<= 10.6
-To install Pimcore Perspective Editor for Pimcore 10.5 or higher, follow the three steps below:
 
 1. Install the required dependencies:
 ```bash
@@ -27,23 +25,6 @@ return [
 bin/console pimcore:bundle:install PimcorePerspectiveEditorBundle
 ```
 
-### For Pimcore 11
-
-You need to follow the steps mentioned above and additionally run the following command:
-
-```bash
-composer require pimcore/admin-ui-classic-bundle
-```
-
-### For Older Versions
-To install the Perspective Editor bundle for older versions of Pimcore, please run the following commands instead:
-
-```bash
-composer require pimcore/perspective-editor
-bin/console pimcore:bundle:enable PimcorePerspectiveEditorBundle
-bin/console pimcore:bundle:install PimcorePerspectiveEditorBundle
-```
-
 Installation routine just adds an additional permission to `users_permission_definitions` table. 
 
 Also, make sure, that `customviews.php` and `perspectives.php` files are writeable for php.
@@ -52,7 +33,6 @@ They can be located at Pimcore default locations for config files:
 
 If they don't exist, they are created at `PIMCORE_CONFIGURATION_DIRECTORY`.
  
-
 
 ## Configuration
 

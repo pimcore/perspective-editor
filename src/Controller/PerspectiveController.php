@@ -100,8 +100,8 @@ class PerspectiveController extends UserAwareController
             'error' => null
         ];
         try {
-            $treeStore = json_decode($request->get('data'), true);
-            $deletedRecords = json_decode($request->get('deletedRecords'), true);
+            $treeStore = json_decode($request->request->getString('data'), true);
+            $deletedRecords = json_decode($request->request->getString('deletedRecords'), true);
             $this->checkForUniqueElements($treeStore);
 
             $perspectiveAccessor->writeConfiguration($treeStore, $deletedRecords);
@@ -129,8 +129,8 @@ class PerspectiveController extends UserAwareController
             'error' => null
         ];
         try {
-            $treeStore = json_decode($request->get('data'), true);
-            $deletedRecords = json_decode($request->get('deletedRecords'), true);
+            $treeStore = json_decode($request->request->getString('data'), true);
+            $deletedRecords = json_decode($request->request->geString('deletedRecords'), true);
             $viewAccessor->writeConfiguration($treeStore, $deletedRecords);
         } catch (\Exception $e) {
             $ret = ['success' => false, 'error' => $e->getMessage()];
