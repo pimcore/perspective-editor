@@ -121,7 +121,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
             margin: '10 0 0 10',
             listeners: {
                 "afterrender": function (el) {
-                    el.inputEl.applyStyles("background:url(" + el.getValue() + ") right center no-repeat;");
+                    el.inputEl.applyStyles("background:url(" + el.getValue() + ") right center no-repeat; background-size:contain;");
                 },
                 change: function(field, newValue) {
 
