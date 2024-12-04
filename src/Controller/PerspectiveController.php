@@ -130,7 +130,7 @@ class PerspectiveController extends UserAwareController
         ];
         try {
             $treeStore = json_decode($request->request->getString('data'), true);
-            $deletedRecords = json_decode($request->request->geString('deletedRecords'), true);
+            $deletedRecords = json_decode($request->request->getString('deletedRecords'), true);
             $viewAccessor->writeConfiguration($treeStore, $deletedRecords);
         } catch (\Exception $e) {
             $ret = ['success' => false, 'error' => $e->getMessage()];
