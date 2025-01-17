@@ -14,8 +14,8 @@
   "minimum-stability": "dev",
   "require": {
     "pimcore/compatibility-bridge-v10": "^1.0",
-    "pimcore/admin-ui-classic-bundle": "^1.0",
-    "pimcore/pimcore": "^11.2",
+    "pimcore/admin-ui-classic-bundle": "^1.0 || 2.x-dev",
+    "pimcore/pimcore": "^11.2 || 12.x-dev",
     "symfony/http-foundation": "^6.3"
   },
   "require-dev": {
