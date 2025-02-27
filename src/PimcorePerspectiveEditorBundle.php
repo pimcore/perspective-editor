@@ -16,6 +16,7 @@
 namespace Pimcore\Bundle\PerspectiveEditorBundle;
 
 use Pimcore\Bundle\AdminBundle\PimcoreAdminBundle;
+use Pimcore\Bundle\PerspectiveEditorBundle\DependencyInjection\PimcorePerspectiveEditorExtension;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Pimcore\Extension\Bundle\PimcoreBundleAdminClassicInterface;
@@ -23,6 +24,7 @@ use Pimcore\Extension\Bundle\Traits\BundleAdminClassicTrait;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements PimcoreBundleAdminClassicInterface, DependentBundleInterface
 {
@@ -31,6 +33,11 @@ class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements Pi
 
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
     const PERMISSION_PERSPECTIVE_EDITOR_VIEW_EDIT = 'perspective_editor_view_edit';
+
+    public function getContainerExtension(): ExtensionInterface
+    {
+        return new PimcorePerspectiveEditorExtension();
+    }
 
     public static function registerDependentBundles(BundleCollection $collection): void
     {
