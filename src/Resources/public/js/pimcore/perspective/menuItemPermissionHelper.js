@@ -126,8 +126,7 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.emails',
                 'items.maintenance',
                 'items.systemtools.hidden',
-                'items.systemtools.items.requirements',
-                'items.systemtools.items.fileexplorer'
+                'items.systemtools.items.requirements'
             ],
             settings: [
                 'hidden',
