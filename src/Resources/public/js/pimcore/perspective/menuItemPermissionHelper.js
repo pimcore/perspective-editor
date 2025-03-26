@@ -20,7 +20,9 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
         customViewContextMenu: {
             document: [
                 'items.add',
+                'items.addBlankDocument',
                 'items.addSnippet',
+                'items.addBlankSnippet',
                 'items.addLink',
                 'items.addEmail',
                 'items.addNewsletter',
