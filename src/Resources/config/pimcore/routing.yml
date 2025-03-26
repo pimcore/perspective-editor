@@ -1,4 +1,4 @@
 admin:
     resource: "@PimcorePerspectiveEditorBundle/Controller/"
-    type:     annotation
+    type:     attribute
     prefix:   /admin/perspectives-views
