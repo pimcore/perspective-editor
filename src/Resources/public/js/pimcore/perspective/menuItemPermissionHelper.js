@@ -23,7 +23,6 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.addSnippet',
                 'items.addLink',
                 'items.addEmail',
-                'items.addNewsletter',
                 'items.addHardlink',
                 'items.addFolder',
                 'items.addPrintPage',
