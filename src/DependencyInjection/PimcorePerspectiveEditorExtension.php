@@ -31,7 +31,7 @@ class PimcorePerspectiveEditorExtension extends Extension implements PrependExte
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -43,7 +43,7 @@ class PimcorePerspectiveEditorExtension extends Extension implements PrependExte
     /**
      * @param ContainerBuilder $container
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         if ($container->hasExtension('doctrine_migrations')) {
             $loader = new Loader\YamlFileLoader(
