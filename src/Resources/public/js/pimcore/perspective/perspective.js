@@ -300,6 +300,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
             handler: function(){
                 if(record.data["writeable"] === true) {
                     Ext.MessageBox.prompt(t('plugin_pimcore_perspectiveeditor_rename'), t('plugin_pimcore_perspectiveeditor_perspective_rename'), function (button, value) {
+                        value = this.sanitizeName(value);
                         if (button === 'ok' && value !== record.data.text) {
                             //check for configs with same name
                             let match = this.perspectiveTreeStore.findExact("name", value);
@@ -853,7 +854,7 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
     }
 
     sanitizeName (name) {
-        return name.replace(/[^a-z0-9_\-.+]/gi,'');
+        return name.replace(/[^a-z0-9_\-.+\s]/gi,'');
     }
 
 }
