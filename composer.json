@@ -1,6 +1,6 @@
 {
   "name": "pimcore/perspective-editor",
-  "license": "GPL-3.0+",
+  "license": "proprietary",
   "type": "pimcore-bundle",
   "description": "Pimcore Perspective Editor",
   "config": {
