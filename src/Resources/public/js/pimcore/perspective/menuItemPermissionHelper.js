@@ -22,11 +22,9 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.addBlankSnippet',
                 'items.addLink',
                 'items.addEmail',
-                'items.addBlankEmail',
-                'items.addNewsletter',
+                'items.addBlankEmail',                
                 'items.addHardlink',
                 'items.addFolder',
-                'items.addPrintPage',
                 'items.paste',
                 'items.pasteCut',
                 'items.copy',
@@ -126,11 +124,7 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.emails',
                 'items.maintenance',
                 'items.systemtools.hidden',
-                'items.systemtools.items.phpinfo',
-                'items.systemtools.items.opcache',
-                'items.systemtools.items.requirements',
-                'items.systemtools.items.database',
-                'items.systemtools.items.fileexplorer'
+                'items.systemtools.items.requirements'
             ],
             settings: [
                 'hidden',
@@ -142,7 +136,6 @@ pimcore.bundle.perspectiveeditor.MenuItemPermissionHelper = class {
                 'items.system',
                 'items.appearance',
                 'items.website',
-                'items.web2print',
                 'items.users.hidden',
                 'items.users.items.users',
                 'items.users.items.roles',
