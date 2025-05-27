@@ -2,6 +2,6 @@
 
 return [    
     \Pimcore\Bundle\AdminBundle\PimcoreAdminBundle::class => ['all' => true],
-    \Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle::class => ['all' => true]
+    \Pimcore\Bundle\PerspectiveEditorBundle\PimcorePerspectiveEditorBundle::class => ['all' => true],
     \Pimcore\Bundle\SeoBundle\PimcoreSeoBundle::class => ['all' => true],
 ];
