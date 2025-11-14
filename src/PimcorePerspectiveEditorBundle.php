@@ -23,10 +23,22 @@ use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
+/**
+ * @deprecated version 2.2
+ */
 class PimcorePerspectiveEditorBundle extends AbstractPimcoreBundle implements PimcoreBundleAdminClassicInterface, DependentBundleInterface
 {
     use BundleAdminClassicTrait;
     use PackageVersionTrait;
+
+    public function __construct()
+    {
+        trigger_deprecation(
+            'pimcore/perspective-editor-bundle',
+            '2.2',
+            'The PerspectiveEditorBundle is deprecated and will be discontinued with Pimcore Studio.'
+        );
+    }
 
     const PERMISSION_PERSPECTIVE_EDITOR = 'perspective_editor';
 
