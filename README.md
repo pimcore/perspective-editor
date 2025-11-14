@@ -4,6 +4,9 @@ title: Perspective Editor
 
 # Pimcore Perspective Editor
 
+> [!WARNING]
+> This bundle won't be migrated to Pimcore Studio and therefore will be deprecated with 2.2.
+
 This bundle provides an editor for Pimcore to manage custom views and perspectives.
 
 ## Features in a Nutshell
