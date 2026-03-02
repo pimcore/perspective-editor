@@ -22,7 +22,6 @@ jobs:
                 include:
                     - { php-version: "8.3", dependencies: "highest", pimcore_version: "", phpstan_args: "", experimental: false }
                     - { php-version: "8.4", dependencies: "highest", pimcore_version: "", phpstan_args: "", experimental: false }
-                    - { php-version: "8.4", dependencies: "highest", pimcore_version: "12.x-dev", phpstan_args: "", experimental: true }
         steps:
             - name: "Checkout code"
               uses: "actions/checkout@v2"
