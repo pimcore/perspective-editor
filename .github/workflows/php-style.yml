@@ -18,4 +18,4 @@ jobs:
         with:
             head_ref: ${{ github.head_ref || github.ref_name }}
             repository: ${{ github.repository }}
-            config_file: .php-cs-fixer.dist.php
+            config_file: auto
