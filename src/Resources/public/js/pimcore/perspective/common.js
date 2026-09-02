@@ -27,6 +27,101 @@ pimcore.bundle.perspectiveeditor.PerspectiveViewHelper = class {
         record.parentNode.expand();
     }
 
+    /**
+     * Serializes the given tree store and triggers a download of the result as a JSON file.
+     * The exported format matches the data that is sent to the server on save, so it can be
+     * re-imported on another server to migrate perspectives or views.
+     */
+    static exportTreeStore (treeStore, filename){
+        const data = treeStore.getRoot().serialize();
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], {type: 'application/json'});
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(url);
+    }
+
+    /**
+     * Opens a file picker and reads the selected file as JSON. The parsed content is passed to the
+     * given callback. Invalid JSON triggers an error notification.
+     */
+    static importFromFile (callback){
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json,.json';
+        input.style.display = 'none';
+
+        input.addEventListener('change', function(){
+            const file = input.files && input.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(){
+                let data;
+                try {
+                    data = JSON.parse(reader.result);
+                } catch (e) {
+                    Ext.MessageBox.alert(t('error'), t('plugin_pimcore_perspectiveeditor_import_invalid_file'));
+                    return;
+                }
+                callback(data);
+            };
+            reader.onerror = function(){
+                Ext.MessageBox.alert(t('error'), t('plugin_pimcore_perspectiveeditor_import_invalid_file'));
+            };
+            reader.readAsText(file);
+        });
+
+        document.body.appendChild(input);
+        input.click();
+        document.body.removeChild(input);
+    }
+
+    /**
+     * Normalizes a node coming from an import file so it can be safely appended to a tree store on
+     * another server: new ids are generated to avoid collisions, the node is marked writeable and
+     * the "disabled" styling is removed. Runs recursively on all children.
+     */
+    static prepareImportedNode (node){
+        node.id = this.generateUuid();
+        node.writeable = true;
+
+        if (typeof node.cls === 'string') {
+            node.cls = node.cls.replace('pimcore_tree_node_disabled', '').trim();
+        }
+
+        if (Array.isArray(node.children)) {
+            node.children.forEach(function(child){
+                this.prepareImportedNode(child);
+            }.bind(this));
+        }
+
+        return node;
+    }
+
+    /**
+     * Extracts the list of child nodes from an imported payload. Accepts either a serialized tree
+     * store ({children: [...]}) or a plain array of nodes.
+     */
+    static getImportedChildren (data){
+        if (Array.isArray(data)) {
+            return data;
+        }
+        if (data && Array.isArray(data.children)) {
+            return data.children;
+        }
+        return [];
+    }
+
     static generateCheckbox (label, config, key, inverted = false, changeCallback = null, readOnly = false){
         return new Ext.form.Checkbox({
             boxLabel: label,
