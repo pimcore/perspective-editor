@@ -187,6 +187,19 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
                                         }.bind(this))
                                     }.bind(this)
                                 }),
+                                new Ext.Button({
+                                    text: t("plugin_pimcore_perspectiveeditor_import"),
+                                    iconCls: "pimcore_icon_upload",
+                                    disabled: !pimcore.settings['perspectives-writeable'],
+                                    handler: this.importPerspectives.bind(this)
+                                }),
+                                new Ext.Button({
+                                    text: t("plugin_pimcore_perspectiveeditor_export"),
+                                    iconCls: "pimcore_icon_download",
+                                    handler: function(){
+                                        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.exportTreeStore(this.perspectiveTreeStore, 'perspectives.json');
+                                    }.bind(this)
+                                }),
                             ],
                         },
                     }),
@@ -836,6 +849,41 @@ pimcore.bundle.perspectiveeditor.PerspectiveEditor = class {
         });
         document.dispatchEvent(preAddElementTreeSettingsForm);
         return elementTreeSettingsForm;
+    }
+
+    importPerspectives () {
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.importFromFile(function(data){
+            const children = pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.getImportedChildren(data).filter(function(node){
+                return node && node.type === 'perspective';
+            });
+
+            if (children.length === 0) {
+                Ext.MessageBox.alert(t('error'), t('plugin_pimcore_perspectiveeditor_import_no_perspectives'));
+                return;
+            }
+
+            const root = this.perspectiveTreeStore.getRoot();
+            children.forEach(function(node){
+                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.prepareImportedNode(node);
+
+                // ensure the perspective name is unique within the tree
+                let name = this.sanitizeName(node.name || node.text || '');
+                let candidate = name;
+                let counter = 1;
+                while (this.perspectiveTreeStore.findExact("name", candidate) !== -1) {
+                    candidate = name + ' (' + t('plugin_pimcore_perspectiveeditor_imported') + ' ' + counter + ')';
+                    counter++;
+                }
+                node.name = candidate;
+                node.text = candidate;
+
+                root.appendChild(node);
+            }.bind(this));
+
+            this.setDirty(true);
+            pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(root.lastChild);
+            pimcore.helpers.showNotification(t("success"), t("plugin_pimcore_perspectiveeditor_import_success"), "success");
+        }.bind(this));
     }
 
     setDirty(dirty) {

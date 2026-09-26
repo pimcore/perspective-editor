@@ -13,6 +13,7 @@ This bundle provides an editor for Pimcore to manage custom views and perspectiv
 - Possibility to add, remove or edit custom views.
 - Possibility to add, remove or edit perspectives.
 - Configuration directly in the user interface.
+- Export and import of views and perspectives to migrate settings between servers.
 
 <div class="image-as-lightbox"></div>
 
@@ -28,3 +29,4 @@ This bundle provides an editor for Pimcore to manage custom views and perspectiv
 - [Installation & Configuration](./doc/01_Installation.md)
 - [Customize Menu Entry List](./doc/02_Customize_Menu_Entry_List.md)
 - [Upgrade Notes](./doc/03_Upgrade.md)
+- [Export / Import](./doc/04_Export_Import.md)

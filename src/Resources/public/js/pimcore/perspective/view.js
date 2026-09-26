@@ -76,7 +76,22 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
                 })
             ];
 
+            toolbarButtons.push(new Ext.Button({
+                text: t("plugin_pimcore_perspectiveeditor_export"),
+                iconCls: "pimcore_icon_download",
+                handler: function(){
+                    pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.exportTreeStore(this.viewTreeStore, 'customviews.json');
+                }.bind(this)
+            }));
+
             if(!readOnly) {
+                toolbarButtons.push(new Ext.Button({
+                    text: t("plugin_pimcore_perspectiveeditor_import"),
+                    iconCls: "pimcore_icon_upload",
+                    disabled: !pimcore.settings['custom-views-writeable'],
+                    handler: this.importViews.bind(this)
+                }));
+
                 toolbarButtons.push(new Ext.Button({
                     text: t('plugin_pimcore_perspectiveeditor_add_view'),
                     iconCls: "pimcore_icon_plus",
@@ -564,6 +579,29 @@ pimcore.bundle.perspectiveeditor.ViewEditor = class {
             this.assetTreeContextMenuGroup,
             this.objectTreeContextMenuGroup
         ];
+    }
+
+    importViews () {
+        pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.importFromFile(function(data){
+            const children = pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.getImportedChildren(data).filter(function(node){
+                return node && node.type === 'view';
+            });
+
+            if (children.length === 0) {
+                Ext.MessageBox.alert(t('error'), t('plugin_pimcore_perspectiveeditor_import_no_views'));
+                return;
+            }
+
+            const root = this.viewTreeStore.getRoot();
+            children.forEach(function(node){
+                pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.prepareImportedNode(node);
+                root.appendChild(node);
+            }.bind(this));
+
+            this.setDirty(true);
+            pimcore.bundle.perspectiveeditor.PerspectiveViewHelper.reloadTreeNode(root.lastChild);
+            pimcore.helpers.showNotification(t("success"), t("plugin_pimcore_perspectiveeditor_import_success"), "success");
+        }.bind(this));
     }
 
     setDirty(dirty) {
